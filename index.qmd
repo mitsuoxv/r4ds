@@ -1,29 +1,31 @@
-# Welcome {.unnumbered}
+# ようこそ {.unnumbered}
 
-This is the website for the 2nd edition of **"R for Data Science"**.
-This book will teach you how to do data science with R: You'll learn how to get your data into R, get it into the most useful structure, transform it and visualize.
+**"Rではじめるデータサイエンス"**第2版のウェブサイトへようこそ。
+Rを使ってデータサイエンスする（あなたのデータをRに持ち込んで、最も有益な構造にして、変換、可視化する）やり方を学習しましょう。
 
-In this book, you will find a practicum of skills for data science.
-Just as a chemist learns how to clean test tubes and stock a lab, you'll learn how to clean data and draw plots---and many other things besides.
-These are the skills that allow data science to happen, and here you will find the best practices for doing each of these things with R.
-You'll learn how to use the grammar of graphics, literate programming, and reproducible research to save time.
-You'll also learn how to manage cognitive resources to facilitate discoveries when wrangling, visualizing, and exploring data.
+本書には、データサイエンスに求められる技能演習が含まれています。
+ちょうど化学者が試験管をきれいにしたり、実験室を整理整頓するやり方を学ぶように、データをきれいにしたり、グラフを描いたり、その他もろもろのやり方を学んでいきます。
+これらはデータサイエンスを可能にする技能であり、Rを使ってそれらを行うベスト・プラクティスを見出していくことになるでしょう。
+時間を節約するために、グラフィックスの文法、文芸的プログラミング、再現可能な研究を使うやり方も学びます。
+さらに、データを手懐け、可視化、探索する際に、発見を容易にするために、認知資源を管理するやり方も学びます。
 
-This website is and will always be free, licensed under the [CC BY-NC-ND 3.0](https://creativecommons.org/licenses/by-nc-nd/3.0/us/) License.
-If you'd like a physical copy of the book, you can order it on [Amazon](https://www.amazon.com/dp/1492097403?&tag=hadlwick-20).
-If you appreciate reading the book for free and would like to give back, please make a donation to [Kākāpō Recovery](https://www.doc.govt.nz/kakapo-donate): the [kākāpō](https://www.youtube.com/watch?v=9T1vfsHYiKY) (which appears on the cover of R4DS) is a critically endangered parrot native to New Zealand; there are only 248 left.
+このウェブサイトは[CC BY-NC-ND 3.0](https://creativecommons.org/licenses/by-nc-nd/3.0/us/)ライセンスの下、現在および将来にわたって常に無料で、利用可能です。
+紙の本が欲しいという方は、（英語版ですが）[Amazon](https://www.amazon.com/dp/1492097403?&tag=hadlwick-20)で注文できます。
+本書を無料で読めることへの謝意としてお礼がしたいという方は、[Kākāpō Recovery](https://www.doc.govt.nz/kakapo-donate)へ寄付をお願いします。
+本書表紙に登場している[kākāpō](https://www.youtube.com/watch?v=9T1vfsHYiKY) は、ニュージーランド在来種のオウムで248羽しか残っていない絶滅危惧種です。
 
-If you speak another language, you might be interested in the freely available translations of the 1st edition:
+本書第1版の以下言語への翻訳版が無料で利用可能です。母
+国語が英語でも日本語でもない方は興味を持たれるかと。
 
--   [Spanish](http://es.r4ds.hadley.nz)
--   [Italian](https://it.r4ds.hadley.nz)
--   [Turkish](https://tr.r4ds.hadley.nz)
+-   [スペイン語](http://es.r4ds.hadley.nz)
+-   [イタリア語](https://it.r4ds.hadley.nz)
+-   [トルコ語](https://tr.r4ds.hadley.nz)
 
-You can find suggested answers to exercises in the book at <https://mine-cetinkaya-rundel.github.io/r4ds-solutions>.
+本書の演習への想定回答は <https://mine-cetinkaya-rundel.github.io/r4ds-solutions>にあります。
 
-Please note that R4DS uses a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
-By contributing to this book, you agree to abide by its terms.
+本書で学習するコミュニティは、[コントリビューター行動規範](https://www.contributor-covenant.org/ja/version/2/1/code_of_conduct/code_of_conduct.txt)を用いています。
+本書にコントリビュートすると、その条項に従うと同意したことになりますので、ご留意を。
 
-## Acknowledgements {.unnumbered}
+## 謝辞 {.unnumbered}
 
-R4DS is hosted by <https://www.netlify.com> as part of their support of open source software and communities.
+<https://www.netlify.com> が、オープンソースのソフトウェアとコミュニティへのサポートの一環として、本書（英語版）をホストしてくれています。

@@ -56,5 +56,5 @@ Then commit and push to atlas.
 
 ## コントリビューター行動規範
 
-本書で学習するコミュニティは、[コントリビューター行動規範](https://www.contributor-covenant.org/ja/version/2/1/code_of_conduct/code_of_conduct.txt)を採用しています。
-あなたも、本書にコントリビュートすることで、その条項に従うと同意したことになります。
+本書で学習するコミュニティは、[コントリビューター行動規範](https://www.contributor-covenant.org/ja/version/2/1/code_of_conduct/code_of_conduct.txt)を用いています。
+本書にコントリビュートすると、その条項に従うと同意したことになりますので、ご留意を。

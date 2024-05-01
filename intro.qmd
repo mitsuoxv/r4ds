@@ -1,4 +1,4 @@
-# Introduction {#sec-intro .unnumbered}
+# はじめに {#sec-intro .unnumbered}
 
 ```{r}
 #| echo: false
@@ -6,11 +6,11 @@
 source("_common.R")
 ```
 
-Data science is an exciting discipline that allows you to transform raw data into understanding, insight, and knowledge.
-The goal of "R for Data Science" is to help you learn the most important tools in R that will allow you to do data science efficiently and reproducibly, and to have some fun along the way 😃.
-After reading this book, you'll have the tools to tackle a wide variety of data science challenges using the best parts of R.
+データサイエンスは、生のデータを理解、洞察、知識へと変換できる、わくわくする学科です。
+"Rではじめるデータサイエンス"のゴールは、あなたがデータサイエンスを効率的に、再現可能な格好で、そしてその過程を楽しめる😃 よう、Rの最も重要な道具を学習することを助けることです。
+本書の読後には、Rの最良な部分を使って、データサイエンスの多種多様の挑戦に取り組むための道具を身に付けていることでしょう。
 
-## What you will learn
+## 本書で学ぶこと
 
 Data science is a vast field, and there's no way you can master it all by reading a single book.
 This book aims to give you a solid foundation in the most important tools and enough knowledge to find the resources to learn more when necessary.

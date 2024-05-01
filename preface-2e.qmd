@@ -1,31 +1,36 @@
-# Preface to the second edition {.unnumbered}
+# 第2版への序文 {.unnumbered}
 
-Welcome to the second edition of "R for Data Science"!
-This is a major reworking of the first edition, removing material we no longer think is useful, adding material we wish we included in the first edition, and generally updating the text and code to reflect changes in best practices.
-We're also very excited to welcome a new co-author: Mine Çetinkaya-Rundel, a noted data science educator and one of our colleagues at Posit (the company formerly known as RStudio).
+"Rではじめるデータサイエンス"第2版へようこそ！
+第1版から大きく作り直しました。も
+はや有益でないと考えた材料を削除、第1版に含めていたら良かったのにと思った材料を追加、そして、ベストプラクティスの変化を反映して文章とコードを総じてアップデートしました。
+また、とても嬉しいことに新しい共著者を迎えることができました。M
+ine Çetinkaya-Rundelです。彼
+女は著名なデータサイエンス教育者であり、Posit (以前はRStudioという社名でした)での同僚でもあります。
 
-A brief summary of the biggest changes follows:
+大きな変更箇所を簡単にまとめると以下のようになります。
 
--   The first part of the book has been renamed to "Whole game".
-    The goal of this section is to give you the rough details of the "whole game" of data science before we dive into the details.
+-   本書第1部は"全体像"としました。
+    第1部の目的は、データサイエンスの詳細に入り込む前に、その"全体像"を大まかに掴んでもらうことです。
 
--   The second part of the book is "Visualize".
-    This part gives data visualization tools and best practices a more thorough coverage compared to the first edition.
-    The best place to get all the details is still the [ggplot2 book](http://ggplot2-book.org/), but now R4DS covers more of the most important techniques.
+-   第2部は"可視化"です。
+    第2部では、データを可視化する道具とベストプラクティスを、第1版のときよりも広くカバーしました。
+    詳細の全てを得る最良の場所は依然として[ggplot2 book](http://ggplot2-book.org/)ではあるのですが、本書第2版では重要なテクニックをより多くカバーしました。
 
--   The third part of the book is now called "Transform" and gains new chapters on numbers, logical vectors, and missing values.
-    These were previously parts of the data transformation chapter, but needed much more room to cover all the details.
+-   第3部は"変換"と名付けて、数値、論理ベクター、欠損値についての章を追加。
+    第1版ではデータ変換の章で、その一部として扱っていたのですが、詳細の全てをカバーするにはもっと多くのスペースが必要になりました。
 
--   The fourth part of the book is called "Import".
-    It's a new set of chapters that goes beyond reading flat text files to working with spreadsheets, getting data out of databases, working with big data, rectangling hierarchical data, and scraping data from web sites.
+-   第4部は"読み込み"です。
+    フラットなテキストファイルを読み込むだけでなく、スプレッドシートで仕事をしたり、データベースからデータを取ってきたり、ビッグデータを扱ったり、階層データを矩形化したり、ウェブサイトからデータをスクレイピングする章を追加しました。
 
--   The "Program" part remains, but has been rewritten from top-to-bottom to focus on the most important parts of function writing and iteration.
-    Function writing now includes details on how to wrap tidyverse functions (dealing with the challenges of tidy evaluation), since this has become much easier and more important over the last few years.
-    We've added a new chapter on important base R functions that you're likely to see in wild-caught R code.
+-   "プログラム"部は残しましたが、徹底的に書き直して、関数記述と繰り返しの最も重要な部分にフォーカスしました。
+    関数記述には、tidyverse関数を包み込む詳細なやり方（tidy evaluationの挑戦の取り扱い方）を含めました。こ
+    こ数年に間に、ずっと簡単に、そしてずっと重要になったからです。
+    また、ベースR関数で、そこかしこのRコードで見かけそうな重要な関数についての章を追加しました。
 
--   The modeling part has been removed.
-    We never had enough room to fully do modelling justice, and there are now much better resources available.
-    We generally recommend using the [tidymodels](https://www.tidymodels.org/) packages and reading [Tidy Modeling with R](https://www.tmwr.org/) by Max Kuhn and Julia Silge.
+-   モデルについての部は削除しました。
+    第1版でもモデルを十分に扱えるだけのスペースがありませんでしたが、今ではもっと良い資源が利用可能になっています。
+    [tidymodels](https://www.tidymodels.org/) パッケージの使用と、Max KuhnとJulia Silgeによる著作[Tidy Modeling with R](https://www.tmwr.org/)を読むことを一般的に薦めています。
 
--   The "Communicate" part remains, but has been thoroughly updated to feature [Quarto](https://quarto.org/) instead of R Markdown.
-    This edition of the book has been written in Quarto, and it's clearly the tool of the future.
+-   "コミュニケート"部は残しましたが、R Markdownに替わって、[Quarto](https://quarto.org/)をメインとするよう、徹底的にアップデートしました。
+    この第2版はQuartoで書かれています。Q
+    uartoが将来にわたって使われる道具であることは明らかです。
