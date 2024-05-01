@@ -12,9 +12,10 @@ source("_common.R")
 
 ## 本書で学ぶこと
 
-Data science is a vast field, and there's no way you can master it all by reading a single book.
-This book aims to give you a solid foundation in the most important tools and enough knowledge to find the resources to learn more when necessary.
-Our model of the steps of a typical data science project looks something like @fig-ds-diagram.
+データサイエンスは広大な領域であり、一冊の本を読んだだけでその全てが修得できるわけがありません。
+本書が狙っているのは、必要となればもっと学べる資源を読者が見つけられるよう、最も重要な道具と十分な知識の堅牢な土台を与えることです。
+典型的なデータサイエンスのプロジェクトは、以下のように複数の段階から成るモデルで表せます。@
+fig-ds-diagram
 
 ```{r}
 #| label: fig-ds-diagram
@@ -33,80 +34,87 @@ Our model of the steps of a typical data science project looks something like @f
 knitr::include_graphics("diagrams/data-science/base.png", dpi = 270)
 ```
 
-First, you must **import** your data into R.
-This typically means that you take data stored in a file, database, or web application programming interface (API) and load it into a data frame in R.
-If you can't get your data into R, you can't do data science on it!
+最初に、自分が持っているデータをRに**読み込む**必要があります。
+典型的には、ファイル、データベース、もしくは、ウェブに保存されているデータをアプリケーション・プログラミング・インターフェース (API) を通じて取り出し、Rにデータフレームとして持ち込む、ということです。
+Rにデータを読み込めなければ、それについてデータサイエンスをすることなどできません！
 
-Once you've imported your data, it is a good idea to **tidy** it.
-Tidying your data means storing it in a consistent form that matches the semantics of the dataset with how it is stored.
-In brief, when your data is tidy, each column is a variable and each row is an observation.
-Tidy data is important because the consistent structure lets you focus your efforts on answering questions about the data, not fighting to get the data into the right form for different functions.
+ひとたびデータを読み込んだなら、そいつを**整頓**するのは良い考えです。
+データを整頓するとは、データセットの持つ意味と保存方法が一致するよう、首尾一貫した様式で保存することです。
+簡単に言えば、データが整頓されていれば、各列は変数に、各行は観測値になっています。
+整頓されたデータが重要なのは、その首尾一貫した構造のおかげで、異なる関数ごとに正しい様式にしようとデータと格闘することなく、データについての質問に答えることに努力を集中できるからです。
 
-Once you have tidy data, a common next step is to **transform** it.
-Transformation includes narrowing in on observations of interest (like all people in one city or all data from the last year), creating new variables that are functions of existing variables (like computing speed from distance and time), and calculating a set of summary statistics (like counts or means).
-Together, tidying and transforming are called **wrangling** because getting your data in a form that's natural to work with often feels like a fight!
+ひとたびデータを整頓すれば、次のステップは普通それを**変換**することです。
+変換とは、（一つの都市の全員とか、昨年の全てのデータとか）興味のある観測値に絞り込む、（距離と時間から速度を計算するなど）既存の変数から関数を使って新しい変数を作り出す、（カウントや平均など）一連の要約統計値を計算する、などのことです。
+整頓と変換を合わせて**手懐け**と呼びます。と
+いうのも、データを仕事を進めるのに自然な様式にすることは、動物を手懐けるに等しい闘いに感じられるのがしばしばだからです！
 
-Once you have tidy data with the variables you need, there are two main engines of knowledge generation: visualization and modeling.
-These have complementary strengths and weaknesses, so any real data analysis will iterate between them many times.
+ひとたび必要な変数を含む整頓されたデータを得れば、知識を創造する主に二つのエンジンが使えます。可
+視化とモデルです。
+これらの強みと弱みは補完関係にあるので、実際のデータ分析ではこれらの間を何度も行ったり来たりすることになります。
 
-**Visualization** is a fundamentally human activity.
-A good visualization will show you things you did not expect or raise new questions about the data.
-A good visualization might also hint that you're asking the wrong question or that you need to collect different data.
-Visualizations can surprise you, but they don't scale particularly well because they require a human to interpret them.
+**可視化**は根本的に人向けの活動です。
+良い可視化では、予想していなかった物事が見えたり、データについて新しい質問を思い付いたりします。
+さらに、間違った質問をしていたとか、異なるデータを集める必要があるとか、気付かされるかもしれません。
+可視化はあなたを驚かせることができますが、人が見て解釈しないといけないので、観測値がとても多いとあまり上手く行きません。
 
-**Models** are complementary tools to visualization.
-Once you have made your questions sufficiently precise, you can use a model to answer them.
-Models are fundamentally mathematical or computational tools, so they generally scale well.
-Even when they don't, it's usually cheaper to buy more computers than it is to buy more brains!
-But every model makes assumptions, and by its very nature, a model cannot question its own assumptions.
-That means a model cannot fundamentally surprise you.
+**モデル**は可視化を補完する道具です。
+ひとたび十分に精密な質問を持ったなら、モデルを使って答えることができます。
+モデルは根本的に数学的、あるいは、計算上の道具なので、観測値が多くなっても一般的には上手く行きます。
+上手く行かないときでも、追加で頭脳を買うよりもコンピューターを買った方が通常安上がりです！
+ただし、全てのモデルには前提が置かれています。そ
+の性質ゆえ、モデルは自身の前提を疑えません。
+モデルはあなたを驚かせることが根本的にできない、ということです。
 
-The last step of data science is **communication**, an absolutely critical part of any data analysis project.
-It doesn't matter how well your models and visualization have led you to understand the data unless you can also communicate your results to others.
+データサイエンスの最後のステップは**コミュニケーション**で、どんなデータ分析プロジェクトでも絶対的に大事な部分です。
+どれだけモデルや可視化を通してデータを理解できたとしても、あなたの得た結果を他者に伝えることができなければ、何の意味もありません。
 
-Surrounding all these tools is **programming**.
-Programming is a cross-cutting tool that you use in nearly every part of a data science project.
-You don't need to be an expert programmer to be a successful data scientist, but learning more about programming pays off because becoming a better programmer allows you to automate common tasks and solve new problems with greater ease.
+これら全ての道具を取り囲んでいるのが**プログラミング**です。
+プログラミングは、データサイエンスのプロジェクトのほぼ全ての部分で使う分野横断的な道具です。
+データサイエンティストとして成功するのに、プロのプログラマーになる必要はありませんが、より良いプログラマーになれば、よくある業務を自動化したり、新しい問題をより容易に解けたりできるので、プログラミングについてさらに学習することは割の良い投資です。
 
-You'll use these tools in every data science project, but they're not enough for most projects.
-There's a rough 80/20 rule at play: you can tackle about 80% of every project using the tools you'll learn in this book, but you'll need other tools to tackle the remaining 20%.
-Throughout this book, we'll point you to resources where you can learn more.
+本書で学ぶ道具は、データサイエンスの全てのプロジェクトで使うことになりますが、ほとんどのプロジェクトではそれだけでは足りません。
+大まかに 80/20 ルールが働いています。本
+書で学ぶ道具を使って全てのプロジェクトの約80％はこなせますが、残りの20％に取り組むには他の道具が必要になります。
+本書を通じて、さらに学習できる資源を指し示すことにします。
 
-## How this book is organized
+## 本書の構成
 
-The previous description of the tools of data science is organized roughly according to the order in which you use them in an analysis (although, of course, you'll iterate through them multiple times).
-In our experience, however, learning data importing and tidying first is suboptimal because, 80% of the time, it's routine and boring, and the other 20% of the time, it's weird and frustrating.
-That's a bad place to start learning a new subject!
-Instead, we'll start with visualization and transformation of data that's already been imported and tidied.
-That way, when you ingest and tidy your own data, your motivation will stay high because you know the pain is worth the effort.
+データサイエンスの道具について、ここまでは、大まかに分析で使う順（と言っても、当然何度も行ったり来たりするのですが）に描写してきました。
+しかし、最初にデータの読み込みと整頓を学習するのは、経験上、最適ではありません。と
+いうのも、80％の時間は繰り返し作業で退屈、残り20％の時間は訳のわからん作業で不満がたまるからです。
+新しい主題を学びはじめる場所としてふさわしくないのです！
+替わりに、読み込みと整頓が済んだデータの可視化と変換からはじめます。
+こうすることで、いざ自分のデータを読み込んで整頓する際に、苦痛が努力に見合うものだと知っているので、動機を高く保てます。
 
-Within each chapter, we try to adhere to a consistent pattern: start with some motivating examples so you can see the bigger picture, and then dive into the details.
-Each section of the book is paired with exercises to help you practice what you've learned.
-Although it can be tempting to skip the exercises, there's no better way to learn than by practicing on real problems.
+各章内で、首尾一貫したパターンに固執するよう努めました。動
+機付けになる例でより大きな絵が見えるようにはじめて、それから詳細に潜っていきます。
+本書の各セクションには、学んだばかりのことを練習できるよう演習を置きました。
+演習はスキップしたくなるかもしれませんが、実際の問題で練習することよりも優れた方法はありません。
 
-## What you won't learn
+## 何を学ばないか
 
-There are several important topics that this book doesn't cover.
-We believe it's important to stay ruthlessly focused on the essentials so you can get up and running as quickly as possible.
-That means this book can't cover every important topic.
+本書がカバーしていない重要トピックはいくつもあります。
+あなたが可能な限り素早く立ち上がって走って行けるよう、本質的なことだけに無慈悲なほどにフォーカスし続けることが重要だと信じています。
+本書で全ての重要トピックをカバーすることはできない、ということです。
 
-### Modeling
+### モデル
 
-Modeling is super important for data science, but it's a big topic, and unfortunately, we just don't have the space to give it the coverage it deserves here.
-To learn more about modeling, we highly recommend [Tidy Modeling with R](https://www.tmwr.org) by our colleagues Max Kuhn and Julia Silge.
-This book will teach you the tidymodels family of packages, which, as you might guess from the name, share many conventions with the tidyverse packages we use in this book.
+モデルはデータサイエンスにとってとても重要ですが、大きなトピックでもあり、残念ながら、それに見合う扱いでカバーするには本書にはスペースが足りません。
+モデルについてさらに学ぶには、われわれの同僚のMax Kuhn と Julia Silgeによる著作 [Tidy Modeling with R](https://www.tmwr.org) をお薦めします。
+tidymodels パッケージ（その名から推測できるように、本書で使用する tidyverse パッケージと多くの慣行を共有しています）を教えてくれます。
 
-### Big data
+### ビッグデータ
 
-This book proudly and primarily focuses on small, in-memory datasets.
-This is the right place to start because you can't tackle big data unless you have experience with small data.
-The tools you'll learn throughout the majority of this book will easily handle hundreds of megabytes of data, and with a bit of care, you can typically use them to work with a few gigabytes of data.
-We'll also show you how to get data out of databases and parquet files, both of which are often used to store big data.
-You won't necessarily be able to work with the entire dataset, but that's not a problem because you only need a subset or subsample to answer the question that you're interested in.
+本書は、主にメモリーに置ける程度の小さいデータセットに、誇りを持ってフォーカスしています。
+小さいデータの経験がなければ、ビッグデータに取り組むことなどできないのですから、小さいデータからはじめるのが正しい。
+本書の大部分を通して学ぶ道具は、数百メガバイトのデータを容易に扱えますし、数ギガバイトのデータでも、少々注意すれば、典型的には扱えます。
+また、ビッグデータを保存するのに多く用いられているデータベースや parquet ファイルからデータを取り出すやり方も示します。
+データセットの全体で作業する必要は必ずしもないのです。興
+味を持った質問に答えるのに必要なのはサブセットやサブサンプルだけなので、全体を扱えないことは問題ではないのです。
 
-If you're routinely working with larger data (10--100 GB, say), we recommend learning more about [data.table](https://github.com/Rdatatable/data.table).
-We don't teach it here because it uses a different interface than the tidyverse and requires you to learn some different conventions.
-However, it is incredibly faster, and the performance payoff is worth investing some time in learning it if you're working with large data.
+（例えば、10--100 GBの）より大きなデータでいつも作業しているなら、[data.table](https://github.com/Rdatatable/data.table)についてさらに学習することを薦めます。
+本書で教えていないのは、tidyverse とインターフェースが異なり、いくつか別の慣行を学ばなければならないからです。
+しかし、その速さは驚くべきもので、大きなデータを扱っているなら、時間を割いて学習することは割に合います。
 
 ### Python, Julia, and friends
 
