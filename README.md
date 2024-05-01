@@ -1,13 +1,7 @@
-# R for Data Science
+# Rではじめるデータサイエンス
 
-<!-- badges: start -->
-
-[![Render and deploy Book to Netlify](https://github.com/hadley/r4ds/actions/workflows/build_book.yaml/badge.svg)](https://github.com/hadley/r4ds/actions/workflows/build_book.yaml)
-
-<!-- badges: end -->
-
-This repository contains the source of [R for Data Science](http://r4ds.hadley.nz) book.
-The book is built using [Quarto](https://quarto.org/).
+本レポは「Rではじめるデータサイエンス」第2版　日本語版　試作品のソースです。
+本書の作成には[Quarto](https://quarto.org/)を使っています。
 
 ## Images
 
@@ -60,7 +54,7 @@ file.copy(pngs, dest, overwrite = TRUE)
 
 Then commit and push to atlas.
 
-## Code of Conduct
+## コントリビューター行動規範
 
-Please note that r4ds uses a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
-By contributing to this book, you agree to abide by its terms.
+本書で学習するコミュニティは、[コントリビューター行動規範](https://www.contributor-covenant.org/ja/version/2/1/code_of_conduct/code_of_conduct.txt)を採用しています。
+あなたも、本書にコントリビュートすることで、その条項に従うと同意したことになります。
