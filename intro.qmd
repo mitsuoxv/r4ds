@@ -1,4 +1,4 @@
-# はじめに {#sec-intro .unnumbered}
+# まえがき {#sec-intro .unnumbered}
 
 ```{r}
 #| echo: false
@@ -10,7 +10,7 @@ source("_common.R")
 "Rではじめるデータサイエンス"のゴールは、あなたがデータサイエンスを効率的に、再現可能な格好で、そしてその過程を楽しめる😃 よう、Rの最も重要な道具を学習することを助けることです。
 本書の読後には、Rの最良な部分を使って、データサイエンスの多種多様の挑戦に取り組むための道具を身に付けていることでしょう。
 
-## 本書で学ぶこと
+## 何を学ぶのか
 
 データサイエンスは広大な領域であり、一冊の本を読んだだけでその全てが修得できるわけがありません。
 本書が狙っているのは、必要となればもっと学べる資源を読者が見つけられるよう、最も重要な道具と十分な知識の堅牢な土台を与えることです。
@@ -33,21 +33,21 @@ source("_common.R")
 knitr::include_graphics("diagrams/data-science/base.png", dpi = 270)
 ```
 
-最初に、自分が持っているデータをRに**読み込む**必要があります。
+最初に、自分が持っているデータをRに**インポート**する必要があります。
 典型的には、ファイル、データベース、もしくは、ウェブに保存されているデータをアプリケーション・プログラミング・インターフェース (API) を通じて取り出し、Rにデータフレームとして持ち込む、ということです。
-Rにデータを読み込めなければ、それについてデータサイエンスをすることなどできません！
+Rにデータをインポートしなければ、それについてデータサイエンスすることなどできません！
 
-ひとたびデータを読み込んだなら、そいつを**整頓**するのは良い考えです。
-データを整頓するとは、データセットの持つ意味と保存方法が一致するよう、首尾一貫した様式で保存することです。
-簡単に言えば、データが整頓されていれば、各列は変数に、各行は観測値になっています。
-整頓されたデータが重要なのは、その首尾一貫した構造のおかげで、異なる関数ごとに正しい様式にしようとデータと格闘することなく、データについての質問に答えることに努力を集中できるからです。
+ひとたびデータをインポートしたなら、それを**整理**するのは良い考えです。
+データを整理するとは、データセットの持つ意味と保存方法が一致するよう、首尾一貫した様式で保存することです。
+簡単に言えば、データが整理されていれば、各列は変数に、各行は観測値になっています。
+整理されたデータが重要なのは、その首尾一貫した構造のおかげで、異なる関数ごとに正しい様式にしようとデータと格闘することなく、データについての質問に答えることに努力を集中できるからです。
 
-ひとたびデータを整頓すれば、次のステップは普通それを**変換**することです。
+ひとたびデータを整理すれば、次のステップは普通それを**変換**することです。
 変換とは、（一つの都市の全員とか、昨年の全てのデータとか）興味のある観測値に絞り込む、（距離と時間から速度を計算するなど）既存の変数から関数を使って新しい変数を作り出す、（カウントや平均など）一連の要約統計値を計算する、などのことです。
-整頓と変換を合わせて**手懐け**と呼びます。と
+整理と変換を合わせて**手懐け**と呼びます。と
 いうのも、データを仕事を進めるのに自然な様式にすることは、動物を手懐けるに等しい闘いに感じられるのがしばしばだからです！
 
-ひとたび必要な変数を含む整頓されたデータを得れば、知識を創造する主に二つのエンジンが使えます。可
+ひとたび必要な変数を含む整理されたデータを得れば、知識を創造する主に二つのエンジンが使えます。可
 視化とモデルです。
 これらの強みと弱みは補完関係にあるので、実際のデータ分析ではこれらの間を何度も行ったり来たりすることになります。
 
@@ -67,9 +67,9 @@ Rにデータを読み込めなければ、それについてデータサイエ�
 データサイエンスの最後のステップは**コミュニケーション**で、どんなデータ分析プロジェクトでも絶対的に大事な部分です。
 どれだけモデルや可視化を通してデータを理解できたとしても、あなたの得た結果を他者に伝えることができなければ、何の意味もありません。
 
-これら全ての道具を取り囲んでいるのが**プログラミング**です。
-プログラミングは、データサイエンスのプロジェクトのほぼ全ての部分で使う分野横断的な道具です。
-データサイエンティストとして成功するのに、プロのプログラマーになる必要はありませんが、より良いプログラマーになれば、よくある業務を自動化したり、新しい問題をより容易に解けたりできるので、プログラミングについてさらに学習することは割の良い投資です。
+これら全ての道具を取り囲んでいるのが**プログラム**です。
+プログラムは、データサイエンスのプロジェクトのほぼ全ての部分で使う分野横断的な道具です。
+データサイエンティストとして成功するのに、プロのプログラマーになる必要はありませんが、より良いプログラマーになれば、よくある業務を自動化したり、新しい問題をより容易に解けたりできるので、プログラムについてさらに学習することは割の良い投資です。
 
 本書で学ぶ道具は、データサイエンスの全てのプロジェクトで使うことになりますが、ほとんどのプロジェクトではそれだけでは足りません。
 大まかに 80/20 ルールが働いています。本
@@ -79,11 +79,11 @@ Rにデータを読み込めなければ、それについてデータサイエ�
 ## 本書の構成
 
 データサイエンスの道具について、ここまでは、大まかに分析で使う順（と言っても、当然何度も行ったり来たりするのですが）に描写してきました。
-しかし、最初にデータの読み込みと整頓を学習するのは、経験上、最適ではありません。と
+しかし、最初にデータのインポートと整理を学習するのは、経験上、最適ではありません。と
 いうのも、80％の時間は決まりきった作業で退屈、残り20％の時間は訳のわからない作業で不満がたまるからです。
 新しい主題を学びはじめる場所としてふさわしくない！
-替わりに、読み込みと整頓が済んだデータの可視化と変換からはじめます。こ
-うすることで、いざ自分のデータを読み込んで整頓する際に、動機を高く保てます。苦
+替わりに、インポートと整理が済んだデータの可視化と変換からはじめます。こ
+うすることで、いざ自分のデータをインポートして整理する際に、動機を高く保てます。苦
 痛が努力に見合うものだと知っているからです。
 
 各章内で、首尾一貫したパターンに固執するよう努めました。動
@@ -116,44 +116,48 @@ tidymodels パッケージ（その名から推測できるように、本書で
 本書で教えていないのは、tidyverse とインターフェースが異なり、いくつか別の慣行を学ばなければならないからです。
 しかし、その速さは驚くべきもので、大きなデータを扱っているなら、時間を割いて学習することは割に合います。
 
-### Python, Julia, and friends
+### Python、Julia、その他の言語
 
-In this book, you won't learn anything about Python, Julia, or any other programming language useful for data science.
-This isn't because we think these tools are bad.
-They're not!
-And in practice, most data science teams use a mix of languages, often at least R and Python.
-But we strongly believe that it's best to master one tool at a time, and R is a great place to start.
+PythonやJulia、その他データサイエンスに役立つプログラム言語について、本書では全く学びません。
+それらの道具が不出来だと考えたからではありません。
+不出来などではありません！
+実際のところ、ほとんどのデータサイエンス・チームは複数の言語、多くの場合少なくともRとPythonを、組み合わせて使っています。
+けれども、いっときに修得するには一つの道具に絞るのが最良であり、Rからはじめるのが良いとわれわれは強く信じているのです。
 
-## Prerequisites
+## 準備するもの
 
-We've made a few assumptions about what you already know to get the most out of this book.
-You should be generally numerically literate, and it's helpful if you have some basic programming experience already.
-If you've never programmed before, you might find [Hands on Programming with R](https://rstudio-education.github.io/hopr/) by Garrett to be a valuable adjunct to this book.
+本書から最大限学んでもらうために、読者が既知であることについて、いくつか前提を置いています。
+読者は総じて数値の扱いに長けていること。既
+に基礎的なプログラムの経験があれば、助けになります。
+これまで一度もプログラムをしたことがないなら、Garrettの著作 [Hands on Programming with R](https://rstudio-education.github.io/hopr/) が本書にとって価値ある副読本になるかもしれません。
 
-You need four things to run the code in this book: R, RStudio, a collection of R packages called the **tidyverse**, and a handful of other packages.
-Packages are the fundamental units of reproducible R code.
-They include reusable functions, documentation that describes how to use them, and sample data.
+本書中のコードを走らせるには４つのものが必要です。R
+、RStudio、**tidyverse**と呼ばれるRパッケージ群、そしていくつかのその他パッケージです。
+パッケージは再現可能なRコードの基礎を成すものです。
+パッケージは、再利用可能な関数、それらの使い方を記したドキュメント、そしてサンプル・データを含んでいます。
 
 ### R
 
-To download R, go to CRAN, the **c**omprehensive **R** **a**rchive **n**etwork, <https://cloud.r-project.org>.
-A new major version of R comes out once a year, and there are 2-3 minor releases each year.
-It's a good idea to update regularly.
-Upgrading can be a bit of a hassle, especially for major versions that require you to re-install all your packages, but putting it off only makes it worse.
-We recommend R 4.2.0 or later for this book.
+Rをダウンロードするには、CRAN, the **c**omprehensive **R** **a**rchive **n**etwork, <https://cloud.r-project.org>に行きます。
+Rの主要バージョンは年１回のペースで出て来ますが、年に２、３回のペースでマイナー・バージョンもリリースされます。
+定期的な更新をお薦めします。
+更新は少々手間がかかることがあります。特
+に主要バージョンへの更新では全てのパッケージを再インストールする必要があります。し
+かし、更新を先延ばしていては、事態は悪くなる一方です。
+R 4.2.0以上のバージョンを本書ではお薦めします。
 
 ### RStudio
 
-RStudio is an integrated development environment, or IDE, for R programming, which you can download from <https://posit.co/download/rstudio-desktop/>.
-RStudio is updated a couple of times a year, and it will automatically let you know when a new version is out, so there's no need to check back.
-It's a good idea to upgrade regularly to take advantage of the latest and greatest features.
-For this book, make sure you have at least RStudio 2022.02.0.
+RStudioはRプログラム向けの統合開発環境、IDEで、<https://posit.co/download/rstudio-desktop/>からダウンロードできます。
+年に２、３回アップデートされ、新しいバージョンが出れば自動的に知らせますので、チェックする必要はありません。
+定期的に更新して、最新かつ最強の機能を利用することをお薦めします。
+本書では、RStudio 2022.02.0以上のバージョンを使うようにしてください。
 
-When you start RStudio, @fig-rstudio-console, you'll see two key regions in the interface: the console pane and the output pane.
-For now, all you need to know is that you type the R code in the console pane and press enter to run it.
-You'll learn more as we go along![^intro-1]
+RStudioを起動すると @fig-rstudio-console、画面に２つの領域が現れます。コンソール区画と出力区画です。
+今のところは、Rコードをコンソール区画に打ち込んで、Enterを押せば実行されると知っていれば十分です。
+先に進むに連れて使い方をもっと学んでいきます！[^intro-1]
 
-[^intro-1]: If you'd like a comprehensive overview of all of RStudio's features, see the RStudio User Guide at <https://docs.posit.co/ide/user>.
+[^intro-1]: RStudioの全機能を網羅的に知りたいのなら、<https://docs.posit.co/ide/user>にあるユーザー・ガイドにあたってください。
 
 ```{r}
 #| label: fig-rstudio-console
@@ -167,15 +171,14 @@ You'll learn more as we go along![^intro-1]
 knitr::include_graphics("diagrams/rstudio/console.png", dpi = 270)
 ```
 
-### The tidyverse
+### tidyverse
 
-You'll also need to install some R packages.
-An R **package** is a collection of functions, data, and documentation that extends the capabilities of base R.
-Using packages is key to the successful use of R.
-The majority of the packages that you will learn in this book are part of the so-called tidyverse.
-All packages in the tidyverse share a common philosophy of data and R programming and are designed to work together.
-
-You can install the complete tidyverse with a single line of code:
+他にもいくつかRパッケージをインストールするひつようがあります。
+R**パッケージ**は関数、データ、ドキュメントの集合で、ベースRの機能を拡張します。
+パッケージの利用がRを上手く使いこなす鍵です。
+本書で学ぶパッケージの大半はいわゆるtidyverseに属しています。
+tidyverseに属する全てのパッケージはデータとRプログラムについて同じ哲学を共有しており、手を携えて働くよう設計されています。
+tidyverseのコアに当たるパッケージ群は以下の一行コードでインストールできます。
 
 ```{r}
 #| eval: false
@@ -183,23 +186,24 @@ You can install the complete tidyverse with a single line of code:
 install.packages("tidyverse")
 ```
 
-On your computer, type that line of code in the console, and then press enter to run it.
-R will download the packages from CRAN and install them on your computer.
+あなたのコンピューターで、コンソール区画にこのコードを打ち込んで、Enterを押すと、走り出します。
+RがCRANからパッケージをダウンロードして、あなたのコンピューターにインストールします。
 
-You will not be able to use the functions, objects, or help files in a package until you load it with `library()`.
-Once you have installed a package, you can load it using the `library()` function:
+そのままではパッケージ内の関数、オブジェクト、ヘルプ・ファイルは使えません。`l`
+`ibrary()`でロードしてはじめて使えるようになります。
+パッケージのインストールが済んでいれば、以下のように`library()`関数を使えばロードできます。
 
 ```{r}
 library(tidyverse)
 ```
 
-This tells you that tidyverse loads nine packages: dplyr, forcats, ggplot2, lubridate, purrr, readr, stringr, tibble, tidyr.
-These are considered the **core** of the tidyverse because you'll use them in almost every analysis.
+dplyr、forcats、ggplot2、lubridate、purrr、readr、stringr、tibble、tidyrの9つのパッケージがロードされたことが分かります。
+これら9つのパッケージは、ほとんど全ての分析で使うので、tidyverseの**コア**と考えられています。
 
-Packages in the tidyverse change fairly frequently.
-You can see if updates are available by running `tidyverse_update()`.
+tidyverse中のパッケージはかなり頻繁にアップデートされます。
+`tidyverse_update()`を実行すると、入手可能なアップデートがあるか知ることができます。
 
-### Other packages
+### その他のパッケージ
 
 There are many other excellent packages that are not part of the tidyverse because they solve problems in a different domain or are designed with a different set of underlying principles.
 This doesn't make them better or worse; it just makes them different.
