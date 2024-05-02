@@ -1,4 +1,4 @@
-# Whole game {#sec-whole-game-intro .unnumbered}
+# 全体像 {#sec-whole-game-intro .unnumbered}
 
 ```{r}
 #| results: "asis"
@@ -6,9 +6,9 @@
 source("_common.R")
 ```
 
-Our goal in this part of the book is to give you a rapid overview of the main tools of data science: **importing**, **tidying**, **transforming**, and **visualizing data**, as shown in @fig-ds-whole-game.
-We want to show you the "whole game" of data science giving you just enough of all the major pieces so that you can tackle real, if simple, datasets.
-The later parts of the book will hit each of these topics in more depth, increasing the range of data science challenges that you can tackle.
+本書のこの部での目標は、@fig-ds-whole-gameに示した**インポート**、**整理**、**変換**、**可視化**といった、データサイエンスの主要な道具をざっと概観してもらうことです。
+データサイエンスの"全体像"を示して、簡素ながらも実際のデータセットに取り組めるよう、必要な主要部品を全てあなたに与えたい。
+本書の後の部では、ここでのトピックそれぞれをより深く掘り下げ、あなたが取り組めるデータサイエンスの挑戦の範囲を広げていきます。
 
 ```{r}
 #| label: fig-ds-whole-game 
