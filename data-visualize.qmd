@@ -1,4 +1,4 @@
-# Data visualization {#sec-data-visualization}
+# データ可視化 {#sec-data-visualization}
 
 ```{r}
 #| echo: false
@@ -6,7 +6,7 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
 > "The simple graph has brought more information to the data analyst's mind than any other device." --- John Tukey
 
