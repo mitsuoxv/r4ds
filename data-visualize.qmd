@@ -8,21 +8,21 @@ source("_common.R")
 
 ## はじめに
 
-> "The simple graph has brought more information to the data analyst's mind than any other device." --- John Tukey
+> "簡素なグラフほど、データ分析者の心に情報を届けてくれるものはない。" --- John Tukey
 
-R has several systems for making graphs, but ggplot2 is one of the most elegant and most versatile.
-ggplot2 implements the **grammar of graphics**, a coherent system for describing and building graphs.
-With ggplot2, you can do more and faster by learning one system and applying it in many places.
+Rにはグラフを描くシステムがいくつかありますが、ggplot2 が最もエレガントで最も汎用的なものの一つです。
+ggplot2 は、グラフを記述、構築する首尾一貫したシステムである**グラフィックスの文法**を実装しています。
+ggplot2 を使えば、一つのシステムを学ぶとそれを多くの場所で適用できるので、多くのことをより速くできます。
 
-This chapter will teach you how to visualize your data using **ggplot2**.
-We will start by creating a simple scatterplot and use that to introduce aesthetic mappings and geometric objects -- the fundamental building blocks of ggplot2.
-We will then walk you through visualizing distributions of single variables as well as visualizing relationships between two or more variables.
-We'll finish off with saving your plots and troubleshooting tips.
+本章では、**ggplot2** を使ってデータを可視化するやり方を学習します。
+単純な散布図の作成から始めて、それを使ってggplot2 の根本的構築ブロックである、エステティック・マッピングと幾何オブジェクトを紹介します。
+それから、1つの変数の分布、2つ以上の変数間の関係を可視化していきます。
+最後に、描いたグラフを保存して、トラブルシューティングのヒントで締めます。
 
-### Prerequisites
+### 準備するもの
 
-This chapter focuses on ggplot2, one of the core packages in the tidyverse.
-To access the datasets, help pages, and functions used in this chapter, load the tidyverse by running:
+本章がフォーカスするのはtidyverse のコア・パッケージの一つggplot2 です。
+本章で使うデータセット、ヘルプページや関数にアクセスするには、以下を実行してtidyverse をロードします。
 
 ```{r}
 #| label: setup
@@ -30,13 +30,15 @@ To access the datasets, help pages, and functions used in this chapter, load the
 library(tidyverse)
 ```
 
-That one line of code loads the core tidyverse; the packages that you will use in almost every data analysis.
-It also tells you which functions from the tidyverse conflict with functions in base R (or from other packages you might have loaded)[^data-visualize-1].
+この一行のコードでtidyverse のコア・パッケージ群をロードしています。ほ
+ぼ全てのデータ分析で使用するパッケージ群です。
+また、tidyverse のどの関数がベースRの関数（または、これ以前にロードした他のパッケージ）とコンフリクトしているかも教えてくれています。[^data-visualize-1].
 
-[^data-visualize-1]: You can eliminate that message and force conflict resolution to happen on demand by using the conflicted package, which becomes more important as you load more packages.
-    You can learn more about conflicted at <https://conflicted.r-lib.org>.
+[^data-visualize-1]: このメッセージを消して、意図したようにコンフリクトを解消するには、conflicted パッケージを使います。よ
+    り多くのパッケージをロードするにつれ、重要になってきます。
+    conflicted パッケージについては、<https://conflicted.r-lib.org>でさらに学習できます。
 
-If you run this code and get the error message `there is no package called 'tidyverse'`, you'll need to first install it, then run `library()` once again.
+もしこのコードを実行して、`there is no package called 'tidyverse'` というエラーメッセージが出たら、インストールを済ませてから再度`library()` を実行してください。
 
 ```{r}
 #| eval: false
@@ -45,16 +47,16 @@ install.packages("tidyverse")
 library(tidyverse)
 ```
 
-You only need to install a package once, but you need to load it every time you start a new session.
+パッケージのインストールは一度で済みますが、ロードは新しいセッションを開始するたびに必要です。
 
-In addition to tidyverse, we will also use the **palmerpenguins** package, which includes the `penguins` dataset containing body measurements for penguins on three islands in the Palmer Archipelago, and the ggthemes package, which offers a colorblind safe color palette.
+tidyverse に加えて、パルマー諸島の３つの島に住むペンギンを身体測定したデータセットである**palmerpenguins** パッケージと、色盲の人にも識別可能なカラー・パレットを提供してくれるggthemes パッケージも使います。
 
 ```{r}
 library(palmerpenguins)
 library(ggthemes)
 ```
 
-## First steps
+## 第１ステップ
 
 Do penguins with longer flippers weigh more or less than penguins with shorter flippers?
 You probably already have an answer, but try to make your answer precise.
