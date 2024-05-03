@@ -8,7 +8,7 @@ source("_common.R")
 
 ## はじめに
 
-> "簡素なグラフほど、データ分析者の心に情報を届けてくれるものはない。" --- John Tukey
+> "単純なグラフほど、データ分析者の心に情報を届けてくれるものはない。" --- John Tukey
 
 Rにはグラフを描くシステムがいくつかありますが、ggplot2 が最もエレガントで最も汎用的なものの一つです。
 ggplot2 は、グラフを記述、構築する首尾一貫したシステムである**グラフィックスの文法**を実装しています。
@@ -56,24 +56,26 @@ library(palmerpenguins)
 library(ggthemes)
 ```
 
-## 第１ステップ
+## 最初のステップ
 
-Do penguins with longer flippers weigh more or less than penguins with shorter flippers?
-You probably already have an answer, but try to make your answer precise.
-What does the relationship between flipper length and body mass look like?
-Is it positive?
-Negative?
-Linear?
-Nonlinear?
-Does the relationship vary by the species of the penguin?
-How about by the island where the penguin lives?
-Let's create visualizations that we can use to answer these questions.
+翼の長いペンギンは短いペンギンより体重が重いの、軽いの？
+たぶん回答を知っているでしょうが、正確に答えるよう努めてみましょう。
+翼の長さと体重の関係はどう見えるのか？
+正の関係？
+負の関係？
+リニアな関係？
+ノンリニア？
+ペンギンの種族によって関係は違うの？
+ペンギンが住んでいる島によって違ったりする？
+こんな質問に答えられるような可視化をしてみましょう。
 
-### The `penguins` data frame
+### `penguins` データフレーム
 
-You can test your answers to those questions with the `penguins` **data frame** found in palmerpenguins (a.k.a. `palmerpenguins::penguins`).
-A data frame is a rectangular collection of variables (in the columns) and observations (in the rows).
-`penguins` contains `r nrow(penguins)` observations collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER[^data-visualize-2].
+palmerpenguins パッケージの中にある`penguins` **データフレーム** (`palmerpenguins::penguins` のことです)を使えば、これらの質問へのあなたの回答をチェックできます。
+データフレームとは、（列を成す）変数と（行を成す）観測を矩形に集めたものです。
+`penguins` には`r nrow(penguins)` 個の観測が入っています。D
+r.
+Kristen Gorman と the Palmer Station, Antarctica LTER[^data-visualize-2] が集めて公開してくれているものです。
 
 [^data-visualize-2]: Horst AM, Hill AP, Gorman KB (2020).
     palmerpenguins: Palmer Archipelago (Antarctica) penguin data.
@@ -81,47 +83,48 @@ A data frame is a rectangular collection of variables (in the columns) and obser
     <https://allisonhorst.github.io/palmerpenguins/>.
     doi: 10.5281/zenodo.3960218.
 
-To make the discussion easier, let's define some terms:
+議論を容易にするために、以下、いくつかの用語を定義しましょう。
 
--   A **variable** is a quantity, quality, or property that you can measure.
+-   **変数**とは、測定可能な量、質、もしくは、特性。
 
--   A **value** is the state of a variable when you measure it.
-    The value of a variable may change from measurement to measurement.
+-   **値**とは、測定時の変数の状態。
+    変数の値は測定ごとに変化するかもしれません。
 
--   An **observation** is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object).
-    An observation will contain several values, each associated with a different variable.
-    We'll sometimes refer to an observation as a data point.
+-   **観測**とは、似た状況下で（通常は、同じ対象に対して同時に）測定した値の集合。
+    一つの観測には複数の値があり、それぞれが別々の変数につながっています。
+    観測のことをデータポイントと呼ぶこともあります。
 
--   **Tabular data** is a set of values, each associated with a variable and an observation.
-    Tabular data is *tidy* if each value is placed in its own "cell", each variable in its own column, and each observation in its own row.
+-   **表形式データ**とは、それぞれが変数と観測につながっている値の集合。
+    各値が自身の"セル"に、各変数が自身の列に、各観測が自身の列に置かれているなら、その表形式データは*整理されている*と言います。
 
-In this context, a variable refers to an attribute of all the penguins, and an observation refers to all the attributes of a single penguin.
+この文脈では、各変数は全てのペンギンの属性を指し、各観測は一羽の全ての属性を指します。
 
-Type the name of the data frame in the console and R will print a preview of its contents.
-Note that it says `tibble` on top of this preview.
-In the tidyverse, we use special data frames called **tibbles** that you will learn more about soon.
+コンソール区画にデータフレームの名前を打ち込むと、Rがその中身のプレビューを出力してくれます。
+このプレビューの一番上に`tibble` とありますね。
+tidyverse では、特殊なデータフレームである**tibbles** を使います。通
+常のデータフレームとどう違うのかなどはすぐに学習します。
 
 ```{r}
 penguins
 ```
 
-This data frame contains `r ncol(penguins)` columns.
-For an alternative view, where you can see all variables and the first few observations of each variable, use `glimpse()`.
-Or, if you're in RStudio, run `View(penguins)` to open an interactive data viewer.
+このデータフレームには`r ncol(penguins)`個の列があります。
+別の見方として、全ての変数と変数ごとに最初の2、3の観測を見るには、`glimpse()`を使います。
+RStudioを使っていれば、`View(penguins)`を実行すれば、インターアクティブにデータを見られるウィンドウが開きます。
 
 ```{r}
 glimpse(penguins)
 ```
 
-Among the variables in `penguins` are:
+以下の変数が`penguins`に含まれています。
 
-1.  `species`: a penguin's species (Adelie, Chinstrap, or Gentoo).
+1.  `species`: ペンギンの種族 (Adelie、Chinstrap、Gentoo)
 
-2.  `flipper_length_mm`: length of a penguin's flipper, in millimeters.
+2.  `flipper_length_mm`: ペンギンの翼の長さ、ミリメートル表示
 
-3.  `body_mass_g`: body mass of a penguin, in grams.
+3.  `body_mass_g`: ペンギンの体重、グラム表示
 
-To learn more about `penguins`, open its help page by running `?penguins`.
+`penguins`についてもっと知るには、`?penguins`を実行してヘルプページを開いてください。
 
 ### Ultimate goal {#sec-ultimate-goal}
 
