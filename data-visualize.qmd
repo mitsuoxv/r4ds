@@ -8,16 +8,16 @@ source("_common.R")
 
 ## はじめに
 
-> "単純なグラフほど、データ分析者の心に情報を届けてくれるものはない。" --- John Tukey
+> "単純なプロットほど、データ分析者の心に情報を届けてくれるものはない。" --- John Tukey
 
-Rにはグラフを描くシステムがいくつかありますが、ggplot2 が最もエレガントで最も汎用的なものの一つです。
-ggplot2 は、グラフを記述、構築する首尾一貫したシステムである**グラフィックスの文法**を実装しています。
+Rにはプロットを描くシステムがいくつかありますが、ggplot2 が最もエレガントで最も汎用的なものの一つです。
+ggplot2 は、プロットを記述、構築する首尾一貫したシステムである**グラフィックスの文法**を実装しています。
 ggplot2 を使えば、一つのシステムを学ぶとそれを多くの場所で適用できるので、多くのことをより速くできます。
 
 本章では、**ggplot2** を使ってデータを可視化するやり方を学習します。
 単純な散布図の作成から始めて、それを使ってggplot2 の根本的構築ブロックである、エステティック・マッピングと幾何オブジェクトを紹介します。
 それから、1つの変数の分布、2つ以上の変数間の関係を可視化していきます。
-最後に、描いたグラフを保存して、トラブルシューティングのヒントで締めます。
+最後に、描いたプロットを保存して、トラブルシューティングのヒントで締めます。
 
 ### 準備するもの
 
@@ -126,9 +126,9 @@ glimpse(penguins)
 
 `penguins`についてもっと知るには、`?penguins`を実行してヘルプページを開いてください。
 
-### Ultimate goal {#sec-ultimate-goal}
+### 究極の目標 {#sec-ultimate-goal}
 
-Our ultimate goal in this chapter is to recreate the following visualization displaying the relationship between flipper lengths and body masses of these penguins, taking into consideration the species of the penguin.
+本書での究極の目標は、ペンギンの翼の長さと体重の関係を、ペンギンの種族を考慮しつつ表示した以下の可視化を再現することです。
 
 ```{r}
 #| echo: false
@@ -157,13 +157,15 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
   scale_color_colorblind()
 ```
 
-### Creating a ggplot
+### ggplot の作成
 
-Let's recreate this plot step-by-step.
+このプロットを一歩ずつ再現しましょう。
 
-With ggplot2, you begin a plot with the function `ggplot()`, defining a plot object that you then add **layers** to.
-The first argument of `ggplot()` is the dataset to use in the graph and so `ggplot(data = penguins)` creates an empty graph that is primed to display the `penguins` data, but since we haven't told it how to visualize it yet, for now it's empty.
-This is not a very exciting plot, but you can think of it like an empty canvas you'll paint the remaining layers of your plot onto.
+ggplot2でのプロット作成は、`ggplot()`関数でプロットのオブジェクトを定義するところから始めて、次に**レイヤー**を追加していきます。
+`ggplot()`の最初の引数はグラフで使うデータセットです。だ
+から、`ggplot(data = penguins)`とすると、`penguins`のデータを表示する準備ができた、空のグラフを作成します。デ
+ータをどう可視化するか伝えていないので、今のところ空なのです。
+あまり面白くないプロットですが、プロットの残りのレイヤーを描いていく空のキャンバスのように考えることができます。
 
 ```{r}
 #| fig-alt: |
@@ -172,13 +174,14 @@ This is not a very exciting plot, but you can think of it like an empty canvas y
 ggplot(data = penguins)
 ```
 
-Next, we need to tell `ggplot()` how the information from our data will be visually represented.
-The `mapping` argument of the `ggplot()` function defines how variables in your dataset are mapped to visual properties (**aesthetics**) of your plot.
-The `mapping` argument is always defined in the `aes()` function, and the `x` and `y` arguments of `aes()` specify which variables to map to the x and y axes.
-For now, we will only map flipper length to the `x` aesthetic and body mass to the `y` aesthetic.
-ggplot2 looks for the mapped variables in the `data` argument, in this case, `penguins`.
+次に、データからの情報をどう目に見えるように表すか、`ggplot()`に伝えます。
+`ggplot()`関数の`mapping`引数で、データセットの変数をプロットの見える属性 (**エステティック属性**) にどうマップするか指定します。
+`mapping`引数は常に`aes()`関数で、その中で指定します。例
+えば、`aes()`の引数`x`と`y`で、どの変数をx軸とy軸にマップするか指定します。
+とりあえず、翼の長さを`x`エステティック属性に、体重を`y`エステティック属性にマップするだけにします。
+ggplot2は`data`引数、この場合`penguins`ですが、の中から、マップされた変数を探し出します。
 
-The following plot shows the result of adding these mappings.
+ここまでのマッピングの結果が以下のプロットです。
 
 ```{r}
 #| fig-alt: |
@@ -192,14 +195,15 @@ ggplot(
 )
 ```
 
-Our empty canvas now has more structure -- it's clear where flipper lengths will be displayed (on the x-axis) and where body masses will be displayed (on the y-axis).
-But the penguins themselves are not yet on the plot.
-This is because we have not yet articulated, in our code, how to represent the observations from our data frame on our plot.
+空のキャンバスに構造が加わりました。翼
+の長さがどこに(x軸上に)、体重がどこに(y軸上に)表示されることが明らかになっています。
+でもまだ、ペンギン自身はプロット上に表されていません。
+データフレーム内の観測をプロット上にどう表すか、まだコードで明確に伝えていなきからです。
 
-To do so, we need to define a **geom**: the geometrical object that a plot uses to represent data.
-These geometric objects are made available in ggplot2 with functions that start with `geom_`.
-People often describe plots by the type of geom that the plot uses.
-For example, bar charts use bar geoms (`geom_bar()`), line charts use line geoms (`geom_line()`), boxplots use boxplot geoms (`geom_boxplot()`), scatterplots use point geoms (`geom_point()`), and so on.
+そうするには、データを表すのにプロットが用いる幾何オブジェクト、**geom**を指定する必要があります。
+こららの幾何オブジェクトは、ggplot2では`geom_`で始まる関数で利用可能になります。
+どのタイプのgeomを使っているかで、プロットを呼び分けるのが普通です。
+例えば、棒グラフは bar geoms (`geom_bar()`)、線グラフは line geoms (`geom_line()`)、ボックスプロットは boxplot geoms (`geom_boxplot()`)、散布図は point geoms (`geom_point()`)を使ったプロット、という具合です。
 
 The function `geom_point()` adds a layer of points to your plot, which creates a scatterplot.
 ggplot2 comes with many geom functions that each adds a different type of layer to a plot.
