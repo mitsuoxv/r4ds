@@ -236,17 +236,19 @@ Rと同じく、ggplot2も、欠損値が黙っていなくなってはいけな
 損値については、本書を通じて、特に @sec-missing-values でさらに学習します。
 本章での残りのプロットでは、この警告は表示しないようにします。
 
-### Adding aesthetics and layers {#sec-adding-aesthetics-layers}
+### エステティック属性とレイヤーを追加 {#sec-adding-aesthetics-layers}
 
-Scatterplots are useful for displaying the relationship between two numerical variables, but it's always a good idea to be skeptical of any apparent relationship between two variables and ask if there may be other variables that explain or change the nature of this apparent relationship.
-For example, does the relationship between flipper length and body mass differ by species?
-Let's incorporate species into our plot and see if this reveals any additional insights into the apparent relationship between these variables.
-We will do this by representing species with different colored points.
+2変数間の関係を示すのに散布図は役に立ちますが、一見した関係に騙されないよう常に気を付けてください。こ
+の一見した関係を説明する、もしくは、その性質を変化させる他の変数がないか考えることをお薦めします。
+例えば、翼の長さと体重の関係は種族ごとに違うのでしょうか？
+プロットに種族を取り込んでみましょう。2
+変数間の一見した関係について新たな洞察が得られるかみてみましょう。
+種族ごとに点の色を変えることで表します。
 
-To achieve this, will we need to modify the aesthetic or the geom?
-If you guessed "in the aesthetic mapping, inside of `aes()`", you're already getting the hang of creating data visualizations with ggplot2!
-And if not, don't worry.
-Throughout the book you will make many more ggplots and have many more opportunities to check your intuition as you make them.
+そうするには、エステティック属性とgeomのどちらを修正する必要があるのでしょうか？
+"`aes()`の中のエステティック・マッピング"を修正するのでは、と思ったとしたら、あなたはggplot2を使ったデータ可視化の手掛かりを得つつあるということです！
+そう思わなかったとしても、悩むことはありません。
+本書を通じてもっと多くのggplotを作成していきますので、その過程で直観をチェックする機会はいくらもあります。
 
 ```{r}
 #| warning: false
@@ -262,14 +264,15 @@ ggplot(
   geom_point()
 ```
 
-When a categorical variable is mapped to an aesthetic, ggplot2 will automatically assign a unique value of the aesthetic (here a unique color) to each unique level of the variable (each of the three species), a process known as **scaling**.
-ggplot2 will also add a legend that explains which values correspond to which levels.
+カテゴリー変数がエステティック属性にマップされると、ggplot2は自動的に、変数のユニークなレベルごと（この場合は3つの種族のぞれぞれ）に、ユニークな値（この場合はユニークな色）をエステティック属性に割り振ります。こ
+の過程を**スケーリング**といいます。
+ggplot2はまた、どの値がどのレベルに対応しているのか説明する凡例を追加します。
 
-Now let's add one more layer: a smooth curve displaying the relationship between body mass and flipper length.
-Before you proceed, refer back to the code above, and think about how we can add this to our existing plot.
+もう一つレイヤーを追加して、体重と翼の長さの間の関係を示す滑らかな曲線を表しましょう。
+先を読む前に、上のコードを見直して、ここまでのプロットにどう追加できるか考えてみてください。
 
-Since this is a new geometric object representing our data, we will add a new geom as a layer on top of our point geom: `geom_smooth()`.
-And we will specify that we want to draw the line of best fit based on a `l`inear `m`odel with `method = "lm"`.
+データを表す新しい幾何オブジェクトなので、新しい`geom_smooth()`を追加します。
+`method = "lm"`として、リニアモデルでベストフィットの線を引くことを指定します。
 
 ```{r}
 #| warning: false
@@ -286,11 +289,12 @@ ggplot(
   geom_smooth(method = "lm")
 ```
 
-We have successfully added lines, but this plot doesn't look like the plot from @sec-ultimate-goal, which only has one line for the entire dataset as opposed to separate lines for each of the penguin species.
+複数の線を追加できましたが、@sec-ultimate-goal のプロットとは似つかぬプロットになってしまいました。そ
+こではデータセット全体にフィットした一本の線だったのに、ペンギンの種族ごとにフィットした複数の線になっています。
 
-When aesthetic mappings are defined in `ggplot()`, at the *global* level, they're passed down to each of the subsequent geom layers of the plot.
-However, each geom function in ggplot2 can also take a `mapping` argument, which allows for aesthetic mappings at the *local* level that are added to those inherited from the global level.
-Since we want points to be colored based on species but don't want the lines to be separated out for them, we should specify `color = species` for `geom_point()` only.
+エステティック属性を`ggplot()`で指定すると、*グローバル*レベルでの指定となり、重ねるレイヤーの全てに伝わります。
+でも、ggplot2のgeom関数は皆、`mapping` 引数を取ることができ、そこでエステティック属性を指定すれば*local*レベルの指定として、グローバルレベルから引き継いだ指定に加えることができます。
+点の色は種族ごとに変えたいけど、線は別々にしたくないので、`color = species`の指定は`geom_point()`だけですべきなのです。
 
 ```{r}
 #| warning: false
@@ -307,12 +311,14 @@ ggplot(
   geom_smooth(method = "lm")
 ```
 
-Voila!
-We have something that looks very much like our ultimate goal, though it's not yet perfect.
-We still need to use different shapes for each species of penguins and improve labels.
+やりました！
+究極の目標にとてもよく似てきました。も
+う少しです。
+ペンギンの種族ごとに点の形を変えて、ラベルも改良しましょう。
 
-It's generally not a good idea to represent information using only colors on a plot, as people perceive colors differently due to color blindness or other color vision differences.
-Therefore, in addition to color, we can also map `species` to the `shape` aesthetic.
+プロットで色だけで情報を表すのは一般にお薦めできません。色
+盲や色覚の差のせいで、人々の色の受け取り方は様々だからです。
+なので、色に加えて、エステティック属性`shape`に`species`をマップします。
 
 ```{r}
 #| warning: false
@@ -329,12 +335,15 @@ ggplot(
   geom_smooth(method = "lm")
 ```
 
-Note that the legend is automatically updated to reflect the different shapes of the points as well.
+凡例が自動的にアップデートされました。点
+の色だけでなく、形も変わることを反映しています。
 
-And finally, we can improve the labels of our plot using the `labs()` function in a new layer.
-Some of the arguments to `labs()` might be self explanatory: `title` adds a title and `subtitle` adds a subtitle to the plot.
-Other arguments match the aesthetic mappings, `x` is the x-axis label, `y` is the y-axis label, and `color` and `shape` define the label for the legend.
-In addition, we can improve the color palette to be colorblind safe with the `scale_color_colorblind()` function from the ggthemes package.
+最後に、新たしいレイヤーに`labs()`関数を使って、プロットのラベルを改良します。
+`labs()`の引数のいくつかは名前の通りです。`t`
+`itle`はタイトルを、`subtitle`はサブタイトルをプロットに追加します。
+その他の引数はエステティック属性と一致しています。`x`
+はx軸のラベル、`y`はy軸のラベル、`color`と`shape`は凡例のラベルを指定します。
+加えて、ggthemesパッケージの`scale_color_colorblind()`関数を使えば、色盲の人にも識別できるよう、カラーパレットを改良できます。
 
 ```{r}
 #| warning: false
@@ -361,9 +370,9 @@ ggplot(
   scale_color_colorblind()
 ```
 
-We finally have a plot that perfectly matches our "ultimate goal"!
+"究極の目標"と寸分違わぬプロットが出来ました！
 
-### Exercises
+### 練習問題
 
 1.  How many rows are in `penguins`?
     How many columns?
