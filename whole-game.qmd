@@ -6,7 +6,7 @@
 source("_common.R")
 ```
 
-本書のこの部での目標は、@fig-ds-whole-game に示した**インポート**、**整理**、**変換**、**可視化**といった、データサイエンスの主要な道具をざっと概観してもらうことです。
+このセクションでの目標は、@fig-ds-whole-game に示した**インポート**、**整理**、**変換**、**可視化**といった、データサイエンスの主要な道具をざっと概観してもらうことです。
 データサイエンスの"全体像"を示して、簡素ながらも実際のデータセットに取り組めるよう、必要な主要部品を全てあなたに与えたい。
 本書の後の部では、ここでのトピックそれぞれをより深く掘り下げ、あなたが取り組めるデータサイエンスの挑戦の範囲を広げていきます。
 
@@ -15,13 +15,13 @@ source("_common.R")
 #| echo: false
 #| out.width: NULL
 #| fig-cap: |
-#|   In this section of the book, you'll learn how to import,
-#|   tidy, transform, and visualize data.
+#|   このセクションでは、データのインポート、整理、変換と可視化を
+#|   学習します。
 #| fig-alt: |
-#|   A diagram displaying the data science cycle: Import -> Tidy ->
-#|   Understand  (which has the phases Transform -> Visualize -> Model in a
-#|   cycle) -> Communicate. Surrounding all of these is Program 
-#|   Import, Tidy, Transform, and Visualize is highlighted.
+#|   データサイエンスのサイクルを表すダイアグラム：インポート -> 整理 -> 
+#|   理解 (その中に、変換 -> 可視化 -> モデル のサイクルの局面がある) -> 
+#|   コミュニケーション。これら全てを取り囲むのがプログラム。
+#|   インポート、整理、変換と可視化がハイライトされている。
 
 knitr::include_graphics("diagrams/data-science/whole-game.png", dpi = 270)
 ```
