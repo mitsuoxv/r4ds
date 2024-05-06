@@ -374,20 +374,21 @@ ggplot(
 
 ### 練習問題
 
-1.  How many rows are in `penguins`?
-    How many columns?
+1.  `penguins`には行がいくつある？
+    列はいくつ？
 
-2.  What does the `bill_depth_mm` variable in the `penguins` data frame describe?
-    Read the help for `?penguins` to find out.
+2.  `penguins`データフレームの`bill_depth_mm`は何を指す？
+    `?penguins`でヘルプを読んで探しなさい。
 
-3.  Make a scatterplot of `bill_depth_mm` vs. `bill_length_mm`.
-    That is, make a scatterplot with `bill_depth_mm` on the y-axis and `bill_length_mm` on the x-axis.
-    Describe the relationship between these two variables.
+3.  `bill_depth_mm`と`bill_length_mm`の散布図を作成しなさい。
+    `bill_depth_mm`をy軸に、`bill_length_mm`をx軸にすること。
+    この2変数間の関係を述べよ。
 
-4.  What happens if you make a scatterplot of `species` vs. `bill_depth_mm`?
-    What might be a better choice of geom?
+4.  `species`と`bill_depth_mm`で散布図を作成するとどうなる？
+    geomのより良い選択は何か？
 
-5.  Why does the following give an error and how would you fix it?
+5.  以下コードがエラーになる理由は？　
+    どう修正する？
 
     ```{r}
     #| eval: false
@@ -396,24 +397,24 @@ ggplot(
       geom_point()
     ```
 
-6.  What does the `na.rm` argument do in `geom_point()`?
-    What is the default value of the argument?
-    Create a scatterplot where you successfully use this argument set to `TRUE`.
+6.  `geom_point()`の`na.rm`引数は何をしているか？
+    この引数のデフォルトは何？
+    この引数を`TRUE`に設定して散布図を作成してみなさい。
 
-7.  Add the following caption to the plot you made in the previous exercise: "Data come from the palmerpenguins package." Hint: Take a look at the documentation for `labs()`.
+7.  前の練習問題で作成したプロットに次のキャプションを追加しなさい。"
+    Data come from the palmerpenguins package."　ヒント：`labs()`のドキュメントを見よ。
 
-8.  Recreate the following visualization.
-    What aesthetic should `bill_depth_mm` be mapped to?
-    And should it be mapped at the global level or at the geom level?
+8.  次の可視化を再現しなさい。
+    `bill_depth_mm`をどのエステティック属性にマップする？
+    また、グローバルとgeomのどちらのレベルでマップする？
 
     ```{r}
     #| echo: false
     #| warning: false
     #| fig-alt: |
-    #|   A scatterplot of body mass vs. flipper length of penguins, colored 
-    #|   by bill depth. A smooth curve of the relationship between body mass 
-    #|   and flipper length is overlaid. The relationship is positive, 
-    #|   fairly linear, and moderately strong.
+    #|   ペンギンの体重と翼の長さの散布図で、くちばしの厚さで色付け。
+    #|   体重と翼の長さの関係の滑らかな曲線を重ねる。
+    #|   関係は正で、相当リニアで、まずまず強い。
 
     ggplot(
       data = penguins,
@@ -423,8 +424,8 @@ ggplot(
       geom_smooth()
     ```
 
-9.  Run this code in your head and predict what the output will look like.
-    Then, run the code in R and check your predictions.
+9.  以下のコードを頭の中で走らせて、出力がどうなるか想像せよ。
+    次に、Rでコードを実行し、想像が当たったかチェックしなさい。
 
     ```{r}
     #| eval: false
@@ -437,8 +438,8 @@ ggplot(
       geom_smooth(se = FALSE)
     ```
 
-10. Will these two graphs look different?
-    Why/why not?
+10. この2つのグラフは同じか違うか？
+    その理由は？
 
     ```{r}
     #| eval: false
@@ -461,10 +462,10 @@ ggplot(
       )
     ```
 
-## ggplot2 calls {#sec-ggplot2-calls}
+## ggplot2コール {#sec-ggplot2-calls}
 
-As we move on from these introductory sections, we'll transition to a more concise expression of ggplot2 code.
-So far we've been very explicit, which is helpful when you are learning:
+この導入に当たるセクションから先に進むにつれ、ggplot2コードの表記をより簡略にします。
+ここまでは、学習の助けになるので、以下のように何も略さずに来ました。
 
 ```{r}
 #| eval: false
@@ -476,12 +477,13 @@ ggplot(
   geom_point()
 ```
 
-Typically, the first one or two arguments to a function are so important that you should know them by heart.
-The first two arguments to `ggplot()` are `data` and `mapping`, in the remainder of the book, we won't supply those names.
-That saves typing, and, by reducing the amount of extra text, makes it easier to see what's different between plots.
-That's a really important programming concern that we'll come back to in @sec-functions.
+関数の最初の、あるいは、最初の2つの引数はとても大事なので、それらが何か普通、自明なはずです。
+`ggplot()`の最初の2つの引数は`data`と`mapping`ですが、今後はその名前は省略します。
+打ち込みを節約して、余計な文字数を減らせるので、プロット間でどこが違うのか見やすくなります。
+プログラムにとってとても大事なことです。@
+sec-functions で再度述べます。
 
-Rewriting the previous plot more concisely yields:
+さきほどのプロットをより簡略に書き直すと、以下のようになります。
 
 ```{r}
 #| eval: false
@@ -490,7 +492,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
   geom_point()
 ```
 
-In the future, you'll also learn about the pipe, `|>`, which will allow you to create that plot with:
+さらに先でパイプ`|>`を学習すると、以下のように書けるようになります。
 
 ```{r}
 #| eval: false
@@ -500,21 +502,21 @@ penguins |>
   geom_point()
 ```
 
-## Visualizing distributions
+## 分布の可視化
 
-How you visualize the distribution of a variable depends on the type of variable: categorical or numerical.
+変数の分布を可視化する方法は、変数のタイプがカテゴリーか数値かによって異なります。
 
-### A categorical variable
+### カテゴリー変数
 
-A variable is **categorical** if it can only take one of a small set of values.
-To examine the distribution of a categorical variable, you can use a bar chart.
-The height of the bars displays how many observations occurred with each `x` value.
+変数が、値の小さな集合の中のどれらか一つだけを取れるとき、カテゴリー変数といいます。
+カテゴリー変数の分布を検討するには、棒グラフが使えます。
+棒の高さで`x`の各値ごとにいくつ観察されたかを表します。
 
 ```{r}
 #| fig-alt: |
-#|   A bar chart of frequencies of species of penguins: Adelie 
-#|   (approximately 150), Chinstrap (approximately 90), Gentoo 
-#|   (approximately 125).
+#|   ペンギンの種族ごとの頻度の棒グラフ。Adelie
+#|   (約150)、Chinstrap (約90), Gentoo 
+#|   (約125).
 
 ggplot(penguins, aes(x = species)) +
   geom_bar()
