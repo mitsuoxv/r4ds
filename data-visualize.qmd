@@ -264,7 +264,7 @@ ggplot(
   geom_point()
 ```
 
-カテゴリー変数がエステティック属性にマップされると、ggplot2は自動的に、変数のユニークなレベルごと（この場合は3つの種族のぞれぞれ）に、ユニークな値（この場合はユニークな色）をエステティック属性に割り振ります。こ
+カテゴリ変数がエステティック属性にマップされると、ggplot2は自動的に、変数のユニークなレベルごと（この場合は3つの種族のぞれぞれ）に、ユニークな値（この場合はユニークな色）をエステティック属性に割り振ります。こ
 の過程を**スケーリング**といいます。
 ggplot2はまた、どの値がどのレベルに対応しているのか説明する凡例を追加します。
 
@@ -480,8 +480,8 @@ ggplot(
 関数の最初の、あるいは、最初の2つの引数はとても大事なので、それらが何か普通、自明なはずです。
 `ggplot()`の最初の2つの引数は`data`と`mapping`ですが、今後はその名前は省略します。
 打ち込みを節約して、余計な文字数を減らせるので、プロット間でどこが違うのか見やすくなります。
-プログラムにとってとても大事なことです。@
-sec-functions で再度述べます。
+プログラムにとってとても大事なことです。
+@sec-functions で再度述べます。
 
 さきほどのプロットをより簡略に書き直すと、以下のようになります。
 
@@ -504,65 +504,65 @@ penguins |>
 
 ## 分布の可視化
 
-変数の分布を可視化する方法は、変数のタイプがカテゴリーか数値かによって異なります。
+変数の分布を可視化する方法は、変数のタイプがカテゴリか数値かによって異なります。
 
-### カテゴリー変数
+### カテゴリ変数
 
-変数が、値の小さな集合の中のどれらか一つだけを取れるとき、カテゴリー変数といいます。
-カテゴリー変数の分布を検討するには、棒グラフが使えます。
+変数が、値の小さな集合の中のどれらか一つだけを取れるとき、カテゴリ変数といいます。
+カテゴリ変数の分布を検討するには、棒グラフが使えます。
 棒の高さで`x`の各値ごとにいくつ観察されたかを表します。
 
 ```{r}
 #| fig-alt: |
-#|   ペンギンの種族ごとの頻度の棒グラフ。Adelie
-#|   (約150)、Chinstrap (約90), Gentoo 
-#|   (約125).
+#|   ペンギンの種族ごとの頻度の棒グラフ。Adelie (約150)、
+#|   Chinstrap (約90), Gentoo (約125)。
 
 ggplot(penguins, aes(x = species)) +
   geom_bar()
 ```
 
-In bar plots of categorical variables with non-ordered levels, like the penguin `species` above, it's often preferable to reorder the bars based on their frequencies.
-Doing so requires transforming the variable to a factor (how R handles categorical data) and then reordering the levels of that factor.
+上で見たペンギンの種族のように順番のないカテゴリ変数の棒グラフでは、頻度順に並べるのが大抵望ましいです。
+そうするためには、変数を (Rがカテゴリ変数を扱うやり方である) ファクタに変換して、そのファクタのレベルを並べ直す必要があります。
 
 ```{r}
 #| fig-alt: |
-#|   A bar chart of frequencies of species of penguins, where the bars are 
-#|   ordered in decreasing order of their heights (frequencies): Adelie 
-#|   (approximately 150), Gentoo (approximately 125), Chinstrap 
-#|   (approximately 90).
+#|   ペンギンの種族ごとの頻度の棒グラフ。
+#|   棒は高さ（頻度）が減っていく順序に並んでいる。
+#|   Adelie (約150)、
+#|   Chinstrap (約90), Gentoo (約125)。
 
 ggplot(penguins, aes(x = fct_infreq(species))) +
   geom_bar()
 ```
 
-You will learn more about factors and functions for dealing with factors (like `fct_infreq()` shown above) in @sec-factors.
+ファクタと (上記の`fct_infreq()`のような) ファクタを扱う関数については、 @sec-factors でさらに学習します。
 
-### A numerical variable
+### 数値変数
 
-A variable is **numerical** (or quantitative) if it can take on a wide range of numerical values, and it is sensible to add, subtract, or take averages with those values.
-Numerical variables can be continuous or discrete.
+変数が広い範囲の数値を取り、加算、引き算や平均を取ることに意味があるなら、それは**数値** (もしくは、量的) 変数です。
+数値変数は連続値でも、離散値でもありえます。
 
-One commonly used visualization for distributions of continuous variables is a histogram.
+連続変数の分散の可視化によく用いられるのは、ヒストグラムです。
 
 ```{r}
 #| warning: false
 #| fig-alt: |
-#|   A histogram of body masses of penguins. The distribution is unimodal 
-#|   and right skewed, ranging between approximately 2500 to 6500 grams.
+#|   ペンギンの体重のヒストグラム。分布の山は一つで、
+#|   右に偏っており、範囲は約2500から6500までに広がる。
 
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram(binwidth = 200)
 ```
 
-A histogram divides the x-axis into equally spaced bins and then uses the height of a bar to display the number of observations that fall in each bin.
-In the graph above, the tallest bar shows that 39 observations have a `body_mass_g` value between 3,500 and 3,700 grams, which are the left and right edges of the bar.
+ヒストグラムはx軸を等間隔のビンに分け、各ビンに入る観察の数を棒の高さで表します。
+上のグラフでは、最も高い棒の左端と右端である3,500と3,700グラムの間に`body_mass_g`の値が入る観察は、39個あることを表しています。
 
-You can set the width of the intervals in a histogram with the binwidth argument, which is measured in the units of the `x` variable.
-You should always explore a variety of binwidths when working with histograms, as different binwidths can reveal different patterns.
-In the plots below a binwidth of 20 is too narrow, resulting in too many bars, making it difficult to determine the shape of the distribution.
-Similarly, a binwidth of 2,000 is too high, resulting in all data being binned into only three bars, and also making it difficult to determine the shape of the distribution.
-A binwidth of 200 provides a sensible balance.
+binwidth引数でヒストグラムの間隔幅を設定できます。`x`
+変数の単位で設定します。
+ヒストグラムを描くときは、binwidthを変えると違ったパターンが見えることがあるので、常にいくつものbinwidthを試すべきです。
+下のプロットではbinwidth 20は狭すぎて、棒が多すぎて、分布の形を同定するのが困難になっています。
+同様に、binwidth 2,000は広すぎて、3本だけの棒に全データが詰め込まれて、やはり分布の形を同定するのが困難です。
+binwidthを200にすると、バランス良く、分布の形が見えます。
 
 ```{r}
 #| warning: false
