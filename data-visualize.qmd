@@ -155,7 +155,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
   scale_color_colorblind()
 ```
 
-### ggplot の作成
+### ggplotの作成
 
 このプロットを一歩ずつ再現しましょう。
 
@@ -569,10 +569,10 @@ binwidthを200にすると、バランス良く、分布の形が見えます。
 #| layout-ncol: 2
 #| fig-width: 3
 #| fig-alt: |
-#|   Two histograms of body masses of penguins, one with binwidth of 20 
-#|   (left) and one with binwidth of 2000 (right). The histogram with binwidth 
-#|   of 20 shows lots of ups and downs in the heights of the bins, creating a 
-#|   jagged outline. The histogram  with binwidth of 2000 shows only three bins.
+#|   ペンギンの体重の2つのヒストグラム、左側がbinwidth 20で、
+#|   右側がbinwidth 2000。binwidth 20のヒストグラムでは、ビンの高さの
+#|   アップ・ダウンが多く、輪郭がジグザグになっています。binwidth 2000の
+#|   ヒストグラムにはビンが3つしかありません。
 
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram(binwidth = 20)
@@ -580,30 +580,31 @@ ggplot(penguins, aes(x = body_mass_g)) +
   geom_histogram(binwidth = 2000)
 ```
 
-An alternative visualization for distributions of numerical variables is a density plot.
-A density plot is a smoothed-out version of a histogram and a practical alternative, particularly for continuous data that comes from an underlying smooth distribution.
-We won't go into how `geom_density()` estimates the density (you can read more about that in the function documentation), but let's explain how the density curve is drawn with an analogy.
-Imagine a histogram made out of wooden blocks.
-Then, imagine that you drop a cooked spaghetti string over it.
-The shape the spaghetti will take draped over blocks can be thought of as the shape of the density curve.
-It shows fewer details than a histogram but can make it easier to quickly glean the shape of the distribution, particularly with respect to modes and skewness.
+数値変数の分布のもう一つの可視化は密度プロットです。
+密度プロットはヒストグラムを滑らかにしたバージョンで、根底にある滑らかな分布から得られた連続値である場合は特に、現実的な代替プロットになります。
+`geom_density()`がどうやって密度を推計するか (関数のドキュメントを読めば載っています) には立ち入りませんが、たとえ話で説明しておきましょう。
+ヒストグラムが木製のブロックで出来ているとします。
+次に、その上に煮たスパゲッティを一本載せるとします。
+ブロック上にだらりと掛かるスパゲッティの形が密度曲線の形です。
+ヒストグラムほど詳細ではなくなりますが、特に山や歪度など、分布の形を素早く拾い出すのは容易になります。
 
 ```{r}
 #| fig-alt: |
-#|   A density plot of body masses of penguins. The distribution is unimodal 
-#|   and right skewed, ranging between approximately 2500 to 6500 grams.
+#|   ペンギンの体重の密度プロット。分布の山は一つで、右に歪んでおり、
+#|   範囲は約2500から6500グラムに広がる。
 
 ggplot(penguins, aes(x = body_mass_g)) +
   geom_density()
 ```
 
-### Exercises
+### 練習問題
 
-1.  Make a bar plot of `species` of `penguins`, where you assign `species` to the `y` aesthetic.
-    How is this plot different?
+1.  `penguins`の`species`で棒グラフを描け。`s`
+    `pecies`をy軸に割り当てること。
+    本文のプロットと比べて、どう違っていますか？
 
-2.  How are the following two plots different?
-    Which aesthetic, `color` or `fill`, is more useful for changing the color of bars?
+2.  以下の2つのプロットはどう違っていますか？
+    `color`と`fill`、どちらのエステティック属性が、棒グラフの色を変えるのに適していますか？
 
     ```{r}
     #| eval: false
@@ -615,13 +616,13 @@ ggplot(penguins, aes(x = body_mass_g)) +
       geom_bar(fill = "red")
     ```
 
-3.  What does the `bins` argument in `geom_histogram()` do?
+3.  `geom_histogram()`の`bins`引数の役目は？
 
-4.  Make a histogram of the `carat` variable in the `diamonds` dataset that is available when you load the tidyverse package.
-    Experiment with different binwidths.
-    What binwidth reveals the most interesting patterns?
+4.  tidyverseパッケージをロードすると利用可能になる`diamonds`データセットで、`carat`変数のヒストグラムを描きなさい。
+    biwidthをいくつか変えて試しなさい。
+    どのbinwidthが最も興味深いパターンを明らかにしましたか？
 
-## Visualizing relationships
+## 関係の可視化
 
 To visualize a relationship we need to have at least two variables mapped to aesthetics of a plot.
 In the following sections you will learn about commonly used plots for visualizing relationships between two or more variables and the geoms used for creating them.
