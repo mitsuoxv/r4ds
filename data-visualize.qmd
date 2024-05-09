@@ -624,88 +624,83 @@ ggplot(penguins, aes(x = body_mass_g)) +
 
 ## 関係の可視化
 
-To visualize a relationship we need to have at least two variables mapped to aesthetics of a plot.
-In the following sections you will learn about commonly used plots for visualizing relationships between two or more variables and the geoms used for creating them.
+関係を可視化するには、少なくとも2つの変数をプロットのエステティック属性にマップする必要があります。
+以下のセクションでは、2つ以上の変数間の関係を可視化するのに通常用いられるプロットとそれらを作成のためのgeomを学びます。
 
-### A numerical and a categorical variable
+### 数値変数とカテゴリ変数の間の関係
 
-To visualize the relationship between a numerical and a categorical variable we can use side-by-side box plots.
-A **boxplot** is a type of visual shorthand for measures of position (percentiles) that describe a distribution.
-It is also useful for identifying potential outliers.
-As shown in @fig-eda-boxplot, each boxplot consists of:
+数値変数とカテゴリ変数の間の関係を可視化するには、複数のボックスプロットが横並びになるプロットを使えます。
+**ボックスプロット**は、分布を表す百分位 (下から数えて何番目) の位置を、簡略化して示すタイプの可視化です。
+外れ値の可能性があるものを特定するのにも役立ちます。
+@fig-eda-boxplot に示したように、各ボックスプロットは以下のように構成されています。
 
--   A box that indicates the range of the middle half of the data, a distance known as the interquartile range (IQR), stretching from the 25th percentile of the distribution to the 75th percentile.
-    In the middle of the box is a line that displays the median, i.e. 50th percentile, of the distribution.
-    These three lines give you a sense of the spread of the distribution and whether or not the distribution is symmetric about the median or skewed to one side.
+-   箱は、四分位範囲 (IQR) と呼ばれる、分布の25百分位から75百分位までの、中間にあるデータ半分の範囲を示す。
+    箱の中の一本の線は、分布の50百分位、つまり中央値を示す。
+    これら3本の線から、分布の広がり具合と、分布が中央値から対称か、一方に歪んだ非対称か、感覚的につかめる。
 
--   Visual points that display observations that fall more than 1.5 times the IQR from either edge of the box.
-    These outlying points are unusual so are plotted individually.
+-   点は、箱の各端からIQRの1.5倍よりも離れた観測を表す。
+    これらの外れ点は通常でないので、1点ずつプロットされる。
 
--   A line (or whisker) that extends from each end of the box and goes to the farthest non-outlier point in the distribution.
+-   箱の各端から先に伸びる線 (ウィスカーという) は、分布の外れ点ではない中で一番離れた点まで届く。
 
 ```{r}
 #| label: fig-eda-boxplot
 #| echo: false
 #| fig-cap: |
-#|   Diagram depicting how a boxplot is created.
+#|   ボックスプロットの構成を示すダイアグラム。
 #| fig-alt: |
-#|   A diagram depicting how a boxplot is created following the steps outlined 
-#|   above.
+#|   上記のステップに従った、ボックスプロットの構成を示すダイアグラム。
 
 knitr::include_graphics("images/EDA-boxplot.png")
 ```
 
-Let's take a look at the distribution of body mass by species using `geom_boxplot()`:
+種族ごとの体重の分布を`geom_boxplot()`を使って見てみましょう。
 
 ```{r}
 #| warning: false
 #| fig-alt: |
-#|   Side-by-side box plots of distributions of body masses of Adelie, 
-#|   Chinstrap, and Gentoo penguins. The distribution of Adelie and 
-#|   Chinstrap penguins' body masses appear to be symmetric with 
-#|   medians around 3750 grams. The median body mass of Gentoo penguins 
-#|   is much higher, around 5000 grams, and the distribution of the 
-#|   body masses of these penguins appears to be somewhat right skewed.
+#|   Adelie、Chinstrap、Gentooペンギンの体重分布のボックスプロット
+#|   が横並び。AdelieとChinstrapペンギンの体重分布は、3750グラム辺りの
+#|   中央値から対称に見える。Gentooペンギンの体重の中央値は5000グラム
+#|   辺りとずっと高く、体重分布はいくらか右側に歪んで見える。
 
 ggplot(penguins, aes(x = species, y = body_mass_g)) +
   geom_boxplot()
 ```
 
-Alternatively, we can make density plots with `geom_density()`.
+`geom_density()`を使って、密度プロットを描くこともできます。
 
 ```{r}
 #| warning: false
 #| fig-alt: |
-#|   A density plot of body masses of penguins by species of penguins. Each 
-#|   species (Adelie, Chinstrap, and Gentoo) is represented with different 
-#|   colored outlines for the density curves.
+#|   ペンギンの種族ごとの体重の密度プロット。
+#|   各種族 (Adelie、Chinstrap、Gentoo) は、密度曲線の色を変えて表している。 
 
 ggplot(penguins, aes(x = body_mass_g, color = species)) +
   geom_density(linewidth = 0.75)
 ```
 
-We've also customized the thickness of the lines using the `linewidth` argument in order to make them stand out a bit more against the background.
+背景に対して線がもう少し目立つよう、線の太さを`linewidth`引数を使って変えてもいます。
 
-Additionally, we can map `species` to both `color` and `fill` aesthetics and use the `alpha` aesthetic to add transparency to the filled density curves.
-This aesthetic takes values between 0 (completely transparent) and 1 (completely opaque).
-In the following plot it's *set* to 0.5.
+さらに、`species`を`color`と`fill`の両方のエステティック属性にマップして、`alpha`エステティック属性を設定して密度曲線が覆う領域に透明度を加えています。
+`alpha`は0 (完全に透明) から1 (完全に不透明) までの値を取ります。
+以下のプロットでは0.5に*設定*しています。
 
 ```{r}
 #| warning: false
 #| fig-alt: |
-#|   A density plot of body masses of penguins by species of penguins. Each 
-#|   species (Adelie, Chinstrap, and Gentoo) is represented in different 
-#|   colored outlines for the density curves. The density curves are also 
-#|   filled with the same colors, with some transparency added.
+#|   ペンギンの種族ごとの体重の密度プロット。
+#|   各種族 (Adelie、Chinstrap、Gentoo) は、密度曲線の色を変えて表している。
+#|   密度曲線が覆う領域も同色で埋めて、いくらか透明度を加えている。
 
 ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
   geom_density(alpha = 0.5)
 ```
 
-Note the terminology we have used here:
+ここでの用語を確認しておきましょう。
 
--   We *map* variables to aesthetics if we want the visual attribute represented by that aesthetic to vary based on the values of that variable.
--   Otherwise, we *set* the value of an aesthetic.
+-   エステティック属性が変数の値に応じて変わるように可視化したいのなら、変数をエステティック属性に*マップ*する。
+-   そうでなければ、エステティック属性の値を*設定*する。
 
 ### Two categorical variables
 
