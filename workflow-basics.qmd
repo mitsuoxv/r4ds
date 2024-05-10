@@ -1,4 +1,4 @@
-# Workflow: basics {#sec-workflow-basics}
+# ワークフロー：基本 {#sec-workflow-basics}
 
 ```{r}
 #| echo: false
@@ -6,17 +6,20 @@
 source("_common.R")
 ```
 
-You now have some experience running R code.
-We didn't give you many details, but you've obviously figured out the basics, or you would've thrown this book away in frustration!
-Frustration is natural when you start programming in R because it is such a stickler for punctuation, and even one character out of place can cause it to complain.
-But while you should expect to be a little frustrated, take comfort in that this experience is typical and temporary: it happens to everyone, and the only way to get over it is to keep trying.
+ここまでで、Rコードを走らせる経験をいくらか積みました。
+詳細は述べてきませんでしたが、基本は分かったはずです。で
+なければ、不満を爆発させて本書を投げ捨ててしまっているでしょうから！
+Rでプログラムをはじめる際に不満を覚えるのは自然なことです。R
+はパンクチュエーションにとてもうるさく、一文字でも違っていると文句を垂れるのですから。
+少々不満は覚えるでしょうが、その経験は典型的かつ一時的なものです。誰
+にでも起きることですし、乗り越えるにはトライし続けるしかないのです。
 
-Before we go any further, let's ensure you've got a solid foundation in running R code and that you know some of the most helpful RStudio features.
+先に進む前に、Rコードを走らせる基礎を固め、RStudioの最も役立つ機能を会得していることを確認しましょう。
 
-## Coding basics
+## コーディングの基本
 
-Let's review some basics we've omitted so far in the interest of getting you plotting as quickly as possible.
-You can use R to do basic math calculations:
+できるだけ速くプロットできるになってもらうため、ここまで省略してきた基本のいくつかを検討しましょう。
+Rを使って、基礎的な数値計算が可能です。
 
 ```{r}
 1 / 200 * 30
@@ -24,29 +27,30 @@ You can use R to do basic math calculations:
 sin(pi / 2)
 ```
 
-You can create new objects with the assignment operator `<-`:
+代入子`<-`を使って、新しいオブジェクトを作れます。
 
 ```{r}
 x <- 3 * 4
 ```
 
-Note that the value of `x` is not printed, it's just stored.
-If you want to view the value, type `x` in the console.
+`x`の値はプリントされていませんね。た
+だ保存されただけです。
+値を見たければ、コンソールに`x`と打ち込みます。
 
-You can **c**ombine multiple elements into a vector with `c()`:
+複数の要素を一つのベクタにまとめるには、`c()`を使います。
 
 ```{r}
 primes <- c(2, 3, 5, 7, 11, 13)
 ```
 
-And basic arithmetic on vectors is applied to every element of of the vector:
+ベクタへの基礎的な算術は、ベクタの各要素に適用されます。
 
 ```{r}
 primes * 2
 primes - 1
 ```
 
-All R statements where you create objects, **assignment** statements, have the same form:
+オブジェクトを作るRの文、**代入**文、は全て同じ形式を取ります。
 
 ```{r}
 #| eval: false
@@ -54,20 +58,21 @@ All R statements where you create objects, **assignment** statements, have the s
 object_name <- value
 ```
 
-When reading that code, say "object name gets value" in your head.
+このコードを読む際は、頭の中で"object nameがvalueを取る"と読みます。
 
-You will make lots of assignments, and `<-` is a pain to type.
-You can save time with RStudio's keyboard shortcut: Alt + - (the minus sign).
-Notice that RStudio automatically surrounds `<-` with spaces, which is a good code formatting practice.
-Code can be miserable to read on a good day, so giveyoureyesabreak and use spaces.
+しょっちゅう代入しますので、`<-`と打ち込むのは苦痛です。
+RStudioではキーボード・ショートカット、Alt + - (マイナス・サイン) で済みます。
+RStudioは、コード・フォーマットの良い慣例に従って、自動的に`<-`の両端にスペースを加えます。
+素晴らし日に目に悪いコードを読むと、惨めな思いをします。ス
+ペースを使って、目に優しいコードを書きましょう。
 
-## Comments
+## コメント
 
-R will ignore any text after `#` for that line.
-This allows you to write **comments**, text that is ignored by R but read by other humans.
-We'll sometimes include comments in examples explaining what's happening with the code.
+Rは行に`#`があると、そこから後ろは無視します。
+Rには無視されるが、人間には読めるので、コメントが書けるのです。
+コードで何をしているのか説明するコメントを、例に含めることがあります。
 
-Comments can be helpful for briefly describing what the following code does.
+コードが何をするのか簡略に述べるのに、コメントは役に立ちます。
 
 ```{r}
 # create vector of primes
@@ -77,19 +82,20 @@ primes <- c(2, 3, 5, 7, 11, 13)
 primes * 2
 ```
 
-With short pieces of code like this, leaving a comment for every single line of code might not be necessary.
-But as the code you're writing gets more complex, comments can save you (and your collaborators) a lot of time figuring out what was done in the code.
+このような短いコードであれば、一行ずつコメントを付けることは不要でしょう。
+しかし、コードが複雑になってくると、あなた (とあなたの共同作業者) がコードが何をしているのか見つけ出す時間を、コメントは大いに省けます。
 
-Use comments to explain the *why* of your code, not the *how* or the *what*.
-The *what* and *how* of your code are always possible to figure out, even if it might be tedious, by carefully reading it.
-If you describe every step in the comments, and then change the code, you will have to remember to update the comments as well or it will be confusing when you return to your code in the future.
+コードの*いかに*や*何を*ではなく*なぜ*を説明するのに、コメントは使ってください。
+コードの*いかに*や*何を*は、面倒かもしれませんが、注意深く読めば、必ず見つけ出すことが可能です。
+全てのステップにコメントを付けてから、コードを変えると、コメントも忘れずにアップデートしないと、将来コードに戻って来たときに混乱してしまいます。
 
-Figuring out *why* something was done is much more difficult, if not impossible.
-For example, `geom_smooth()` has an argument called `span`, which controls the smoothness of the curve, with larger values yielding a smoother curve.
-Suppose you decide to change the value of `span` from its default of 0.75 to 0.9: it's easy for a future reader to understand *what* is happening, but unless you note your thinking in a comment, no one will understand *why* you changed the default.
+*なぜ*こうしているのか、は見つけ出すのが不可能でないとしてもずっと困難です。
+例えば、`geom_smooth()`には`span`という引数があって、曲線の滑らかさをコントロールしていて、値を大きくするほど曲線は滑らかになります。
+`span`の値をデフォルトの0.75から0.9に変更することにしたとします。将
+来コードを読む人にとって、*何を*しているのか理解することは容易ですが、コメントを付けていないと、*なぜ*デフォルトから変更したのか理解することはできません。
 
-For data analysis code, use comments to explain your overall plan of attack and record important insights as you encounter them.
-There's no way to re-capture this knowledge from the code itself.
+データ分析のコードでは、取り組みの全体計画を説明し、重要な洞察に出会うたびにそれを記録するために、コメントを使いましょう。
+コード自体からこの知識を再把握することはできないのですから。
 
 ## What's in a name? {#sec-whats-in-a-name}
 
