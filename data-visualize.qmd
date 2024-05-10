@@ -780,39 +780,41 @@ The variable that you pass to `facet_wrap()` should be categorical.
 #| fig-width: 8
 #| fig-asp: 0.33
 #| fig-alt: |
-#|   A scatterplot of body mass vs. flipper length of penguins. The shapes and 
-#|   colors of points represent species. Penguins from each island are on a 
-#|   separate facet. Within each facet, the relationship between body mass and 
-#|   flipper length is positive, linear, relatively strong. 
+#|   ペンギンの体重と翼の長さの散布図。
+#|   点の形と色は種族を表す。
+#|   各島のペンギンは別々のファセットにある。
+#|   各ファセット内では、体重と翼の長さの関係は、
+#|   正で、リニアで、まずまず強い。
 
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
   geom_point(aes(color = species, shape = species)) +
   facet_wrap(~island)
 ```
 
-You will learn about many other geoms for visualizing distributions of variables and relationships between them in @sec-layers.
+@sec-layers で、変数の分布やそれらの間の関係を可視化する、その他多くのgeomsを学習します。
 
-### Exercises
+### 練習問題
 
-1.  The `mpg` data frame that is bundled with the ggplot2 package contains `r nrow(mpg)` observations collected by the US Environmental Protection Agency on `r mpg |> distinct(model) |> nrow()` car models.
-    Which variables in `mpg` are categorical?
-    Which variables are numerical?
-    (Hint: Type `?mpg` to read the documentation for the dataset.) How can you see this information when you run `mpg`?
+1.  ggplot2パッケージに同梱されている`mpg`データフレームは、米国環境保護庁が`r mpg |> distinct(model) |> nrow()`個の自動車モデルについて収集した、`r nrow(mpg)`個の観測から成る。
+    `mpg`内の変数のどれがカテゴリ変数？
+    どれが数値変数？
+    (ヒント：`?mpg`と打ち込むとデータセットのドキュメントが読める。) `mpg`と打ち込んだら、この情報はどう見えるか？
 
-2.  Make a scatterplot of `hwy` vs. `displ` using the `mpg` data frame.
-    Next, map a third, numerical variable to `color`, then `size`, then both `color` and `size`, then `shape`.
-    How do these aesthetics behave differently for categorical vs. numerical variables?
+2.  `mpg`データフレームを使って、`hwy`対`displ`の散布図を描きなさい。
+    次に、第3の数値変数を`color`にマップしなさい。次
+    は`size`に、次は`color`と`size`の両方に、次に`shape`にマップしなさい。
+    これらのエステティック属性は、カテゴリ変数がマップされた場合と数値変数がマップされた場合とで、どのように違った振る舞いをしますか？
 
-3.  In the scatterplot of `hwy` vs. `displ`, what happens if you map a third variable to `linewidth`?
+3.  `hwy`対`displ`の散布図で、第3の変数を`linewidth`にマップしたら、どうなりますか？
 
-4.  What happens if you map the same variable to multiple aesthetics?
+4.  同じ変数を複数のエステティック属性にマップしたら、どうなりますか？
 
-5.  Make a scatterplot of `bill_depth_mm` vs. `bill_length_mm` and color the points by `species`.
-    What does adding coloring by species reveal about the relationship between these two variables?
-    What about faceting by `species`?
+5.  `bill_depth_mm`対`bill_length_mm`の散布図を描いて、`species`ごとに点の色を変えなさい。
+    種族ごとに色分けを加えたことで、この2変数間の関係の何が見えるか？
+    `species`ごとにファセットしたら、どうか？
 
-6.  Why does the following yield two separate legends?
-    How would you fix it to combine the two legends?
+6.  以下のグラフで、凡例が2つ別々になったのはなぜか？
+    凡例を1つに合わせるには、どう修正するか？
 
     ```{r}
     #| warning: false
@@ -829,9 +831,9 @@ You will learn about many other geoms for visualizing distributions of variables
       labs(color = "Species")
     ```
 
-7.  Create the two following stacked bar plots.
-    Which question can you answer with the first one?
-    Which question can you answer with the second one?
+7.  以下2つの積み上げ棒グラフを描きなさい。
+    1つ目のグラフから答えられる質問は？
+    2つ目のグラフから答えられる質問は？
 
     ```{r}
     #| fig-show: hide
@@ -842,10 +844,11 @@ You will learn about many other geoms for visualizing distributions of variables
       geom_bar(position = "fill")
     ```
 
-## Saving your plots {#sec-ggsave}
+## プロットの保存 {#sec-ggsave}
 
-Once you've made a plot, you might want to get it out of R by saving it as an image that you can use elsewhere.
-That's the job of `ggsave()`, which will save the plot most recently created to disk:
+プロットが出来上がったたら、Rの外に持ち出して、他でも利用できるイメージとして保存したくなるかもしれません。
+それが、`ggsave()`の仕事です。以
+下のようにすれば、最も新しく描いたプロットをディスクに保存してくれます。
 
 ```{r}
 #| fig-show: hide
@@ -862,20 +865,22 @@ ggsave(filename = "penguin-plot.png")
 file.remove("penguin-plot.png")
 ```
 
-This will save your plot to your working directory, a concept you'll learn more about in @sec-workflow-scripts-projects.
+これで、ワーキング・ディレクトリにプロットが保存されます。ワ
+ーキング・ディレクトリという概念については、@sec-workflow-scripts-projects でさらに学習します。
 
-If you don't specify the `width` and `height` they will be taken from the dimensions of the current plotting device.
-For reproducible code, you'll want to specify them.
-You can learn more about `ggsave()` in the documentation.
+`width`と`height`を指定しなければ、現在画面に出ているプロットのものが使用されます。
+再現可能なコードにするためには、それらを指定したいでしょう。
+`ggsave()`については、ドキュメントからさらに学習できます。
 
-Generally, however, we recommend that you assemble your final reports using Quarto, a reproducible authoring system that allows you to interleave your code and your prose and automatically include your plots in your write-ups.
-You will learn more about Quarto in @sec-quarto.
+しかし、一般的には、最終レポートはQuartoを使ってまとめることをお薦めします。再
+現可能な著作システムで、コードと文章を交互に並べて、著作の中に自動的にプロットを含めることができます。
+Quartoについては、@sec-quarto でさらに学習します。
 
-### Exercises
+### 練習問題
 
-1.  Run the following lines of code.
-    Which of the two plots is saved as `mpg-plot.png`?
-    Why?
+1.  以下のコードを実行しなさい。
+    2つのプロットのうち、`mpg-plot.png`として保存されたのはどちら？
+    その理由は？
 
     ```{r}
     #| eval: false
@@ -887,24 +892,27 @@ You will learn more about Quarto in @sec-quarto.
     ggsave("mpg-plot.png")
     ```
 
-2.  What do you need to change in the code above to save the plot as a PDF instead of a PNG?
-    How could you find out what types of image files would work in `ggsave()`?
+2.  PNGではなくPDFとしてプロットを保存するには、コードのどこを変更する必要がある？
+    `ggsave()`で保存できるイメージ・ファイルの種類を知るにはどうする？
 
-## Common problems
+## よくある問題
 
-As you start to run R code, you're likely to run into problems.
-Don't worry --- it happens to everyone.
-We have all been writing R code for years, but every day we still write code that doesn't work on the first try!
+Rコードを実行しはじめた当初は、様々な問題に行き当たりがちです。
+悩まないで。誰
+にでも起こることです。
+著者は皆、もう何年もRコードを書いていますが、それでも、一発では動かないコードを毎日書いています！
 
-Start by carefully comparing the code that you're running to the code in the book.
-R is extremely picky, and a misplaced character can make all the difference.
-Make sure that every `(` is matched with a `)` and every `"` is paired with another `"`.
-Sometimes you'll run the code and nothing happens.
-Check the left-hand of your console: if it's a `+`, it means that R doesn't think you've typed a complete expression and it's waiting for you to finish it.
-In this case, it's usually easy to start from scratch again by pressing ESCAPE to abort processing the current command.
+実行したコードと本書のコードを注意深く比べるところからはじめましょう。
+Rという言語はとても小うるさく、文字を入れ間違えると台無しになります。
+`(`と`)`が全てマッチしていること、`"`ともう一つの`"`が全てペアになっていることを確認しましょう。
+コードを実行したのに、何も起こらないこともあります。
+コンソールの左端をチェックします。`+`
+となっていたら、Rは命令文が未完と考え、それを完成させる次の入力を待っている、ということです。
+この場合、ESCAPEを押して、現在の命令を放棄し、はじめからやり直すのが一番簡単です。
 
-One common problem when creating ggplot2 graphics is to put the `+` in the wrong place: it has to come at the end of the line, not the start.
-In other words, make sure you haven't accidentally written code like this:
+ggplot2で描画する際よくある問題は、`+`を間違った場所に置くことです。行
+の最後に置くのが正しく、最初に置くのは間違いです。
+言い換えると、以下のようなコードを書いてしまわないことです。
 
 ```{r}
 #| eval: false
@@ -913,23 +921,30 @@ ggplot(data = mpg)
 + geom_point(mapping = aes(x = displ, y = hwy))
 ```
 
-If you're still stuck, try the help.
-You can get help about any R function by running `?function_name` in the console, or highlighting the function name and pressing F1 in RStudio.
-Don't worry if the help doesn't seem that helpful - instead skip down to the examples and look for code that matches what you're trying to do.
+まだ行き詰まっているなら、ヘルプを試しましょう。
+どんなR関数も、コンソールに`?function_name`と打ち込むか、RStudioで関数名をハイライトしてからF1を押せば、ヘルプが得られます。
+ヘルプがたいした助けになりそうになくても、悩まないことです。そ
+の場合、ヘルプの最後の方にあるexamplesまで飛んで、やろうとしていることにマッチするコードを探しましょう。
 
-If that doesn't help, carefully read the error message.
-Sometimes the answer will be buried there!
-But when you're new to R, even if the answer is in the error message, you might not yet know how to understand it.
-Another great tool is Google: try googling the error message, as it's likely someone else has had the same problem, and has gotten help online.
+それでも助けにならなければ、エラー・メッセージを注意深く読みましょう。
+そこに答えが埋もれていることがあります！
+ただ、たとえ答えがエラー・メッセージにあったとしても、Rの初心者には意味が分からないかもしれません。
+もう一つ偉大な道具はGoogleです。エ
+ラー・メッセージを検索してみることです。同
+じ問題に悩んで、オンラインでヘルプを得た人がこれまでにいた可能性が高いのですから。
 
-## Summary
+## まとめ
 
-In this chapter, you've learned the basics of data visualization with ggplot2.
-We started with the basic idea that underpins ggplot2: a visualization is a mapping from variables in your data to aesthetic properties like position, color, size and shape.
-You then learned about increasing the complexity and improving the presentation of your plots layer-by-layer.
-You also learned about commonly used plots for visualizing the distribution of a single variable as well as for visualizing relationships between two or more variables, by leveraging additional aesthetic mappings and/or splitting your plot into small multiples using faceting.
+この章では、ggplot2を使ったデータの可視化の基礎を学びました。
+ggplot2の土台である基本的な考え方からはじめました。可
+視化とは、データの変数を位置、色、サイズ、形などのエステティック属性にマップすることである、という考え方です。
+次に、レイヤーを重ねて、プロットの複雑さを増し、プレゼンとして改良することを学びました。
+また、1つの変数の分布を可視化したり、2つ以上の変数間の関係を可視化したりするのによく用いられるプロットを、エステティック・マッピングを追加したり、ファセットを使って複数の小さなプロットに分割したりして作成することを学びました。
 
-We'll use visualizations again and again throughout this book, introducing new techniques as we need them as well as do a deeper dive into creating visualizations with ggplot2 in @sec-layers through @sec-communication.
+本書を通じて、繰り返し可視化を使います。そ
+のたびに、必要なテクニックを新しく導入します。ま
+た、@sec-layers から @sec-communication では、ggplot2を使った可視化により深く潜り込みます。
 
-With the basics of visualization under your belt, in the next chapter we're going to switch gears a little and give you some practical workflow advice.
-We intersperse workflow advice with data science tools throughout this part of the book because it'll help you stay organized as you write increasing amounts of R code.
+可視化の基礎を身に付けて、次章ではギアを変えて、実務的なワークフロー上の助言をいくつかします。
+データサイエンスの道具を用いたワークフロー上の助言は、この部を通じて散らばらせています。そ
+うすることが、より長いRコードを書くようになっても、整頓できていられる助けになるからです。
