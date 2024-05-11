@@ -97,11 +97,11 @@ primes * 2
 データ分析のコードでは、取り組みの全体計画を説明し、重要な洞察に出会うたびにそれを記録するために、コメントを使いましょう。
 コード自体からこの知識を再把握することはできないのですから。
 
-## What's in a name? {#sec-whats-in-a-name}
+## 名前の付け方 {#sec-whats-in-a-name}
 
-Object names must start with a letter and can only contain letters, numbers, `_`, and `.`.
-You want your object names to be descriptive, so you'll need to adopt a convention for multiple words.
-We recommend **snake_case**, where you separate lowercase words with `_`.
+オブジェクトの名前は文字ではじまり、含んで良いのは文字、数字、`_`と`.`だけです。
+オブジェクトの名前は複数の言葉で描写したいので、そのための慣例に従う必要があります。
+小文字の言葉を`_`でつなぐ**snake_case**がお薦めです。
 
 ```{r}
 #| eval: false
@@ -112,36 +112,38 @@ some.people.use.periods
 And_aFew.People_RENOUNCEconvention
 ```
 
-We'll return to names again when we discuss code style in @sec-workflow-style.
+@sec-workflow-style でコード・スタイルを議論するときに、もう一度、名前に立ち返ります。
 
-You can inspect an object by typing its name:
+名前を打ち込むと、オブジェクトを調べられます。
 
 ```{r}
 x
 ```
 
-Make another assignment:
+もう一つ、代入をします。
 
 ```{r}
 this_is_a_really_long_name <- 2.5
 ```
 
-To inspect this object, try out RStudio's completion facility: type "this", press TAB, add characters until you have a unique prefix, then press return.
+このオブジェクトを調べるのに、RStudioの補完機能を試してみましょう。最
+初の数文字を打ち込むと、補完候補が出て来ます。"
+this"と打ち込んで、TABを押して、returnを押します。
 
-Let's assume you made a mistake, and that the value of `this_is_a_really_long_name` should be 3.5, not 2.5.
-You can use another keyboard shortcut to help you fix it.
-For example, you can press ↑ to bring the last command you typed and edit it.
-Or, type "this" then press Cmd/Ctrl + ↑ to list all the commands you've typed that start with those letters.
-Use the arrow keys to navigate, then press enter to retype the command.
-Change 2.5 to 3.5 and rerun.
+`this_is_a_really_long_name`に代入すべき値は3.5だったのに、間違って2.5と入力してしまった、としましょう。
+これを修正するのに、別のキーボード・ショートカットが使えます。
+↑ を押すと、最後に入力したコマンドが出て来ますので、それを編集できます。
+もしくは、"this"と入力して、Cmd/Ctrl + ↑ を押すと、これまでに入力したコマンド中で"this"ではじまるものが出て来ます。
+矢印キーを使って選択して、enterを押すと、そのコマンドを再入力できます。
+そして、2.5を3.5に変えて、再実行。
 
-Make yet another assignment:
+代入をもう一つ。
 
 ```{r}
 r_rocks <- 2^3
 ```
 
-Let's try to inspect it:
+調べてみましょう。
 
 ```{r}
 #| eval: false
@@ -152,14 +154,20 @@ R_rocks
 #> Error: object 'R_rocks' not found
 ```
 
-This illustrates the implied contract between you and R: R will do the tedious computations for you, but in exchange, you must be completely precise in your instructions.
-If not, you're likely to get an error that says the object you're looking for was not found.
-Typos matter; R can't read your mind and say, "oh, they probably meant `r_rocks` when they typed `r_rock`".
-Case matters; similarly, R can't read your mind and say, "oh, they probably meant `r_rocks` when they typed `R_rocks`".
+こうしてみると、あなたとRの暗黙の契約が見えてきます。R
+はあなたに代わって面倒な計算をしてくれます。そ
+の替わり、あなたの指示は完全に精確でなければなりません。
+さもないと、あなたが探しているオブジェクトは見つからない、というエラーをくらうことになります。
+入力ミスは重大です。R
+にはあなたの心は読めません。`r`
+`_rock`と入力したら、たぶん`r_rocks`のことだな、と読んでくれません。
+大文字小文字の違いも重大です。や
+はり、Rにはあなたの心は読めません。`R`
+`_rocks`と入力したら、たぶん`r_rocks`のことだな、と読んでくれません。
 
-## Calling functions
+## 関数呼び出し
 
-R has a large collection of built-in functions that are called like this:
+Rには膨大な組み込み関数があり、以下のように呼び出せます。
 
 ```{r}
 #| eval: false
@@ -167,37 +175,40 @@ R has a large collection of built-in functions that are called like this:
 function_name(argument1 = value1, argument2 = value2, ...)
 ```
 
-Let's try using `seq()`, which makes regular **seq**uences of numbers, and while we're at it, learn more helpful features of RStudio.
-Type `se` and hit TAB.
-A popup shows you possible completions.
-Specify `seq()` by typing more (a `q`) to disambiguate or by using ↑/↓ arrows to select.
-Notice the floating tooltip that pops up, reminding you of the function's arguments and purpose.
-If you want more help, press F1 to get all the details in the help tab in the lower right pane.
+一定間隔の数列 (**seq**uences) を作る`seq()`を試しに使ってみましょう。そ
+の過程で、RStudioのもっと役立つ機能を学習します
 
-When you've selected the function you want, press TAB again.
-RStudio will add matching opening (`(`) and closing (`)`) parentheses for you.
-Type the name of the first argument, `from`, and set it equal to `1`.
-Then, type the name of the second argument, `to`, and set it equal to `10`.
-Finally, hit return.
+`se`と入力して、TABを押します。
+補完候補がポップアップに出て来ます。
+もう一文字`q`を入力して候補を減らすか、↑/↓の矢印キーで選ぶかして、`seq()`をハイライトします。
+バルーンヘルプが出て来て、関数の引数や目的を思い起こさせてくれます。
+もっとヘルプが欲しければ、F1を押せば、右下区画のHelpタブに全ての詳細が出て来ます。
+
+使いたい関数を選んだら、もう一度TABを押します。
+RStudioが括弧のペア、`(`と`)`、を加えてくれます。
+第1引数の名前`from`を入力して、イコール`1`にします。
+次に、第2引数の名前`to`を入力して、イコール`10`とします。
+最後に、returnを押します。
 
 ```{r}
 seq(from = 1, to = 10)
 ```
 
-We often omit the names of the first several arguments in function calls, so we can rewrite this as follows:
+関数呼び出しでは、最初のいくつかの引数の名前は省略するのが通常ですから、以下のように書き直せます。
 
 ```{r}
 seq(1, 10)
 ```
 
-Type the following code and notice that RStudio provides similar assistance with the paired quotation marks:
+以下のコードを入力すると、RStudioは引用符でもペアを加えてくれることに気付きます。
 
 ```{r}
 x <- "hello world"
 ```
 
-Quotation marks and parentheses must always come in a pair.
-RStudio does its best to help you, but it's still possible to mess up and end up with a mismatch.
+引用符と括弧は常にペアである必要があります。
+RStudioはあなたを助けるべくベストを尽くしますが、それでもごたごたして、ペアでなくなってしまうことがあります。
+そのときは、続きの入力を求めるべく、Rは"+"を表示します。
 If this happens, R will show you the continuation character "+":
 
 ```         
@@ -205,23 +216,23 @@ If this happens, R will show you the continuation character "+":
 +
 ```
 
-The `+` tells you that R is waiting for more input; it doesn't think you're done yet.
-Usually, this means you've forgotten either a `"` or a `)`. Either add the missing pair, or press ESCAPE to abort the expression and try again.
+`+`があなたに伝えていることは、Rは入力が未完と考え次の入力を待っている、ということです。
+通常、`"`か`)`を入力し忘れたことを意味します。欠けたペアを加えるか、ESCAPEを押してコマンドを放棄し再入力し直すかしましょう。
 
-Note that the environment tab in the upper right pane displays all of the objects that you've created:
+右上区画のEnvironmentタブには、作成したオブジェクト全てが表示されます。
 
 ```{r}
 #| echo: false
 #| fig-alt: |
-#|   Environment tab of RStudio which shows r_rocks, this_is_a_really_long_name, 
-#|   x, and y in the Global Environment.
+#|   RStudioのEnvironmentタブの中に、r_rocks、this_is_a_really_long_name、 
+#|   xとyがGlobal Environmentに表示されている。
 
 knitr::include_graphics("screenshots/rstudio-env.png")
 ```
 
-## Exercises
+## 練習問題
 
-1.  Why does this code not work?
+1.  以下のコードが上手く行かない理由は？
 
     ```{r}
     #| error: true
@@ -230,10 +241,10 @@ knitr::include_graphics("screenshots/rstudio-env.png")
     my_varıable
     ```
 
-    Look carefully!
-    (This may seem like an exercise in pointlessness, but training your brain to notice even the tiniest difference will pay off when programming.)
+    注意深く見てください！
+    (どうでもよい練習問題に思えるかもしれませんが、プログラムをする際は、ほんの些細な違いに気付くよう脳を鍛えておくことは割に合います。)
 
-2.  Tweak each of the following R commands so that they run correctly:
+2.  以下の各Rコマンドが正しく動作するよう修正しなさい。
 
     ```{r}
     #| eval: false
@@ -245,14 +256,14 @@ knitr::include_graphics("screenshots/rstudio-env.png")
       geom_smooth(method = "lm)
     ```
 
-3.  Press Option + Shift + K / Alt + Shift + K.
-    What happens?
-    How can you get to the same place using the menus?
+3.  Option + Shift + K (Windows)/ Alt + Shift + K (Mac or Linux)を押せ。
+    どうなった？
+    メニューを使って、同じようにする方法は？
 
-4.  Let's revisit an exercise from the @sec-ggsave.
-    Run the following lines of code.
-    Which of the two plots is saved as `mpg-plot.png`?
-    Why?
+4.  @sec-ggsave の練習問題を再訪してみよう。
+    以下のコードを実行しなさい。
+    2つのプロットのうち、mpg-plot.pngとして保存されたのはどちら？
+    その理由は？
 
     ```{r}
     #| eval: false
@@ -264,7 +275,8 @@ knitr::include_graphics("screenshots/rstudio-env.png")
     ggsave(filename = "mpg-plot.png", plot = my_bar_plot)
     ```
 
-## Summary
+## まとめ
 
-Now that you've learned a little more about how R code works, and some tips to help you understand your code when you come back to it in the future.
-In the next chapter, we'll continue your data science journey by teaching you about dplyr, the tidyverse package that helps you transform data, whether it's selecting important variables, filtering down to rows of interest, or computing summary statistics.
+Rコードの動作の仕方についてもう少し、また、自分の書いたコードを将来理解するために助けになるちょっとしたやり方をいくつか学習しました。
+次章では、データサイエンスの旅を続けて、dplyrを学習します。d
+plyrはtidyverseのパッケージで、データの変換、重要な変数の選択、興味のある行の抽出、要約統計値の計算を助けてくれます。
