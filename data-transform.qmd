@@ -1,4 +1,4 @@
-# Data transformation {#sec-data-transform}
+# データ変換 {#sec-data-transform}
 
 ```{r}
 #| echo: false
@@ -6,21 +6,26 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
-Visualization is an important tool for generating insight, but it's rare that you get the data in exactly the right form you need to make the graph you want.
-Often you'll need to create some new variables or summaries to answer your questions with your data, or maybe you just want to rename the variables or reorder the observations to make the data a little easier to work with.
-You'll learn how to do all that (and more!) in this chapter, which will introduce you to data transformation using the **dplyr** package and a new dataset on flights that departed from New York City in 2013.
+可視化は洞察を得るための大切な道具ですが、描きたいと思うグラフを作成するのにまさに必要な形式でデータを入手することはめったにないことです。
+多くの場合、データで質問に答えるために新しい変数や要約を作る必要があります。も
+しくは、データを少々扱いやすくするために変数名の変更や観察の並べ替えをしたいこともあります。
+これた全て (とさらに！) を本章では学びます。
+**dplyr**パッケージと新しく2013年ニューヨーク発航空便データセットを使って、データ変換を紹介します。
 
-The goal of this chapter is to give you an overview of all the key tools for transforming a data frame.
-We'll start with functions that operate on rows and then columns of a data frame, then circle back to talk more about the pipe, an important tool that you use to combine verbs.
-We will then introduce the ability to work with groups.
-We will end the chapter with a case study that showcases these functions in action and we'll come back to the functions in more detail in later chapters, as we start to dig into specific types of data (e.g., numbers, strings, dates).
+本章のゴールはデータフレームを変換する鍵となる道具全てをざっと示すことです。
+データフレームの行を操作する関数からはじめて、次に列を操作する関数へ進みます。そ
+れから振り返って、動詞を組み合わせるのに使うパイプについてさらに語ります。
+次に、グループを扱うやり方を紹介します。
+本章の最後は、これらの関数を実際に使う様子を示すケーススタディです。デ
+ータタイプ (例えば、数値、文字列、日付) ごとに掘り下げる先の章で、振り返って関数の詳細を学びます。
 
-### Prerequisites
+### 準備するもの
 
-In this chapter we'll focus on the dplyr package, another core member of the tidyverse.
-We'll illustrate the key ideas using data from the nycflights13 package, and use ggplot2 to help us understand the data.
+本章では、やはりtidyverseのコア・メンバーであるdplyrパッケージにフォーカスします。
+nycflights13パッケージのデータを使って鍵となるアイディアを示します。ま
+た、データを理解する助けとして、ggplot2パッケージを使います。
 
 ```{r}
 #| label: setup
@@ -29,11 +34,13 @@ library(nycflights13)
 library(tidyverse)
 ```
 
-Take careful note of the conflicts message that's printed when you load the tidyverse.
-It tells you that dplyr overwrites some functions in base R.
-If you want to use the base version of these functions after loading dplyr, you'll need to use their full names: `stats::filter()` and `stats::lag()`.
-So far we've mostly ignored which package a function comes from because most of the time it doesn't matter.
-However, knowing the package can help you find help and find related functions, so when we need to be precise about which package a function comes from, we'll use the same syntax as R: `packagename::functionname()`.
+tidyverseをロードしたときに表示されるコンフリクト・メッセージに注意を払ってください。
+dplyrがベースRのいくつかの関数を上書きしていると書いてあります。
+dplyrをロード後にベースRのこれらの関数を使いたい場合は、`stats::filter()`や`stats::lag()`のように、関数のフルネームで呼ぶ必要があります。
+ここまでは、関数がどのパッケージのものかほぼ無視してきました。た
+いていは、どうでもよいからです。
+しかし、パッケージを知っていれば、ヘルプを探したり、関連する関数を探したりする助けになります。そ
+こで、関数がどのパッケージのものか精確である必要がある場合は、Rと同じ文法の`packagename::functionname()`を使うことにします。
 
 ### nycflights13
 
@@ -347,7 +354,9 @@ In this situation, the first challenge is often just focusing on the variables y
       select(!year:day)
     ```
 
-    Historically this operation was done with `-` instead of `!`, so you're likely to see that in the wild. These two operators serve the same purpose but with subtle differences in behavior. We recommend using `!` because it reads as "not" and combines well with `&` and `|`.
+    Historically this operation was done with `-` instead of `!`, so you're likely to see that in the wild.
+    These two operators serve the same purpose but with subtle differences in behavior.
+    We recommend using `!` because it reads as "not" and combines well with `&` and `|`.
 
 -   Select all columns that are characters:
 
