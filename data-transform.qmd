@@ -77,16 +77,16 @@ glimpse(flights)
 
 1.  第1引数は、いつもデータフレーム。
 
-2.  その次の引数は、典型的には対象を表し、(引用符なしの) 変数名で指定。
+2.  その次の引数は、典型的には演算対象を (引用符なしの) 変数名で表して指定。
 
 3.  出力は、いつも新しいデータフレーム。
 
 各動詞は一つのことを上手くやるので、複雑な問題を解くには、複数の動詞を組み合わせる必要があるのが普通です。そ
 のために、パイプ`|>`を使います。
-パイプについては @sec-the-pipe でさらに議論しますが、簡単に言うと、パイプはその左側からの出力を、その右側の関数の第1引数として渡します。で
+パイプについては @sec-the-pipe でさらに議論しますが、簡単に言うと、パイプはその左側からの出力を、その右側の関数に第1引数として渡します。で
 すから、`x |> f(y)`は`f(x, y)`と同値であり、`x |> f(y) |> g(z)`は`g(f(x, y), z)`と同値です。
 パイプの一番簡単な読み方は、"次に"です。
-そのおかげで、詳細をまだ学んでいなくても、次のコードが何をしているのか、なんとなく分かります。
+そう読むと、詳細をまだ学んでいなくても、次のコードが何をしているか、なんとなく分かるでしょう。
 
 ```{r}
 #| eval: false
@@ -99,68 +99,68 @@ flights |>
   )
 ```
 
-dplyrの動詞は、**行**、**列**、**グループ**、**テーブル**のどれを対象にするか、4つのグループで構成されています。
+dplyrの動詞は、**行**、**列**、**グループ**、**テーブル**のどれを演算対象にする4つのグループで構成されています。
 以下のセクションでは、行、列、グループのための最も重要な動詞を学習します。デ
-ーブルを対象にするjoin動詞には、@sec-joins で戻ってきます。
+ーブルを演算対象にするjoin動詞には、@sec-joins で戻ってきます。
 では、はじめましょう。
 
 ## 行
 
-The most important verbs that operate on rows of a dataset are `filter()`, which changes which rows are present without changing their order, and `arrange()`, which changes the order of the rows without changing which are present.
-Both functions only affect the rows, and the columns are left unchanged.
-We'll also discuss `distinct()` which finds rows with unique values but unlike `arrange()` and `filter()` it can also optionally modify the columns.
+データセットの行を演算対象とする動詞で最も大切なのは、順序はそのままに残る行を変える`filter()`と、残る行はそのままに順序を変える`arrange()`です。
+どちらの関数も行だけに影響し、列はそのままにします。
+ユニークな値の行を見つけ出す`distinct()`も議論しますが、`arrange()`や`filter()`と異なり、オプションとして列も修正することができます。
 
 ### `filter()`
 
-`filter()` allows you to keep rows based on the values of the columns[^data-transform-1].
-The first argument is the data frame.
-The second and subsequent arguments are the conditions that must be true to keep the row.
-For example, we could find all flights that departed more than 120 minutes (two hours) late:
+`filter()`を使えば、列の値に基づいて行を残すことができます[^data-transform-1]。
+第1引数はデータフレーム。
+第2引数とその後の引数は、行を残すには真でなければならない条件です。
+例えば、120分 (2時間) 超遅れて出発した全ての便を探せます。
 
-[^data-transform-1]: Later, you'll learn about the `slice_*()` family which allows you to choose rows based on their positions.
+[^data-transform-1]: 後ほど、行をその位置に基づいて選べる`slice_*()`類を学習します。
 
 ```{r}
 flights |> 
   filter(dep_delay > 120)
 ```
 
-As well as `>` (greater than), you can use `>=` (greater than or equal to), `<` (less than), `<=` (less than or equal to), `==` (equal to), and `!=` (not equal to).
-You can also combine conditions with `&` or `,` to indicate "and" (check for both conditions) or with `|` to indicate "or" (check for either condition):
+`>` (超) だけでなく、`>=` (以上)、`<` (未満)、`<=` (以下)、`==` (等しい)、`!=` (等しくない)も使えます。
+`&`か`,`で条件同士を組み合わせることで"かつ" (両条件が真) の意味にしたり、`|`で組み合わせて"または" (どちらかの条件が真) の意味にしたりできます。
 
 ```{r}
-# Flights that departed on January 1
+# 1月1日の出発便
 flights |> 
   filter(month == 1 & day == 1)
 
-# Flights that departed in January or February
+# 1月か2月の出発便
 flights |> 
   filter(month == 1 | month == 2)
 ```
 
-There's a useful shortcut when you're combining `|` and `==`: `%in%`.
-It keeps rows where the variable equals one of the values on the right:
+`|`と`==`の組み合わせが続く場合、`%in%`というショートカットが役に立ちます。
+右側の値のどれか一つと変数の値が等しければ、その行を残します。
 
 ```{r}
-# A shorter way to select flights that departed in January or February
+# 1月か2月の出発便を選ぶショートカットによる方法
 flights |> 
   filter(month %in% c(1, 2))
 ```
 
-We'll come back to these comparisons and logical operators in more detail in @sec-logicals.
+これらの比較や論理演算子については、より詳細に @sec-logicals で戻ってきます。
 
-When you run `filter()` dplyr executes the filtering operation, creating a new data frame, and then prints it.
-It doesn't modify the existing `flights` dataset because dplyr functions never modify their inputs.
-To save the result, you need to use the assignment operator, `<-`:
+`filter()`を実行すると、dplyrはフィルタ作業を行い、新しいデータフレームを作成、それから、プリントします。
+dplyr関数は入力を決して修正しないので、既存の`flights`データセットは修正されません。
+結果を保存するには、代入子`<-`を使う必要があります。
 
 ```{r}
 jan1 <- flights |> 
   filter(month == 1 & day == 1)
 ```
 
-### Common mistakes
+### よくある間違い
 
-When you're starting out with R, the easiest mistake to make is to use `=` instead of `==` when testing for equality.
-`filter()` will let you know when this happens:
+Rを使いはじめた当初に犯しがちな間違いは、等しいかテストする際に、`==`ではなく`=`を使ってしまうことです。
+そうした場合、`filter()`はエラーを出して教えてくれます。
 
 ```{r}
 #| error: true
@@ -169,7 +169,7 @@ flights |>
   filter(month = 1)
 ```
 
-Another mistakes is you write "or" statements like you would in English:
+もう一つよくある間違いは、英語で"or"を書くように、記述してしまうことです。
 
 ```{r}
 #| eval: false
@@ -178,65 +178,69 @@ flights |>
   filter(month == 1 | 2)
 ```
 
-This "works", in the sense that it doesn't throw an error, but it doesn't do what you want because `|` first checks the condition `month == 1` and then checks the condition `2`, which is not a sensible condition to check.
-We'll learn more about what's happening here and why in @sec-boolean-operations.
+エラーは出て来ていないという意味で、これはこれで"機能"しています。し
+かし、`|`はまず`month == 1`という条件が真か調べ、次に`2`という意味を成さない条件を調べているので、意図したようには機能していません。
+ここで何が起こっているのか、それはなぜなのか、@sec-boolean-operations で学びます。
 
 ### `arrange()`
 
-`arrange()` changes the order of the rows based on the value of the columns.
-It takes a data frame and a set of column names (or more complicated expressions) to order by.
-If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns.
-For example, the following code sorts by the departure time, which is spread over four columns.
-We get the earliest years first, then within a year the earliest months, etc.
+`arrange()`は、列の値に基づいて行の順序を変えます。
+引数は、データフレームと、それを基に順序付けする列の名前のセット (もしくは、さらに複雑な表現) です。
+列の名前を複数入れると、そこまでの列ではタイだった値を順序付けするために、追加した列は使われます。
+例えば、以下のコードは4つの列にまたがっている出発時間でソートします。
+まず年の順、次の同じ年の中で月順、などなどとなります。
 
 ```{r}
 flights |> 
   arrange(year, month, day, dep_time)
 ```
 
-You can use `desc()` on a column inside of `arrange()` to re-order the data frame based on that column in descending (big-to-small) order.
-For example, this code orders flights from most to least delayed:
+`arrange()`の中で列を`desc()`に入れると、データフレームをその列の降順で (大きい値から小さい値へ) 並び替えることができます。
+例えば、以下のコードは出発遅延時間の最長から最短への順に便を並び替えます。
 
 ```{r}
 flights |> 
   arrange(desc(dep_delay))
 ```
 
-Note that the number of rows has not changed -- we're only arranging the data, we're not filtering it.
+行数は変わっていないことに気付いてください。デ
+ータをアレンジしているだけで、フィルタしているわけではないのです。
 
 ### `distinct()`
 
-`distinct()` finds all the unique rows in a dataset, so in a technical sense, it primarily operates on the rows.
-Most of the time, however, you'll want the distinct combination of some variables, so you can also optionally supply column names:
+`distinct()`はデータセット内のユニークな行を全て探し出すものです。で
+すから、技術的な意味で、第一義的には行を操作します。
+しかし、多くの場合、いくつかの変数の組み合わせでユニークな行を探し出したいので、オプションとして列の名前も指定できます。
 
 ```{r}
-# Remove duplicate rows, if any
+# ダブった行があれば除去
 flights |> 
   distinct()
 
-# Find all unique origin and destination pairs
+# ユニークな出発地と到着地のペアを全て探し出す
 flights |> 
   distinct(origin, dest)
 ```
 
-Alternatively, if you want to the keep other columns when filtering for unique rows, you can use the `.keep_all = TRUE` option.
+その他の列も残したい場合は、`.keep_all = TRUE`オプションを使えます。
 
 ```{r}
 flights |> 
   distinct(origin, dest, .keep_all = TRUE)
 ```
 
-It's not a coincidence that all of these distinct flights are on January 1: `distinct()` will find the first occurrence of a unique row in the dataset and discard the rest.
+これらユニークな便が全て1月1日なのは偶然ではありません。`d`
+`istinct()`はデータセット内のユニークな行の一番最初のものを探し出し、残りは捨てています。
 
-If you want to find the number of occurrences instead, you're better off swapping `distinct()` for `count()`, and with the `sort = TRUE` argument you can arrange them in descending order of number of occurrences.
-You'll learn more about count in @sec-counts.
+ユニークな行ごとに何行あるかカウントしたいのなら、`distinct()`ではなく、`count()`を使って、`sort = TRUE`と引数を指定すると、カウントの降順に並べられます。
+`count()`については、@sec-counts でさらに学習します。
 
 ```{r}
 flights |>
   count(origin, dest, sort = TRUE)
 ```
 
-### Exercises
+### 練習問題
 
 1.  In a single pipeline for each condition, find all flights that meet the condition:
 
