@@ -19,7 +19,7 @@ source("_common.R")
 れから振り返って、動詞を組み合わせるのに使うパイプについてさらに語ります。
 次に、グループを扱うやり方を紹介します。
 本章の最後は、これらの関数を実際に使う様子を示すケーススタディです。デ
-ータタイプ (例えば、数値、文字列、日付) ごとに掘り下げる先の章で、振り返って関数の詳細を学びます。
+ータ型 (例えば、数値、文字列、日付) ごとに掘り下げる先の章で、振り返って関数の詳細を学びます。
 
 ### 準備するもの
 
@@ -44,42 +44,49 @@ dplyrをロード後にベースRのこれらの関数を使いたい場合は�
 
 ### nycflights13
 
-To explore the basic dplyr verbs, we're going to use `nycflights13::flights`.
-This dataset contains all `r format(nrow(nycflights13::flights), big.mark = ",")` flights that departed from New York City in 2013.
-The data comes from the US [Bureau of Transportation Statistics](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr), and is documented in `?flights`.
+基礎的なdplyr動詞を試すため、`nycflights13::flights`を使います。
+このデータセットには、2013年ニューヨーク市発の全`r format(nrow(nycflights13::flights), big.mark = ",")`飛行便が入っています。
+データの出所は、[米国運輸統計局](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr)で、ドキュメントは`?flights`で見られます。
 
 ```{r}
 flights
 ```
 
-`flights` is a tibble, a special type of data frame used by the tidyverse to avoid some common gotchas.
-The most important difference between tibbles and data frames is the way tibbles print; they are designed for large datasets, so they only show the first few rows and only the columns that fit on one screen.
-There are a few options to see everything.
-If you're using RStudio, the most convenient is probably `View(flights)`, which will open an interactive scrollable and filterable view.
-Otherwise you can use `print(flights, width = Inf)` to show all columns, or use `glimpse()`:
+`flights`は、よくある落とし穴を避けるためtidyverseが使う、特殊なタイプのデータフレームのtibbleです。
+tibbleとデータフレームの最も重要な違いは、どう印刷されるかです。t
+ibbleは大きなデータセット向きに設計されているので、行は最初のいくつかだけ、列は一画面に収まる分だけが表示されます。
+全てを見る方法はいくつかあります。
+RStudioを使っているなら、一番簡単な方法はおそらく`View(flights)`とすることです。イ
+ンターアクティブ・ビューのタブが開いて、スクロールやフィルタが可能です。
+他の方法としては、`print(flights, width = Inf)`とすれば全列が表示されます。あ
+るいは、`glimpse()`とすれば以下のように表示されます。
 
 ```{r}
 glimpse(flights)
 ```
 
-In both views, the variables names are followed by abbreviations that tell you the type of each variable: `<int>` is short for integer, `<dbl>` is short for double (aka real numbers), `<chr>` for character (aka strings), and `<dttm>` for date-time.
-These are important because the operations you can perform on a column depend so much on its "type".
+どちらの表示でも、変数名の次にあるのは各変数のデータ型の略称です。`<`
+`int>`は整数、`<dbl>`は倍精度浮動小数点数 (つまり実数)、`<chr>`は文字 (つまり文字列)、`<dttm>`は日付時間のことです。
+変数に対して行える演算は"データ型"によって違うので、これらは大事です。
 
-### dplyr basics
+### dplyrの基本
 
-You're about to learn the primary dplyr verbs (functions) which will allow you to solve the vast majority of your data manipulation challenges.
-But before we discuss their individual differences, it's worth stating what they have in common:
+これから学ぶのは主要なdplyr動詞 (関数) です。こ
+れらを使えば、データ操作についての大抵の挑戦は解決できます。
+しかし、各動詞の違いを議論する前に、共有していることを述べておいた方が良いでしょう。
 
-1.  The first argument is always a data frame.
+1.  第1引数は、いつもデータフレーム。
 
-2.  The subsequent arguments typically describe which columns to operate on, using the variable names (without quotes).
+2.  その次の引数は、典型的には対象を表し、(引用符なしの) 変数名で指定。
 
-3.  The output is always a new data frame.
+3.  出力は、いつも新しいデータフレーム。
 
-Because each verb does one thing well, solving complex problems will usually require combining multiple verbs, and we'll do so with the pipe, `|>`.
-We'll discuss the pipe more in @sec-the-pipe, but in brief, the pipe takes the thing on its left and passes it along to the function on its right so that `x |> f(y)` is equivalent to `f(x, y)`, and `x |> f(y) |> g(z)` is equivalent to `g(f(x, y), z)`.
-The easiest way to pronounce the pipe is "then".
-That makes it possible to get a sense of the following code even though you haven't yet learned the details:
+各動詞は一つのことを上手くやるので、複雑な問題を解くには、複数の動詞を組み合わせる必要があるのが普通です。そ
+のために、パイプ`|>`を使います。
+パイプについては @sec-the-pipe でさらに議論しますが、簡単に言うと、パイプはその左側からの出力を、その右側の関数の第1引数として渡します。で
+すから、`x |> f(y)`は`f(x, y)`と同値であり、`x |> f(y) |> g(z)`は`g(f(x, y), z)`と同値です。
+パイプの一番簡単な読み方は、"次に"です。
+そのおかげで、詳細をまだ学んでいなくても、次のコードが何をしているのか、なんとなく分かります。
 
 ```{r}
 #| eval: false
@@ -92,11 +99,12 @@ flights |>
   )
 ```
 
-dplyr's verbs are organized into four groups based on what they operate on: **rows**, **columns**, **groups**, or **tables**.
-In the following sections you'll learn the most important verbs for rows, columns, and groups, then we'll come back to the join verbs that work on tables in @sec-joins.
-Let's dive in!
+dplyrの動詞は、**行**、**列**、**グループ**、**テーブル**のどれを対象にするか、4つのグループで構成されています。
+以下のセクションでは、行、列、グループのための最も重要な動詞を学習します。デ
+ーブルを対象にするjoin動詞には、@sec-joins で戻ってきます。
+では、はじめましょう。
 
-## Rows
+## 行
 
 The most important verbs that operate on rows of a dataset are `filter()`, which changes which rows are present without changing their order, and `arrange()`, which changes the order of the rows without changing which are present.
 Both functions only affect the rows, and the columns are left unchanged.
