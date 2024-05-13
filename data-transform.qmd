@@ -713,7 +713,7 @@ daily_flights <- daily |>
 `"drop_last"`と違う値にすれば、デフォルトの動作から変更できます。例
 えば、`"drop"`とすれば全てのグループ化を落とせますし、`"keep"`とすれば同じグループ化を維持できます。
 
-### グループ解除
+### グループ化解除
 
 `summarize()`を使わないで、データフレームからグループ化特性を取り除きたいこともあるでしょう。
 `ungroup()`を使えば、そうできます。
@@ -723,7 +723,7 @@ daily |>
   ungroup()
 ```
 
-では、グループ解除したデータフレームを`summarize()`するとどうなるか、見てみましょう。
+では、グループ化解除したデータフレームを`summarize()`するとどうなるか、見てみましょう。
 
 ```{r}
 daily |> 
@@ -764,7 +764,7 @@ flights |>
   )
 ```
 
-`.by`は全ての動詞で動作し、メッセージを出さなくするために`.groups`引数を指定する必要も、グループ解除のために`ungroup()`する必要もありません。
+`.by`は全ての動詞で動作し、メッセージを出さなくするために`.groups`引数を指定する必要も、グループ化解除のために`ungroup()`する必要もありません。
 
 本書執筆時点ではあまりに新参者なので、本章ではこの文法にフォーカスしませんでした。
 触れておいたのは、前途有望で、とても流行しそうだと考えるからです。
@@ -869,12 +869,12 @@ flights |>
           mutate(mean_x = mean(x))
         ```
 
-## Case study: aggregates and sample size {#sec-sample-size}
+## ケーススタディ：集計とサンプルサイズ {#sec-sample-size}
 
-Whenever you do any aggregation, it's always a good idea to include a count (`n()`).
-That way, you can ensure that you're not drawing conclusions based on very small amounts of data.
-We'll demonstrate this with some baseball data from the **Lahman** package.
-Specifically, we will compare what proportion of times a player gets a hit (`H`) vs. the number of times they try to put the ball in play (`AB`):
+どんな集計をするにせよ、いつもカウント (`n()`) を含めておくことをお薦めします。
+そうすることで、とても小さい数のデータに基づいて結論を引き出していないことを確かにできます。
+**Lahman**パッケージからの野球データをいくつか使って、そのデモを行います。
+特に、プレイヤーごとのヒット数 (`H`) の打席数 (`AB`) に対する比率を比べます。
 
 ```{r}
 batters <- Lahman::Batting |> 
@@ -886,23 +886,24 @@ batters <- Lahman::Batting |>
 batters
 ```
 
-When we plot the skill of the batter (measured by the batting average, `performance`) against the number of opportunities to hit the ball (measured by times at bat, `n`), you see two patterns:
+バッターの技能 (平均打率`performance`で測る) 対、打席数 (打席数`n`で測る) でプロットすると、2つのパターンが見えます。
 
-1.  The variation in `performance` is larger among players with fewer at-bats.
-    The shape of this plot is very characteristic: whenever you plot a mean (or other summary statistics) vs. group size, you'll see that the variation decreases as the sample size increases[^data-transform-4].
+1.  打席数の少ないプレイヤーでは`performance`の散らばりが大きい。
+    このプロットの形はよくある特徴を表しています。平
+    均 (もしくは、その他の要約統計値) 対、グループサイズをプロットすると、サンプルサイズが増えるほど散らばりが減ることをいつも見ることになります。[^data-transform-4].
 
-2.  There's a positive correlation between skill (`performance`) and opportunities to hit the ball (`n`) because teams want to give their best batters the most opportunities to hit the ball.
+2.  技能 (`performance`) と打席数 (`n`) の間には正の相関がある。技
+    能の高いバッター成分に打席機会をチームは与えたいので。
 
-[^data-transform-4]: \*cough\* the law of large numbers \*cough\*.
+[^data-transform-4]: \*ごほん\* 大数の法則 \*ごほん\*.
 
 ```{r}
 #| warning: false
 #| fig-alt: |
-#|   A scatterplot of number of batting performance vs. batting opportunites 
-#|   overlaid with a smoothed line. Average performance increases sharply
-#|   from 0.2 at when n is 1 to 0.25 when n is ~1000. Average performance
-#|   continues to increase linearly at a much shallower slope reaching
-#|   ~0.3 when n is ~15,000.
+#|   打率対、打席数の散布図。
+#|   滑らかな線を重ねている。平均打率はnが100辺りでの0.2から、nが1000辺りで
+#|   0.25まで急増。平均打率はその先も、坂はずっと緩やかだがリニアに増え続け、
+#|   nが12,000辺りで0.3に届く。
 
 batters |> 
   filter(n > 100) |> 
@@ -911,24 +912,25 @@ batters |>
   geom_smooth(se = FALSE)
 ```
 
-Note the handy pattern for combining ggplot2 and dplyr.
-You just have to remember to switch from `|>`, for dataset processing, to `+` for adding layers to your plot.
+ggplot2とdplyrを組み合わせた手軽なパターンになっています。
+データセットの処理を重ねるには`|>`を、プロットにレイヤーを重ねるには`+`を使うことを忘れないように。
 
-This also has important implications for ranking.
-If you naively sort on `desc(performance)`, the people with the best batting averages are clearly the ones who tried to put the ball in play very few times and happened to get a hit, they're not necessarily the most skilled players:
+このことは、ランキングについて重要な示唆ともなっています。
+何も考えずに`desc(performance)`で並べると、平均打率が高いのは、明らかに少ない打席数でたまたまヒットを打ったバッターになっており、必ずしも最も技能が高いプレイヤーになっていません。
 
 ```{r}
 batters |> 
   arrange(desc(performance))
 ```
 
-You can find a good explanation of this problem and how to overcome it at <http://varianceexplained.org/r/empirical_bayes_baseball/> and <https://www.evanmiller.org/how-not-to-sort-by-average-rating.html>.
+<http://varianceexplained.org/r/empirical_bayes_baseball/>と<https://www.evanmiller.org/how-not-to-sort-by-average-rating.html>では、この問題の上手い説明とその克服の仕方を見つけることができます。
 
-## Summary
+## まとめ
 
-In this chapter, you've learned the tools that dplyr provides for working with data frames.
-The tools are roughly grouped into three categories: those that manipulate the rows (like `filter()` and `arrange()`, those that manipulate the columns (like `select()` and `mutate()`), and those that manipulate groups (like `group_by()` and `summarize()`).
-In this chapter, we've focused on these "whole data frame" tools, but you haven't yet learned much about what you can do with the individual variable.
-We'll come back to that in the Transform part of the book, where each chapter will give you tools for a specific type of variable.
+本章では、データフレームを扱うdplyrが提供する道具を学習しました。
+道具はざっと3つのカテゴリに分類されます。行
+を操作するもの (`filter()`や`arrange()`など)、列を操作するもの (`select()`や`mutate()`など)、グループを操作するもの (`group_by()`や`summarize()`など)の3つです。
+本章では、"データフレーム全体"を扱う道具にフォーカスしましたが、個々の変数を扱う道具はまだ学習していません。
+本書の変換の部で戻って来て、変数のデータ型ごとに章を分けて道具を学習します。
 
-In the next chapter, we'll pivot back to workflow to discuss the importance of code style, keeping your code well organized in order to make it easy for you and others to read and understand your code.
+次章では、ワークフローに切り替えて、あなた自身を含む誰にとっても読みやすく、分かりやすいコードになるよう、コードをきちんと整頓しておくコード・スタイルの重要性を議論します。
