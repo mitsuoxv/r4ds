@@ -246,7 +246,7 @@ flights |>
 
     -   到着遅延が2時間以上
     -   ヒューストン行き (`IAH`か`HOU`)
-    -   United、American、Deltaが運営
+    -   キャリアがUnited、American、Delta
     -   夏の出発 (7〜9月)
     -   出発遅延はなかったのに、到着時間が2時間超
     -   出発遅延が1時間以上が、飛行中に30分超遅れを取り戻した
@@ -601,7 +601,7 @@ flights |>
 
 `group_by()`ではデータ自体に変化はありませんが、出力をよく見ると、"grouped by" month (`Groups: month [12]`) となっていることに気付きます。
 その意味は、ここから先の操作は"by month"で行われる、ということです。
-`group_by()`は、このグループ特性 (クラスと呼びます) をデータフレームに加えます。そ
+`group_by()`は、このグループ化特性 (クラスと呼びます) をデータフレームに加えます。そ
 の結果、その先データに適用される動詞の動作が変わります。
 
 ### `summarize()` {#sec-summarize}
@@ -678,10 +678,10 @@ flights |>
 
 到着遅延の最大値を`summarize()`で計算するのと似ていますが、要約統計値だけではなく、該当する行 (タイがあれば、それも含めて) 全体が得られます。
 
-### Grouping by multiple variables
+### 複数の変数によるグループ化
 
-You can create groups using more than one variable.
-For example, we could make a group for each date.
+複数の変数でグループ化することができます。
+例えば、日ごとのグループは以下のように作れます。
 
 ```{r}
 daily <- flights |>  
@@ -689,16 +689,16 @@ daily <- flights |>
 daily
 ```
 
-When you summarize a tibble grouped by more than one variable, each summary peels off the last group.
-In hindsight, this wasn't a great way to make this function work, but it's difficult to change without breaking existing code.
-To make it obvious what's happening, dplyr displays a message that tells you how you can change this behavior:
+複数の変数でグループ化されたtibbleを`summarize()`すると、そのたびに最後の変数によるグループ化が剥がれ落ちます。
+振り返って見ると、この関数の動作として上手いやり方ではなかったのですが、既存のコードの動作を壊さないで変更するのは困難です。
+何が起きているのか明確にするために、dplyrはメッセージを表示して、この動作を変更する方法を教えてくれます。
 
 ```{r}
 daily_flights <- daily |> 
   summarize(n = n())
 ```
 
-If you're happy with this behavior, you can explicitly request it in order to suppress the message:
+この動作で満足な場合は、その動作を明示的に求めることで、メッセージが表示されないようにできます。
 
 ```{r}
 #| results: false
@@ -710,19 +710,20 @@ daily_flights <- daily |>
   )
 ```
 
-Alternatively, change the default behavior by setting a different value, e.g., `"drop"` to drop all grouping or `"keep"` to preserve the same groups.
+`"drop_last"`と違う値にすれば、デフォルトの動作から変更できます。例
+えば、`"drop"`とすれば全てのグループ化を落とせますし、`"keep"`とすれば同じグループ化を維持できます。
 
-### Ungrouping
+### グループ解除
 
-You might also want to remove grouping from a data frame without using `summarize()`.
-You can do this with `ungroup()`.
+`summarize()`を使わないで、データフレームからグループ化特性を取り除きたいこともあるでしょう。
+`ungroup()`を使えば、そうできます。
 
 ```{r}
 daily |> 
   ungroup()
 ```
 
-Now let's see what happens when you summarize an ungrouped data frame.
+では、グループ解除したデータフレームを`summarize()`するとどうなるか、見てみましょう。
 
 ```{r}
 daily |> 
@@ -733,12 +734,13 @@ daily |>
   )
 ```
 
-You get a single row back because dplyr treats all the rows in an ungrouped data frame as belonging to one group.
+1行だけ返ってきます。グ
+ループ解除されたデータフレームの全行を一つのグループに属するものとして扱うからです。
 
 ### `.by`
 
-dplyr 1.1.0 includes a new, experimental, syntax for per-operation grouping, the `.by` argument.
-`group_by()` and `ungroup()` aren't going away, but you can now also use the `.by` argument to group within a single operation:
+dplyr 1.1.0では、操作前にグループ化するための実験的な新しい文法`.by`引数を含んでいます。
+`group_by()`と`ungroup()`がなくなることはありませんが、`.by`引数を使えば一つの操作の中でグループ化を指定できるようになっています。
 
 ```{r}
 #| results: false
@@ -750,7 +752,7 @@ flights |>
   )
 ```
 
-Or if you want to group by multiple variables:
+複数の変数でグループ化したいのなら、以下のように指定します。
 
 ```{r}
 #| results: false
@@ -762,30 +764,30 @@ flights |>
   )
 ```
 
-`.by` works with all verbs and has the advantage that you don't need to use the `.groups` argument to suppress the grouping message or `ungroup()` when you're done.
+`.by`は全ての動詞で動作し、メッセージを出さなくするために`.groups`引数を指定する必要も、グループ解除のために`ungroup()`する必要もありません。
 
-We didn't focus on this syntax in this chapter because it was very new when we wrote the book.
-We did want to mention it because we think it has a lot of promise and it's likely to be quite popular.
-You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse.org/blog/2023/02/dplyr-1-1-0-per-operation-grouping/).
+本書執筆時点ではあまりに新参者なので、本章ではこの文法にフォーカスしませんでした。
+触れておいたのは、前途有望で、とても流行しそうだと考えるからです。
+さらに学習するには、[dplyr 1.1.0 blog post](https://www.tidyverse.org/blog/2023/02/dplyr-1-1-0-per-operation-grouping/) を読んでください。
 
-### Exercises
+### 練習問題
 
-1.  Which carrier has the worst average delays?
-    Challenge: can you disentangle the effects of bad airports vs. bad carriers?
-    Why/why not?
-    (Hint: think about `flights |> group_by(carrier, dest) |> summarize(n())`)
+1.  平均出発遅延が最悪なキャリアはどこ？
+    挑戦：空港が悪い効果とキャリアが悪い効果を区別できるか？
+    その理由は？
+    (ヒント：`flights |> group_by(carrier, dest) |> summarize(n())`を考えてみよ)
 
-2.  Find the flights that are most delayed upon departure from each destination.
+2.  各目的地ごとに出発遅延が最も長い便をいくつか見つけなさい。
 
-3.  How do delays vary over the course of the day.
-    Illustrate your answer with a plot.
+3.  一日の中で、出発遅延をどう違うか？
+    答えをプロットで図示しなさい。
 
-4.  What happens if you supply a negative `n` to `slice_min()` and friends?
+4.  `slice_min()`とその仲間の関数で`n`に負数を指定するとどうなるか？
 
-5.  Explain what `count()` does in terms of the dplyr verbs you just learned.
-    What does the `sort` argument to `count()` do?
+5.  ここで学んだdplyr動詞を使って、`count()`の動作を説明しなさい。
+    `count()`の`sort`引数は何をしているか？
 
-6.  Suppose we have the following tiny data frame:
+6.  以下の小さなデータフレームがあるとする。
 
     ```{r}
     df <- tibble(
@@ -795,7 +797,8 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
     )
     ```
 
-    a.  Write down what you think the output will look like, then check if you were correct, and describe what `group_by()` does.
+    a.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        `group_by()`は何をしているか述べなさい。
 
         ```{r}
         #| eval: false
@@ -804,8 +807,9 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
           group_by(y)
         ```
 
-    b.  Write down what you think the output will look like, then check if you were correct, and describe what `arrange()` does.
-        Also comment on how it's different from the `group_by()` in part (a)?
+    b.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        `arrange()`は何をしているか述べなさい。
+        また、(a)の`group_by()`とどう違うのか述べなさい。
 
         ```{r}
         #| eval: false
@@ -814,7 +818,8 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
           arrange(y)
         ```
 
-    c.  Write down what you think the output will look like, then check if you were correct, and describe what the pipeline does.
+    c.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        パイプラインは何をしているか述べなさい。
 
         ```{r}
         #| eval: false
@@ -824,8 +829,9 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
           summarize(mean_x = mean(x))
         ```
 
-    d.  Write down what you think the output will look like, then check if you were correct, and describe what the pipeline does.
-        Then, comment on what the message says.
+    d.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        パイプラインは何をしているか述べなさい。
+        それから、メッセージについてコメントしなさい。
 
         ```{r}
         #| eval: false
@@ -835,8 +841,9 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
           summarize(mean_x = mean(x))
         ```
 
-    e.  Write down what you think the output will look like, then check if you were correct, and describe what the pipeline does.
-        How is the output different from the one in part (d).
+    e.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        パイプラインは何をしているか述べなさい。
+        (d)と出力はどう違っていますか？
 
         ```{r}
         #| eval: false
@@ -846,8 +853,9 @@ You can learn more about it in the [dplyr 1.1.0 blog post](https://www.tidyverse
           summarize(mean_x = mean(x), .groups = "drop")
         ```
 
-    f.  Write down what you think the outputs will look like, then check if you were correct, and describe what each pipeline does.
-        How are the outputs of the two pipelines different?
+    f.  以下の出力を想像して書き出してから、正しかったか確認しなさい。
+        パイプラインは何をしているか述べなさい。
+        2つのパイプラインの出力はどう違っていますか？
 
         ```{r}
         #| eval: false
