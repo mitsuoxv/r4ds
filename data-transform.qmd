@@ -203,7 +203,7 @@ flights |>
   arrange(desc(dep_delay))
 ```
 
-行数は変わっていないことに気付いてください。デ
+行数は変わっていませんね。デ
 ータをアレンジしているだけで、フィルタしているわけではないのです。
 
 ### `distinct()`
@@ -242,39 +242,43 @@ flights |>
 
 ### 練習問題
 
-1.  In a single pipeline for each condition, find all flights that meet the condition:
+1.  以下の各条件ごとに、パイプを使って、満たす便を全て見つけなさい。
 
-    -   Had an arrival delay of two or more hours
-    -   Flew to Houston (`IAH` or `HOU`)
-    -   Were operated by United, American, or Delta
-    -   Departed in summer (July, August, and September)
-    -   Arrived more than two hours late, but didn't leave late
-    -   Were delayed by at least an hour, but made up over 30 minutes in flight
+    -   到着遅延が2時間以上
+    -   ヒューストン行き (`IAH`か`HOU`)
+    -   United、American、Deltaが運営
+    -   夏の出発 (7〜9月)
+    -   出発遅延はなかったのに、到着時間が2時間超
+    -   出発遅延が1時間以上が、飛行中に30分超遅れを取り戻した
 
-2.  Sort `flights` to find the flights with longest departure delays.
-    Find the flights that left earliest in the morning.
+2.  `flights`を並べ直して、到着遅延が最も長い便を見つけなさい。
+    朝一番早く出発した便を見つけなさい。
 
-3.  Sort `flights` to find the fastest flights.
-    (Hint: Try including a math calculation inside of your function.)
+3.  `flights`を並べ直して、一番速い便を見つけなさい。
+    (ヒント：関数内に算術計算式を入れてみなさい。)
 
-4.  Was there a flight on every day of 2013?
+4.  2013年の全ての日に便はあったか？
 
-5.  Which flights traveled the farthest distance?
-    Which traveled the least distance?
+5.  飛行距離が最も長かった便は？
+    短かった便は？
 
-6.  Does it matter what order you used `filter()` and `arrange()` if you're using both?
-    Why/why not?
-    Think about the results and how much work the functions would have to do.
+6.  `filter()`と`arrange()`をパイプでつなぐとき、どちらを先にするかで違いはある？
+    その理由は？
+    結果を想定して、関数がしなければならない作業量を考えてみること。
 
-## Columns
+## 列
 
-There are four important verbs that affect the columns without changing the rows: `mutate()` creates new columns that are derived from the existing columns, `select()` changes which columns are present, `rename()` changes the names of the columns, and `relocate()` changes the positions of the columns.
+行を変えずに列に影響する4つの重要な動詞があります。`m`
+`utate()`は既存の列から新しい列を作り出します。`s`
+`elect()`は残る列を選びます。`r`
+`ename()`は列の名前を変更します。`r`
+`elocate()`は列の位置を変えます。
 
 ### `mutate()` {#sec-mutate}
 
-The job of `mutate()` is to add new columns that are calculated from the existing columns.
-In the transform chapters, you'll learn a large set of functions that you can use to manipulate different types of variables.
-For now, we'll stick with basic algebra, which allows us to compute the `gain`, how much time a delayed flight made up in the air, and the `speed` in miles per hour:
+`mutate()`の仕事は、既存の列から計算された新しい列を追加することです。
+先の変換の部では、変数のデータ型ごとに操作できるよう、関数の大集合を学習します。
+ここでは、基本的な算術だけを使って、基本的な算術だけを使って、飛行中に取り戻した遅延時間`gain`や、時速何マイルの`speed`を計算します。
 
 ```{r}
 flights |> 
@@ -284,10 +288,11 @@ flights |>
   )
 ```
 
-By default, `mutate()` adds new columns on the right hand side of your dataset, which makes it difficult to see what's happening here.
-We can use the `.before` argument to instead add the variables to the left hand side[^data-transform-2]:
+デフォルトでは、`mutate()`はデータセットの右端に新しい列を追加します。こ
+こでは、何が起きているのか見づらいです。
+`.before`引数を使うと、左端に追加できます[^data-transform-2]。
 
-[^data-transform-2]: Remember that in RStudio, the easiest way to see a dataset with many columns is `View()`.
+[^data-transform-2]: RStudioでは、列数の多いデータセットを見る一番簡単な方法は`View()`を使うことです。
 
 ```{r}
 flights |> 
@@ -298,9 +303,10 @@ flights |>
   )
 ```
 
-The `.` is a sign that `.before` is an argument to the function, not the name of a third new variable we are creating.
-You can also use `.after` to add after a variable, and in both `.before` and `.after` you can use the variable name instead of a position.
-For example, we could add the new variables after `day`:
+`.before`の`.`は、`.before`が関数の引数であって、`gain`や`speed`と並ぶ3つ目の新変数の名前ではないことのサインです。
+また、ある変数の後ろに追加したいのなら`.after`が使えます。`.`
+`before`と`.after`は、位置ではなく変数名で指定できます。
+例えば、以下のように`day`の後ろに新変数を追加できます。
 
 ```{r}
 #| results: false
@@ -313,9 +319,9 @@ flights |>
   )
 ```
 
-Alternatively, you can control which variables are kept with the `.keep` argument.
-A particularly useful argument is `"used"` which specifies that we only keep the columns that were involved or created in the `mutate()` step.
-For example, the following output will contain only the variables `dep_delay`, `arr_delay`, `air_time`, `gain`, `hours`, and `gain_per_hour`.
+また、`.keep`引数を使えば、どの変数を残すかコントロールできます。
+特に有用なのは`"used"`と指定することで、`mutate()`の中で使った、あるいは、作った列だけを残せます。
+例えば、以下の出力は、`dep_delay`、`arr_delay`、`air_time`、`gain`、`hours`と`gain_per_hour`の変数だけになります。
 
 ```{r}
 #| results: false
@@ -329,9 +335,10 @@ flights |>
   )
 ```
 
-Note that since we haven't assigned the result of the above computation back to `flights`, the new variables `gain,` `hours`, and `gain_per_hour` will only be printed but will not be stored in a data frame.
-And if we want them to be available in a data frame for future use, we should think carefully about whether we want the result to be assigned back to `flights`, overwriting the original data frame with many more variables, or to a new object.
-Often, the right answer is a new object that is named informatively to indicate its contents, e.g., `delay_gain`, but you might also have good reasons for overwriting `flights`.
+`flights`に以上の計算結果を代入し直していないので、`gain`、`hours`、`gain_per_hour`の新変数はプリントされているだけで、データフレームには保存されていません。
+先で使用するためにデータフレームに保存したい場合、`flights`に代入し直して他にも多数の変数があるオリジナルのデータフレームを上書きするか、新しいオブジェクトに代入するか、注意深く考えるべきです。
+普通は、中身が分かりやすい名前、例えば`delay_gain`、を付けた新しいオブジェクトに代入するのが正解です。た
+だ、`flights`を上書きする十分な理由がある場合もありえます。
 
 ### `select()` {#sec-select}
 
