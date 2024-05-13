@@ -341,11 +341,11 @@ flights |>
 
 ### `select()` {#sec-select}
 
-It's not uncommon to get datasets with hundreds or even thousands of variables.
-In this situation, the first challenge is often just focusing on the variables you're interested in.
-`select()` allows you to rapidly zoom in on a useful subset using operations based on the names of the variables:
+データセットの変数が数百、いや数千にのぼることは珍しくありません。
+こうした場合、まずは興味がある変数にフォーカスすることが挑戦になります。
+`select()`を使えば、変数名に基づく操作で有益なサブセットに素早くズームインできます。
 
--   Select columns by name:
+-   名前で列を選択。
 
     ```{r}
     #| results: false
@@ -354,7 +354,7 @@ In this situation, the first challenge is often just focusing on the variables y
       select(year, month, day)
     ```
 
--   Select all columns between year and day (inclusive):
+-   `year`から`day`までの (両端を含む) 全ての列を選択。
 
     ```{r}
     #| results: false
@@ -363,7 +363,7 @@ In this situation, the first challenge is often just focusing on the variables y
       select(year:day)
     ```
 
--   Select all columns except those from year to day (inclusive):
+-   `year`から`day`までの (両端を含む) 全ての列、以外の列を選択。
 
     ```{r}
     #| results: false
@@ -372,11 +372,11 @@ In this situation, the first challenge is often just focusing on the variables y
       select(!year:day)
     ```
 
-    Historically this operation was done with `-` instead of `!`, so you're likely to see that in the wild.
-    These two operators serve the same purpose but with subtle differences in behavior.
-    We recommend using `!` because it reads as "not" and combines well with `&` and `|`.
+    この操作は`!`ではなく`-`を使って操作してきた歴史があるので、`-`を使った操作例がそこかしかに見られます。
+    この2つの演算子は同じ目的を果たしますが、動作に微妙な差があります。
+    `!`を"not"と読むと、`&`や`|`との組み合わせが馴染むので、`!`の使用をお薦めします。
 
--   Select all columns that are characters:
+-   データ型が文字列の全ての列を選択。
 
     ```{r}
     #| results: false
@@ -385,18 +385,18 @@ In this situation, the first challenge is often just focusing on the variables y
       select(where(is.character))
     ```
 
-There are a number of helper functions you can use within `select()`:
+`select()`の中で使えるヘルパー関数がいくつかあります。
 
--   `starts_with("abc")`: matches names that begin with "abc".
--   `ends_with("xyz")`: matches names that end with "xyz".
--   `contains("ijk")`: matches names that contain "ijk".
--   `num_range("x", 1:3)`: matches `x1`, `x2` and `x3`.
+-   `starts_with("abc")`は、名前が"abc"で始まる列。
+-   `ends_with("xyz")`は、名前が"xyz"で終わる列。
+-   `contains("ijk")`は、名前に"ijk"が含まれる列。
+-   `num_range("x", 1:3)`は、名前が`x1`、`x2`、`x3`と一致する列。
 
-See `?select` for more details.
-Once you know regular expressions (the topic of @sec-regular-expressions) you'll also be able to use `matches()` to select variables that match a pattern.
+さらなる詳細は、`?select`を見てください。
+正規表現 (@sec-regular-expressions のトピックです) を知れば、`matches()`を使って、パターンに一致する変数を選べるようになります。
 
-You can rename variables as you `select()` them by using `=`.
-The new name appears on the left hand side of the `=`, and the old variable appears on the right hand side:
+`select()`の中で`=`を使えば、選択と同時に変数名の変更もできます。
+変更後の名前を`=`の左側に、変更前の名前を右側にします。
 
 ```{r}
 flights |> 
@@ -405,27 +405,28 @@ flights |>
 
 ### `rename()`
 
-If you want to keep all the existing variables and just want to rename a few, you can use `rename()` instead of `select()`:
+既存の変数全てを残したいけれど、そのうちの2、3の変数名を変更したい場合、`select()`に替わって、`rename()`が使えます。
 
 ```{r}
 flights |> 
   rename(tail_num = tailnum)
 ```
 
-If you have a bunch of inconsistently named columns and it would be painful to fix them all by hand, check out `janitor::clean_names()` which provides some useful automated cleaning.
+列の名前が首尾一貫しないものが多く、手作業でいちいち修正するのが苦痛な場合、`janitor::clean_names()`を試してみてください。自
+動的に名前をクリーンにして、使いやすくしてくれます。
 
 ### `relocate()`
 
-Use `relocate()` to move variables around.
-You might want to collect related variables together or move important variables to the front.
-By default `relocate()` moves variables to the front:
+`relocate()`を使って、変数の位置を変えられます。
+関連する変数を一箇所にまとめたい、あるいは、重要な変数を一番前に持って来たい、ということがあるかもしれません。
+デフォルトでは、`relocate()`は変数を一番前に持って来ます。
 
 ```{r}
 flights |> 
   relocate(time_hour, air_time)
 ```
 
-You can also specify where to put them using the `.before` and `.after` arguments, just like in `mutate()`:
+`mutate()`で紹介したのと同様に、引数の`.before`や`.after`を使えば、置き場所を指定できます。
 
 ```{r}
 #| results: false
@@ -436,7 +437,7 @@ flights |>
   relocate(starts_with("arr"), .before = dep_time)
 ```
 
-### Exercises
+### 練習問題
 
 ```{r}
 #| eval: false
@@ -455,23 +456,23 @@ ggplot(flights, aes(x = dep_sched %% 60)) + geom_histogram(binwidth = 1)
 ggplot(flights, aes(x = air_time - airtime2)) + geom_histogram()
 ```
 
-1.  Compare `dep_time`, `sched_dep_time`, and `dep_delay`.
-    How would you expect those three numbers to be related?
+1.  `dep_time`、`sched_dep_time`、`dep_delay`を比較しなさい。
+    これら3つの変数はどういう関係だと思いますか？
 
-2.  Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`.
+2.  `flights`から`dep_time`、`dep_delay`、`arr_time`、`arr_delay`の4つの列を選択する方法を、可能な限り多くブレーンストームしなさい。
 
-3.  What happens if you specify the name of the same variable multiple times in a `select()` call?
+3.  `select()`の中で同じ変数を複数回したらどうなりますか？
 
-4.  What does the `any_of()` function do?
-    Why might it be helpful in conjunction with this vector?
+4.  `any_of()`関数は何をしてくれるのか？
+    以下のベクトルと一緒に使うと役立つ理由は？
 
     ```{r}
     variables <- c("year", "month", "day", "dep_delay", "arr_delay")
     ```
 
-5.  Does the result of running the following code surprise you?
-    How do the select helpers deal with upper and lower case by default?
-    How can you change that default?
+5.  以下コードの実行結果に驚きましたか？
+    `select()`のヘルパー関数は、デフォルトでは大文字小文字をどう扱いますか？
+    どうすればそのデフォルトと違った動作にできますか？
 
     ```{r}
     #| eval: false
@@ -479,9 +480,10 @@ ggplot(flights, aes(x = air_time - airtime2)) + geom_histogram()
     flights |> select(contains("TIME"))
     ```
 
-6.  Rename `air_time` to `air_time_min` to indicate units of measurement and move it to the beginning of the data frame.
+6.  単位を示すため`air_time`を`air_time_min`に変更して、データフレームの一番前に持って来なさい。
 
-7.  Why doesn't the following work, and what does the error mean?
+7.  以下のコードを機能しない理由は？　
+    エラーの意味は？
 
     ```{r}
     #| error: true
@@ -491,10 +493,10 @@ ggplot(flights, aes(x = air_time - airtime2)) + geom_histogram()
       arrange(arr_delay)
     ```
 
-## The pipe {#sec-the-pipe}
+## パイプ {#sec-the-pipe}
 
-We've shown you simple examples of the pipe above, but its real power arises when you start to combine multiple verbs.
-For example, imagine that you wanted to find the fastest flights to Houston's IAH airport: you need to combine `filter()`, `mutate()`, `select()`, and `arrange()`:
+ここまでパイプの簡単な例を示してきましたが、複数の動詞を組み合わせはじめてこそ、その真の力は発揮されます。
+例えば、ヒューストンのIAH空港への最速便を見つけ出したいとすると、以下のように`filter()`、`mutate()`、`select()`、`arrange()`を組み合わせる必要があります。
 
 ```{r}
 flights |> 
@@ -504,10 +506,11 @@ flights |>
   arrange(desc(speed))
 ```
 
-Even though this pipeline has four steps, it's easy to skim because the verbs come at the start of each line: start with the `flights` data, then filter, then mutate, then select, then arrange.
+このパイプラインには4つのステップがありますが、動詞が各行の最初に来ているので、ざっと読みやすくなっています。`f`
+`lights`データからはじめて、次にfilter、次にmutate、次にselect、次にarrangeという具合です。
 
-What would happen if we didn't have the pipe?
-We could nest each function call inside the previous call:
+パイプがなければ、どうなっていたでしょうか？
+各関数が先の関数の出力を呼び出す格好で、入れ子にすることになったでしょう。
 
 ```{r}
 #| results: false
@@ -527,7 +530,7 @@ arrange(
 )
 ```
 
-Or we could use a bunch of intermediate objects:
+もしくは、中間オブジェクトをたくさん使うことになっていたかもしれません。
 
 ```{r}
 #| results: false
@@ -538,19 +541,21 @@ flights3 <- select(flights2, year:day, dep_time, carrier, flight, speed)
 arrange(flights3, desc(speed))
 ```
 
-While both forms have their time and place, the pipe generally produces data analysis code that is easier to write and read.
+両形式とも使いみちはあるものの、一般的にはパイプを使うと、データ分析コードは書くのも読むのも楽になります。
 
-To add the pipe to your code, we recommend using the built-in keyboard shortcut Ctrl/Cmd + Shift + M.
-You'll need to make one change to your RStudio options to use `|>` instead of `%>%` as shown in @fig-pipe-options; more on `%>%` shortly.
+コードにパイプを加えるには、RStudioのキーボード・ショートカット Ctrl/Cmd + Shift + M を使うことをお薦めします。
+`%>%`ではなく、`|>`を使うには、 @fig-pipe-options のように、RStudioのオプション設定を一箇所変更する必要があります。`%`
+`>%`については、もう少しこの先で述べます。
 
 ```{r}
 #| label: fig-pipe-options
 #| echo: false
 #| fig-cap: |
-#|   To insert `|>`, make sure the "Use native pipe operator" option is checked.
+#|   `|>`を挿入するには、"Use native pipe operator"がチェック済みになっていることを確認のこと。
 #| fig-alt: | 
-#|   Screenshot showing the "Use native pipe operator" option which can
-#|   be found on the "Editing" panel of the "Code" options.
+#|   "Use native pipe operator"オプションがチェック済みになっている
+#|   スクリーンショット。このオプションは、Optionsの"Code"の中の
+#|   "Editing"パネルにある。
 
 knitr::include_graphics("screenshots/rstudio-pipe-options.png")
 ```
@@ -558,8 +563,8 @@ knitr::include_graphics("screenshots/rstudio-pipe-options.png")
 ::: callout-note
 ## magrittr
 
-If you've been using the tidyverse for a while, you might be familiar with the `%>%` pipe provided by the **magrittr** package.
-The magrittr package is included in the core tidyverse, so you can use `%>%` whenever you load the tidyverse:
+tidyverseをしばらく使っている人なら、**magrittr**パッケージが提供してくれる`%>%`パイプに馴染みがあるでしょう。
+magrittrパッケージはtidyverseのコア・パッケージ群の一つなので、tidyverseをロードしていれば`%>%`を使えます。
 
 ```{r}
 #| eval: false
@@ -571,38 +576,42 @@ mtcars %>%
   summarize(n = n())
 ```
 
-For simple cases, `|>` and `%>%` behave identically.
-So why do we recommend the base pipe?
-Firstly, because it's part of base R, it's always available for you to use, even when you're not using the tidyverse.
-Secondly, `|>` is quite a bit simpler than `%>%`: in the time between the invention of `%>%` in 2014 and the inclusion of `|>` in R 4.1.0 in 2021, we gained a better understanding of the pipe.
-This allowed the base implementation to jettison infrequently used and less important features.
+簡単な事例では、`|>`も`%>%`も動作は同じです。
+だったら、ベースのパイプを薦める理由は？
+第1に、ベースRの一部ですから、tidyverseをロードしていないときも含めて、いつでも使えること。
+第2に、`%>%`より`|>`の方がずっと簡素であること。`%`
+`>%`が発明された2014年とR 4.1.0に`|>`が含められた2021年の間に、パイプの理解が進みました。
+おかげで、ベースのパイプでは、ほとんど使われない、あまり重要でない機能を落とすことができました。
 :::
 
-## Groups
+## グループ
 
-So far you've learned about functions that work with rows and columns.
-dplyr gets even more powerful when you add in the ability to work with groups.
-In this section, we'll focus on the most important functions: `group_by()`, `summarize()`, and the slice family of functions.
+ここまで、行と列を操作する関数を学んできました。
+グループ単位で操作する能力を加えると、dplyrはさらに強力になります。
+このセクションでは、`group_by()`、`summarize()`と`slice_`関数群にフォーカスします。
 
 ### `group_by()`
 
-Use `group_by()` to divide your dataset into groups meaningful for your analysis:
+`group_by()`を使うと、分析上意味のあるグループにデータセットを分割できます。
 
 ```{r}
 flights |> 
   group_by(month)
 ```
 
-`group_by()` doesn't change the data but, if you look closely at the output, you'll notice that the output indicates that it is "grouped by" month (`Groups: month [12]`).
-This means subsequent operations will now work "by month".
-`group_by()` adds this grouped feature (referred to as class) to the data frame, which changes the behavior of the subsequent verbs applied to the data.
+`group_by()`ではデータ自体に変化はありませんが、出力をよく見ると、"grouped by" month (`Groups: month [12]`) となっていることに気付きます。
+その意味は、ここから先の操作は"by month"で行われる、ということです。
+`group_by()`は、このグループ特性 (クラスと呼びます) をデータフレームに加えます。そ
+の結果、その先データに適用される動詞の動作が変わります。
 
 ### `summarize()` {#sec-summarize}
 
-The most important grouped operation is a summary, which, if being used to calculate a single summary statistic, reduces the data frame to have a single row for each group.
-In dplyr, this operation is performed by `summarize()`[^data-transform-3], as shown by the following example, which computes the average departure delay by month:
+最も重要なグループ単位の操作は要約です。要
+約統計値一つを計算するよう使えば、データフレームはグループごと1行に圧縮されます。
+dplyrでは`summarize()`[^data-transform-3]がこの操作を担います。
+以下の例では、月ごとの平均出発遅延を計算しています。
 
-[^data-transform-3]: Or `summarise()`, if you prefer British English.
+[^data-transform-3]: もしくは、英国英語がお好みなら`summarise()`。
 
 ```{r}
 flights |> 
@@ -612,10 +621,13 @@ flights |>
   )
 ```
 
-Uhoh!
-Something has gone wrong and all of our results are `NA`s (pronounced "N-A"), R's symbol for missing value.
-This happened because some of the observed flights had missing data in the delay column, and so when we calculated the mean including those values, we got an `NA` result.
-We'll come back to discuss missing values in detail in @sec-missing-values, but for now we'll tell the `mean()` function to ignore all missing values by setting the argument `na.rm` to `TRUE`:
+おっと！
+何かまずいようです。結
+果が全て`NA` ("N-A"と読みます) になってしまいました。R
+でも欠損値を表します。
+こうなったのは、`dep_delay`列に欠損値がある観測がいくつかあったためです。欠
+損値込みで平均を計算したので、結果が`NA`になったということです。
+欠損値の詳細は、@sec-missing-values で戻ってきますが、ここでは`mean()`で`na.rm` 引数を`TRUE`に設定して欠損値を無視させます。
 
 ```{r}
 flights |> 
@@ -625,8 +637,8 @@ flights |>
   )
 ```
 
-You can create any number of summaries in a single call to `summarize()`.
-You'll learn various useful summaries in the upcoming chapters, but one very useful summary is `n()`, which returns the number of rows in each group:
+`summarize()`の中では、複数の要約値を作れます。
+先の章で役立つさまざまな要約値を学習しますが、特に役立つのが`n()`で、各グループごとの行数を返します。
 
 ```{r}
 flights |> 
@@ -637,20 +649,20 @@ flights |>
   )
 ```
 
-Means and counts can get you a surprisingly long way in data science!
+平均とカウントを得ることで、データサイエンスで驚くほど先まで進めます！
 
-### The `slice_` functions
+### `slice_`関数群
 
-There are five handy functions that allow you extract specific rows within each group:
+5つの手軽な関数で、各グループ内の特定の行を取り出すことができます。
 
--   `df |> slice_head(n = 1)` takes the first row from each group.
--   `df |> slice_tail(n = 1)` takes the last row in each group.
--   `df |> slice_min(x, n = 1)` takes the row with the smallest value of column `x`.
--   `df |> slice_max(x, n = 1)` takes the row with the largest value of column `x`.
--   `df |> slice_sample(n = 1)` takes one random row.
+-   `df |> slice_head(n = 1)`は、各グループから最初の行を取り出す。
+-   `df |> slice_tail(n = 1)`は、各グループから最後の行を取り出す。
+-   `df |> slice_min(x, n = 1)`は、各グループから`x`列の値が最小の行を取り出す。
+-   `df |> slice_max(x, n = 1)`は、各グループから`x`列の値が最大の行を取り出す。
+-   `df |> slice_sample(n = 1)`は、各グループからランダムに1行を取り出す。
 
-You can vary `n` to select more than one row, or instead of `n =`, you can use `prop = 0.1` to select (e.g.) 10% of the rows in each group.
-For example, the following code finds the flights that are most delayed upon arrival at each destination:
+`n`を変えれば1行超の行を取り出せますし、`n =`の替わりに`prop = 0.1`とすれば、各グループから (例えば) 10％の行を取り出せます。
+例えば、以下のコードは目的地ごとに到着遅延が最も長かった便を見つけ出しています。
 
 ```{r}
 flights |> 
@@ -659,12 +671,12 @@ flights |>
   relocate(dest)
 ```
 
-Note that there are 105 destinations but we get 108 rows here.
-What's up?
-`slice_min()` and `slice_max()` keep tied values so `n = 1` means give us all rows with the highest value.
-If you want exactly one row per group you can set `with_ties = FALSE`.
+目的地は105なのに、ここには108行もあります。
+どうして？
+`slice_min()`と`slice_max()`は、値がタイの場合全てを取り出すので、`n = 1`だと最大値の行全てを取り出します。
+どうしてもグループごとに1行だけにしたいなら、`with_ties = FALSE`と設定します。
 
-This is similar to computing the max delay with `summarize()`, but you get the whole corresponding row (or rows if there's a tie) instead of the single summary statistic.
+到着遅延の最大値を`summarize()`で計算するのと似ていますが、要約統計値だけではなく、該当する行 (タイがあれば、それも含めて) 全体が得られます。
 
 ### Grouping by multiple variables
 
