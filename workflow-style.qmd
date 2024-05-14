@@ -46,59 +46,62 @@ library(nycflights13)
 
 ## 名前
 
-We talked briefly about names in @sec-whats-in-a-name.
-Remember that variable names (those created by `<-` and those created by `mutate()`) should use only lowercase letters, numbers, and `_`.
-Use `_` to separate words within a name.
+名前については @sec-whats-in-a-name で、少しお話ししました。
+(`<-`で代入されたり、`mutate()`で作成されたりする) 変数の名前には、小文字と数字と`_`だけを使うべきでしたよね。
+`_`を使って単語をつないで名前にします。
 
 ```{r}
 #| eval: false
 
-# Strive for:
+# こんな風に
 short_flights <- flights |> filter(air_time < 60)
 
-# Avoid:
+# これはダメ
 SHORTFLIGHTS <- flights |> filter(air_time < 60)
 ```
 
-As a general rule of thumb, it's better to prefer long, descriptive names that are easy to understand rather than concise names that are fast to type.
-Short names save relatively little time when writing code (especially since autocomplete will help you finish typing them), but it can be time-consuming when you come back to old code and are forced to puzzle out a cryptic abbreviation.
+経験則として一般的に、手早く打ち込める短い名前よりも、分かりやすく説明する長たらしい名前にするようにした方が良いです。
+短い名前にして節約できる時間は (特にオートコンプリートが打ち込み完了を手伝ってくれるので) ごくわずかなのに、古いコードに立ち戻って暗号のような略称を解読しなければならなくなったらとても時間をくうのですから。
 
-If you have a bunch of names for related things, do your best to be consistent.
-It's easy for inconsistencies to arise when you forget a previous convention, so don't feel bad if you have to go back and rename things.
-In general, if you have a bunch of variables that are a variation on a theme, you're better off giving them a common prefix rather than a common suffix because autocomplete works best on the start of a variable.
+関連するものにたくさん名前を付ける場合、首尾一貫するよう最大限努めましょう。
+以前の慣例を忘れると、簡単に首尾一貫しなくなります。で
+すから、立ち戻って、名前を付け直さなくなっても気に病むことはありません。
+一般的に、あるテーマの変異体である変数がたくさんある場合、接尾語ではなく、接頭語を共通にするのが吉です。オ
+ートコンプリートが共通の接頭語が付いた変数名を候補に挙げてくれるからです。
 
-## Spaces
+## スペース
 
-Put spaces on either side of mathematical operators apart from `^` (i.e. `+`, `-`, `==`, `<`, ...), and around the assignment operator (`<-`).
+`^`を除く算術演算子 (例えば、`+`、`-`、`==`、`<`など) と代入子 (`<-`) の両端にはスペースを入れます。
 
 ```{r}
 #| eval: false
 
-# Strive for
+# こんな風に
 z <- (a + b)^2 / d
 
-# Avoid
+# これはダメ
 z<-( a + b ) ^ 2/d
 ```
 
-Don't put spaces inside or outside parentheses for regular function calls.
-Always put a space after a comma, just like in standard English.
+関数に付く括弧の内側にも外側にもスペースは入れません。
+コンマの後には常に一つスペースを入れます。普
+通の英語と同様です。
 
 ```{r}
 #| eval: false
 
-# Strive for
+# こんな風に
 mean(x, na.rm = TRUE)
 
-# Avoid
+# これはダメ
 mean (x ,na.rm=TRUE)
 ```
 
-It's OK to add extra spaces if it improves alignment.
-For example, if you're creating multiple variables in `mutate()`, you might want to add spaces so that all the `=` line up.[^workflow-style-1]
-This makes it easier to skim the code.
+コードの並びを改善するために、余分なスペースを入れることは構いません。
+例えば、`mutate()`の中で複数の変数を作る場合、`=`が揃うように、スペースを入れたいかもしれません。[^workflow-style-1]
+コードをざっと見るのが容易になります。
 
-[^workflow-style-1]: Since `dep_time` is in `HMM` or `HHMM` format, we use integer division (`%/%`) to get hour and remainder (also known as modulo, `%%`) to get minute.
+[^workflow-style-1]: `dep_time`は`HMM`か`HHMM`の形式なので、整数除算 (`%/%`) を使って時間を、剰余 (モードともいう、`%%`) を使って分を得ている。
 
 ```{r}
 #| eval: false
@@ -111,30 +114,32 @@ flights |>
   )
 ```
 
-## Pipes {#sec-pipes}
+## パイプ {#sec-pipes}
 
-`|>` should always have a space before it and should typically be the last thing on a line.
-This makes it easier to add new steps, rearrange existing steps, modify elements within a step, and get a 10,000 ft view by skimming the verbs on the left-hand side.
+`|>`の前には常に一つスペースを入れます。大
+抵の場合、行の最後に置きます。
+そうすると、新しくステップを追加したり、既存のステップを並び替えたり、ステップ内の要素を修正したり、左側に並ぶ動詞をざっと見て高度10,000フィートからの外観を得たりすることが簡単になります。
 
 ```{r}
 #| eval: false
 
-# Strive for 
+# こんな風に
 flights |>  
   filter(!is.na(arr_delay), !is.na(tailnum)) |> 
   count(dest)
 
-# Avoid
+# これはダメ
 flights|>filter(!is.na(arr_delay), !is.na(tailnum))|>count(dest)
 ```
 
-If the function you're piping into has named arguments (like `mutate()` or `summarize()`), put each argument on a new line.
-If the function doesn't have named arguments (like `select()` or `filter()`), keep everything on one line unless it doesn't fit, in which case you should put each argument on its own line.
+パイプの先の関数に (`mutate()`や`summarize()`のように) 名前付き引数がある場合、引数ごとに行を変えます。
+(`select()`や`filter()`のように) 名前付き引数がない場合、1行に収まる限り全てを1行に入れます。1
+行に収まらない場合は、引数ごとに行を変えます。
 
 ```{r}
 #| eval: false
 
-# Strive for
+# こんな風に
 flights |>  
   group_by(tailnum) |> 
   summarize(
@@ -142,7 +147,7 @@ flights |>
     n = n()
   )
 
-# Avoid
+# これはダメ
 flights |>
   group_by(
     tailnum
@@ -150,15 +155,15 @@ flights |>
   summarize(delay = mean(arr_delay, na.rm = TRUE), n = n())
 ```
 
-After the first step of the pipeline, indent each line by two spaces.
-RStudio will automatically put the spaces in for you after a line break following a `|>` .
-If you're putting each argument on its own line, indent by an extra two spaces.
-Make sure `)` is on its own line, and un-indented to match the horizontal position of the function name.
+パイプラインの最初のステップの後は、2つのスペースで各行をインデントします。
+RStudioで`|>`後に改行すると、自動的にスペースを入れてくれます。
+引数ごとに改行する場合、さらに2つのスペースを追加してインデントします。
+その場合、`)`だけの行はインデントしないで、`)`の水平位置が関数名の最初の一文字と一致するようにします。
 
 ```{r}
 #| eval: false
 
-# Strive for 
+# こんな風に
 flights |>  
   group_by(tailnum) |> 
   summarize(
@@ -166,7 +171,7 @@ flights |>
     n = n()
   )
 
-# Avoid
+# これはダメ
 flights|>
   group_by(tailnum) |> 
   summarize(
@@ -174,7 +179,7 @@ flights|>
              n = n()
            )
 
-# Avoid
+# これもダメ
 flights|>
   group_by(tailnum) |> 
   summarize(
@@ -183,33 +188,36 @@ flights|>
   )
 ```
 
-It's OK to shirk some of these rules if your pipeline fits easily on one line.
-But in our collective experience, it's common for short snippets to grow longer, so you'll usually save time in the long run by starting with all the vertical space you need.
+パイプラインがやすやすと一行に収まるなら、ルールを曲げても構いません。
+しかし、われわれの集合的経験として、一行のコードが長いコードに変わっていくことはよくあることなので、はじめから垂直方向のスペースを確保しておいた方が、長い目で見ると通常、時間の節約になります。
 
 ```{r}
 #| eval: false
 
-# This fits compactly on one line
+# やすやすと一行に収まる
 df |> mutate(y = x + 1)
 
-# While this takes up 4x as many lines, it's easily extended to 
-# more variables and more steps in the future
+# こうすると4倍の行を使うが、将来、変数やステップを
+# 簡単に追加できる
 df |> 
   mutate(
     y = x + 1
   )
 ```
 
-Finally, be wary of writing very long pipes, say longer than 10-15 lines.
-Try to break them up into smaller sub-tasks, giving each task an informative name.
-The names will help cue the reader into what's happening and makes it easier to check that intermediate results are as expected.
-Whenever you can give something an informative name, you should give it an informative name, for example when you fundamentally change the structure of the data, e.g., after pivoting or summarizing.
-Don't expect to get it right the first time!
-This means breaking up long pipelines if there are intermediate states that can get good names.
+最後に、あまりに長くパイプでつなぐのは避けましょう。1
+0から15行よりも長いのは長過ぎます。
+小さなサブ・タスクに分割して、各タスクに分かりやすい名前を付けるようにしましょう。
+名前を付けることで、何が起こっているのか、コードを読む人にヒントになります。ま
+た、中間結果が予想通りになっているかチェックするのも容易になります。
+例えば、pivotやsummarizeなどでデータ構造を根本から変えた際は、なんであれ分かりやすい名前を付けられるなら、分かりやすい名前を付けましょう。
+最初から上手く行くなどと考えないことです！
+良い名前を付けられる中間の状態があるなら、長いパイプラインを分割することです。
 
 ## ggplot2
 
-The same basic rules that apply to the pipe also apply to ggplot2; just treat `+` the same way as `|>`.
+パイプに当てはまる基本ルールは、ggplot2にも同様に当てはまります。`+`
+を`|>`と同じように扱うだけです。
 
 ```{r}
 #| eval: false
@@ -224,7 +232,7 @@ flights |>
   geom_line()
 ```
 
-Again, if you can't fit all of the arguments to a function on to a single line, put each argument on its own line:
+ここでも、関数の引数が一行に収まらない場合は、引数ごとに改行しましょう。
 
 ```{r}
 #| eval: false
@@ -246,12 +254,12 @@ flights |>
   geom_point()
 ```
 
-Watch for the transition from `|>` to `+`.
-We wish this transition wasn't necessary, but unfortunately, ggplot2 was written before the pipe was discovered.
+`|>`から`+`へ切り替えていることに注意してください。
+切り替え不要だと良かったのですが、パイプが発見される前にggplot2が書かれたので、残念ながら仕方ありません。
 
-## Sectioning comments
+## セクション分けコメント
 
-As your scripts get longer, you can use **sectioning** comments to break up your file into manageable pieces:
+スクリプトが長くなったら、**セクション分け**コメントを使って、ファイルを管理可能な部分へ分割できます。
 
 ```{r}
 #| eval: false
@@ -261,23 +269,23 @@ As your scripts get longer, you can use **sectioning** comments to break up your
 # Plot data --------------------------------------
 ```
 
-RStudio provides a keyboard shortcut to create these headers (Cmd/Ctrl + Shift + R), and will display them in the code navigation drop-down at the bottom-left of the editor, as shown in @fig-rstudio-sections.
+RStudioのキーボード・ショートカット (Cmd/Ctrl + Shift + R) を使えば、これらのヘッダーを作成でき、エディタの左下にあるコード・ナビゲーション・ドロップダウンに、 @fig-rstudio-sections のように表示されます。
 
 ```{r}
 #| label: fig-rstudio-sections
 #| echo: false
 #| out-width: null
 #| fig-cap: | 
-#|   After adding sectioning comments to your script, you can
-#|   easily navigate to them using the code navigation tool in the
-#|   bottom-left of the script editor.
+#|   スクリプトにセクション分けコメントを追加すると、
+#|   スクリプト・エディタの左下にあるコード・ナビゲーション道具を
+#|   使って、簡単にコメント位置へ移動できる。
 
 knitr::include_graphics("screenshots/rstudio-nav.png")
 ```
 
-## Exercises
+## 練習問題
 
-1.  Restyle the following pipelines following the guidelines above.
+1.  上記のガイドラインに従って、以下のパイプラインのスタイルを修正しなさい。
 
     ```{r}
     #| eval: false
@@ -290,14 +298,15 @@ knitr::include_graphics("screenshots/rstudio-nav.png")
     arr_delay,na.rm=TRUE),cancelled=sum(is.na(arr_delay)),n=n())|>filter(n>10)
     ```
 
-## Summary
+## まとめ
 
-In this chapter, you've learned the most important principles of code style.
-These may feel like a set of arbitrary rules to start with (because they are!) but over time, as you write more code, and share code with more people, you'll see how important a consistent style is.
-And don't forget about the styler package: it's a great way to quickly improve the quality of poorly styled code.
+本章では、コード・スタイルの最も重要な原則を学習しました。
+そこからはじめるには、恣意的なルールばかりだと感じたかもしれません (実際そうなのですから！) が、時を経るにつれ、もっとコードを書いて、より多くの人とコードを共有するにつれ、首尾一貫したスタイルがどれほど重要か分かるでしょう。
+それと、stylerパッケージを忘れないように。貧
+相なスタイルのコードを素早く改善してくれますよ。
 
-In the next chapter, we switch back to data science tools, learning about tidy data.
-Tidy data is a consistent way of organizing your data frames that is used throughout the tidyverse.
-This consistency makes your life easier because once you have tidy data, it just works with the vast majority of tidyverse functions.
-Of course, life is never easy, and most datasets you encounter in the wild will not already be tidy.
-So we'll also teach you how to use the tidyr package to tidy your untidy data.
+次章では、データサイエンス道具に立ち戻って、整理データを学習します。
+整理データは、首尾一貫した方法で整頓されたデータフレームで、tidyverseを通して使われます。
+首尾一貫しているおかげで、ひとたび整理データにできると、大半のtidyverse関数で使えます。
+もちろん、そこまでが大変で、そこいらで出会う大抵のデータセットは未整理データです。
+ですから、tidyrパッケージを使って、未整理データを整理する方法も学習します。
