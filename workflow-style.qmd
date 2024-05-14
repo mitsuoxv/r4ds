@@ -1,4 +1,4 @@
-# Workflow: code style {#sec-workflow-style}
+# ワークフロー：コード・スタイル {#sec-workflow-style}
 
 ```{r}
 #| echo: false
@@ -6,33 +6,35 @@
 source("_common.R")
 ```
 
-Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread.
-Even as a very new programmer, it's a good idea to work on your code style.
-Using a consistent style makes it easier for others (including future-you!) to read your work and is particularly important if you need to get help from someone else.
-This chapter will introduce the most important points of the [tidyverse style guide](https://style.tidyverse.org), which is used throughout this book.
+良いコード・スタイルは正しく句読点を打つことに似ています。そ
+うしなくても読めなくはないけれど、そうすれば確かに読みやすくなる、という点で。
+プログラムをはじめたばかりだとしても、コード・スタイルを意識することをお薦めします。
+首尾一貫したスタイルを使えば、 他の人 (将来のあなた自身を含んでいます！) が読みやすくなります。誰
+か他の人からヘルプを得る必要がある場合は特に重要です。
+本章は、本書を通じて使われている [tidyverse style guide](https://style.tidyverse.org) の重要なポイントを紹介します。
 
-Styling your code will feel a bit tedious to start with, but if you practice it, it will soon become second nature.
-Additionally, there are some great tools to quickly restyle existing code, like the [**styler**](https://styler.r-lib.org) package by Lorenz Walthert.
-Once you've installed it with `install.packages("styler")`, an easy way to use it is via RStudio's **command palette**.
-The command palette lets you use any built-in RStudio command and many addins provided by packages.
-Open the palette by pressing Cmd/Ctrl + Shift + P, then type "styler" to see all the shortcuts offered by styler.
-@fig-styler shows the results.
+最初はコード・スタイルなど面倒に感じるかもしれませんが、練習すればすぐに自然とできるようになります。
+加えて、Lorenz Walthertによる[**styler**](https://styler.r-lib.org)パッケージのように、既存のコードを素早くきれいなスタイルにしてくれる素敵な道具もいくつかあります。
+`install.packages("styler")`としてインストールしておくと、RStudioの**コマンド・パレット**経由で簡単に使うことができます。
+RStudioの組み込みコマンドやパッケージが提供する多くのアドインが**コマンド・パレット**経由で使えます。
+Cmd/Ctrl + Shift + P と押してパレットを開いて、"styler"と打ち込めば、stylerが提供する全てのショートカットを見ることができます。
+@fig-styler のように出て来ます。
 
 ```{r}
 #| label: fig-styler
 #| echo: false
 #| out-width: null
 #| fig-cap: | 
-#|   RStudio's command palette makes it easy to access every RStudio command
-#|   using only the keyboard.
+#|   RStudioのコマンド・パレットを使えば、キーボードだけで全てのRStudio
+#|   コマンドに容易にアクセスできます。
 #| fig-alt: |
-#|   A screenshot showing the command palette after typing "styler", showing
-#|   the four styling tool provided by the package.
+#|   "styler"と打ち込んだ後のコマンド・パレットのスクリーンショット。
+#|   パッケージが提供する4つのスタイル化道具が映っている。
 
 knitr::include_graphics("screenshots/rstudio-palette.png")
 ```
 
-We'll use the tidyverse and nycflights13 packages for code examples in this chapter.
+本章では、コード例のためにtidyverseとnycflights13パッケージを使います。
 
 ```{r}
 #| label: setup
@@ -42,7 +44,7 @@ library(tidyverse)
 library(nycflights13)
 ```
 
-## Names
+## 名前
 
 We talked briefly about names in @sec-whats-in-a-name.
 Remember that variable names (those created by `<-` and those created by `mutate()`) should use only lowercase letters, numbers, and `_`.
