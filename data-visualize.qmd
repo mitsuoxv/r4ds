@@ -770,10 +770,10 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
 カテゴリ変数には特に適していますが、別のやり方はプロットを、データのサブセットをそれぞれ表示するサブプロット、**ファセット**に分けることです。
 
 プロットを1つの変数でファセットするには、`facet_wrap()`を使います。
-`facet_wrap()`の The first argument of `facet_wrap()` is a formula[^data-visualize-3], which you create with `~` followed by a variable name.
-The variable that you pass to `facet_wrap()` should be categorical.
+`facet_wrap()`の第1引数は式[^data-visualize-3]で、変数名の前に`~` (チルダと読みます) を付けて作ります。
+`facet_wrap()`に渡す変数はカテゴリ変数でなければなりません。
 
-[^data-visualize-3]: Here "formula" is the name of the thing created by `~`, not a synonym for "equation".
+[^data-visualize-3]: ここでの"式"は`~`で作られるものの名前で、"方程式"の類義語ではありません。
 
 ```{r}
 #| warning: false
