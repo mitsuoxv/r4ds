@@ -53,8 +53,8 @@ table3
 ```
 
 これらは全て、同じデータを表現したものですが、使いやすさは同じではありません。
-その一つ、`table1`はtidyverse内部で処理するのがずっと簡単です。**整**
-**理データ**だからです。
+その一つ、`table1`はtidyverse内部で処理するのがずっと簡単です。
+**整理データ**だからです。
 
 整理データセットであるための、相互に関連する3条件は、
 
@@ -95,84 +95,82 @@ tidyverseのdplyr、ggplot2やその他全てのパッケージは整理デー�
 ```{r}
 #| fig-width: 5
 #| fig-alt: |
-#|   This figure shows the number of cases in 1999 and 2000 for 
-#|   Afghanistan, Brazil, and China, with year on the x-axis and number 
-#|   of cases on the y-axis. Each point on the plot represents the number 
-#|   of cases in a given country in a given year. The points for each
-#|   country are differentiated from others by color and shape and connected
-#|   with a line, resulting in three, non-parallel, non-intersecting lines.
-#|   The numbers of cases in China are highest for both 1999 and 2000, with
-#|   values above 200,000 for both years. The number of cases in Brazil is
-#|   approximately 40,000 in 1999 and approximately 75,000 in 2000. The
-#|   numbers of cases in Afghanistan are lowest for both 1999 and 2000, with
-#|   values that appear to be very close to 0 on this scale.
+#|   アフガニスタン、ブラジル、中国の1999年と2000年のケース数のプロット。
+#|   x軸に年、y軸にケース数としている。プロットの各点は各国の各年の
+#|   ケース数を表している。国ごとに点の色と形を変え、線で結んでおり、
+#|   並行でも交わってもいない3本の線になっている。
+#|   1999年と2000年の両年とも中国がケース数が200,000超と最多。
+#|   ブラジルのケース数は1999年に約40,000、2000年に約75,000。
+#|   アフガニスタンのケース数は1999年と2000年の両年とも最小で、
+#|   この尺度では0にとても近く見える。
 
-# Compute rate per 10,000
+# 10,000人当たりのケース数を計算
 table1 |>
   mutate(rate = cases / population * 10000)
 
-# Compute total cases per year
+# 年ごとの総ケース数を計算
 table1 |> 
   group_by(year) |> 
   summarize(total_cases = sum(cases))
 
-# Visualize changes over time
+# 経年変化を可視化
 ggplot(table1, aes(x = year, y = cases)) +
   geom_line(aes(group = country), color = "grey50") +
   geom_point(aes(color = country, shape = country)) +
   scale_x_continuous(breaks = c(1999, 2000)) # x-axis breaks at 1999 and 2000
 ```
 
-### Exercises
+### 練習問題
 
-1.  For each of the sample tables, describe what each observation and each column represents.
+1.  サンプル・テーブルごとに、各観測と各列が何を表しているか述べなさい。
 
-2.  Sketch out the process you'd use to calculate the `rate` for `table2` and `table3`.
-    You will need to perform four operations:
+2.  `table2`と`table3`で、10,000人当たりのケース数`rate`を計算する過程を描きなさい。
+    以下4つの操作が必要になります。
 
-    a.  Extract the number of TB cases per country per year.
-    b.  Extract the matching population per country per year.
-    c.  Divide cases by population, and multiply by 10000.
-    d.  Store back in the appropriate place.
+    a.  各国各年の結核ケース数を取り出す。
+    b.  各国各年が一致する人口を取り出す。
+    c.  ケース数を人口で割り、10000を掛ける。
+    d.  適当な場所に保存し戻す。
 
-    You haven't yet learned all the functions you'd need to actually perform these operations, but you should still be able to think through the transformations you'd need.
+    これらの操作を実際に行うのに必要な関数の全てをまだ学習していません。
+    それでも、必要な変換を考え通すことはできるはずです。
 
-## Lengthening data {#sec-pivoting}
+## データを縦長に {#sec-pivoting}
 
-The principles of tidy data might seem so obvious that you wonder if you'll ever encounter a dataset that isn't tidy.
-Unfortunately, however, most real data is untidy.
-There are two main reasons:
+整理データの原則はあまりに当たり前なので、未整理のデータセットに出会うことがあるのだろうか、と思うかもしれません。
+でも、残念なことに、ほとんどの実地のデータは未整理です。
+その理由は2つあります。
 
-1.  Data is often organized to facilitate some goal other than analysis.
-    For example, it's common for data to be structured to make data entry, not analysis, easy.
+1.  データを分析以外のある目標を容易するよう整頓されていることがよくあります。
+    たとえば、データの分析ではなく、入力を容易にするようデータが構造化されているのは、よくあることです。
 
-2.  Most people aren't familiar with the principles of tidy data, and it's hard to derive them yourself unless you spend a lot of time working with data.
+2.  ほとんどの人は整理データの原則に馴染みがないので、データを使う仕事に多くの時間を費やすのでなければ、整理データの原則を自分で導き出すことは困難です。
 
-This means that most real analyses will require at least a little tidying.
-You'll begin by figuring out what the underlying variables and observations are.
-Sometimes this is easy; other times you'll need to consult with the people who originally generated the data.
-Next, you'll **pivot** your data into a tidy form, with variables in the columns and observations in the rows.
+つまり、実地に分析する際は、ほとんどの場合、少なくとも少々データ整理が必要だということです。
+根底にある変数と観測が何か、見い出すことからはじめます。
+簡単にできることもありますが、そうでないときは、元々データを生成した人に相談する必要があります。
+次に、データをピボットして、列に変数、行に観測という整理された形式にします。
 
-tidyr provides two functions for pivoting data: `pivot_longer()` and `pivot_wider()`.
-We'll first start with `pivot_longer()` because it's the most common case.
-Let's dive into some examples.
+データをピボットするのに、tidyrは`pivot_longer()`と`pivot_wider()`の2つの関数を提供してくれます。
+最も普通に使う`pivot_longer()`から学習します。
+いくつかの例から入っていきましょう。
 
-### Data in column names {#sec-billboard}
+### 列名がデータである場合 {#sec-billboard}
 
-The `billboard` dataset records the billboard rank of songs in the year 2000:
+`billboard`データセットは、2000年の各曲のビルボード・ランキングを記録しています。
 
 ```{r}
 billboard
 ```
 
-In this dataset, each observation is a song.
-The first three columns (`artist`, `track` and `date.entered`) are variables that describe the song.
-Then we have 76 columns (`wk1`-`wk76`) that describe the rank of the song in each week[^data-tidy-1].
-Here, the column names are one variable (the `week`) and the cell values are another (the `rank`).
+このデータセットでは、各観測は1つの曲です。
+最初の3列 (`artist`、`track`、`date.entered`) は曲を記述する変数です。
+その先に76列 (`wk1`-`wk76`) あって、各週の順位を表しています[^data-tidy-1]。
+これらの列名は1つの変数 (the `week`) で、セルの値は別の変数 (the `rank`) です。
 
-[^data-tidy-1]: The song will be included as long as it was in the top 100 at some point in 2000, and is tracked for up to 72 weeks after it appears.
+[^data-tidy-1]: 2000年のどこかの時点でトップ100に入った曲が含まれており、最初に現れてから最大76週間追跡されている。
 
-To tidy this data, we'll use `pivot_longer()`:
+このデータを整理するには、`pivot_longer()`を使います。
 
 ```{r, R.options=list(pillar.print_min = 10)}
 billboard |> 
@@ -183,21 +181,23 @@ billboard |>
   )
 ```
 
-After the data, there are three key arguments:
+第1引数のデータの後に、鍵となる3つの引数があります。
 
--   `cols` specifies which columns need to be pivoted, i.e. which columns aren't variables. This argument uses the same syntax as `select()` so here we could use `!c(artist, track, date.entered)` or `starts_with("wk")`.
--   `names_to` names the variable stored in the column names, we named that variable `week`.
--   `values_to` names the variable stored in the cell values, we named that variable `rank`.
+-   `cols`は、ピボットする必要のある列、つまりは変数ではない列、を指定します。この引数は`select()`と同じ文法を使うので、ここでは`!c(artist, track, date.entered)`とか`starts_with("wk")`のようにできます。
+-   `names_to`は、列名が入る変数に名前を付けます。ここでは`week`と名付けました。
+-   `values_to`は、セルの値が入る変数に名前を付けます。ここでは`rank`と名付けました。
 
-Note that in the code `"week"` and `"rank"` are quoted because those are new variables we're creating, they don't yet exist in the data when we run the `pivot_longer()` call.
+`"week"`と`"rank"`には引用符が付いていることに注意してください。こ
+れらは、これから作成しようとしている新変数で、`pivot_longer()`を呼び出した時点ではまだデータに存在しないからです。
 
-Now let's turn our attention to the resulting, longer data frame.
-What happens if a song is in the top 100 for less than 76 weeks?
-Take 2 Pac's "Baby Don't Cry", for example.
-The above output suggests that it was only in the top 100 for 7 weeks, and all the remaining weeks are filled in with missing values.
-These `NA`s don't really represent unknown observations; they were forced to exist by the structure of the dataset[^data-tidy-2], so we can ask `pivot_longer()` to get rid of them by setting `values_drop_na = TRUE`:
+では、結果として縦長になったデータフレームに目を向けましょう。
+トップ100に76週未満しか入っていなかった曲はどうなっているでしょうか？
+例えば、2 Pacの"Baby Don't Cry"を見てみましょう。
+上記の出力では、トップ100には7週間だけ入っていましたが、残りの週は全て欠損値となっています。
+これらの`NA`は、実際は、未知の観測を表すものではなく、データセットの構造上無理に存在させられていたものです[^data-tidy-2]。
+ですから、`pivot_longer()`で`values_drop_na = TRUE`と設定することで、除去できます。
 
-[^data-tidy-2]: We'll come back to this idea in @sec-missing-values.
+[^data-tidy-2]: この考え方については @sec-missing-values で立ち戻ります。
 
 ```{r}
 billboard |> 
@@ -209,14 +209,14 @@ billboard |>
   )
 ```
 
-The number of rows is now much lower, indicating that many rows with `NA`s were dropped.
+行数はずいぶん減りました。多
+くあった`NA`だった行が除去されたということです。
 
-You might also wonder what happens if a song is in the top 100 for more than 76 weeks?
-We can't tell from this data, but you might guess that additional columns `wk77`, `wk78`, ...
-would be added to the dataset.
+76週超トップ100に入っていた曲はどうするのか、と思うかもしれません。
+このデータからは何とも言えませんが、データセットに`wk77`、`wk78`、...と列を追加することになるのかな。
 
-This data is now tidy, but we could make future computation a bit easier by converting values of `week` from character strings to numbers using `mutate()` and `readr::parse_number()`.
-`parse_number()` is a handy function that will extract the first number from a string, ignoring all other text.
+これで整理データになっていますが、先の計算を少しばかり容易にするため、`mutate()`と`readr::parse_number()`を使って、`week`の値を文字列から数値に変換します。
+`parse_number()`は、文字列内の数値以外の文字は無視して、最初の数値を取り出すお手軽な関数です。
 
 ```{r}
 billboard_longer <- billboard |> 
@@ -232,20 +232,20 @@ billboard_longer <- billboard |>
 billboard_longer
 ```
 
-Now that we have all the week numbers in one variable and all the rank values in another, we're in a good position to visualize how song ranks vary over time.
-The code is shown below and the result is in @fig-billboard-ranks.
-We can see that very few songs stay in the top 100 for more than 20 weeks.
+これで、週数を全て一つの変数に、順位を全てもう一つの変数にできました。順
+位が時を経るにつれてどう変化するか可視化する準備ができました。
+コードは以下、結果は @fig-billboard-ranks です。
+20週超トップ100にとどまる曲はごくわずかだと分かります。
 
 ```{r}
 #| label: fig-billboard-ranks
 #| fig-cap: |
-#|   A line plot showing how the rank of a song changes over time.
+#|   曲の順位が経時的にどう変化するかを示す線グラフ
 #| fig-alt: |
-#|   A line plot with week on the x-axis and rank on the y-axis, where
-#|   each line represents a song. Most songs appear to start at a high rank,
-#|   rapidly accelerate to a low rank, and then decay again. There are
-#|   surprisingly few tracks in the region when week is >20 and rank is
-#|   >50.
+#|   x軸がweek、y軸がrankの線グラフ。
+#|   各線が各曲を表す。ほとんどの曲は高い順位で現れ、
+#|   急速に順位を落とし、消えていく。
+#|   weekが20超、rankが50以上の領域に入る曲は驚くほど少ない。
 
 billboard_longer |> 
   ggplot(aes(x = week, y = rank, group = track)) + 
