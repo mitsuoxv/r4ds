@@ -253,12 +253,12 @@ billboard_longer |>
   scale_y_reverse()
 ```
 
-### How does pivoting work?
+### ピボットはどう機能するのか？
 
-Now that you've seen how we can use pivoting to reshape our data, let's take a little time to gain some intuition about what pivoting does to the data.
-Let's start with a very simple dataset to make it easier to see what's happening.
-Suppose we have three patients with `id`s A, B, and C, and we take two blood pressure measurements on each patient.
-We'll create the data with `tribble()`, a handy function for constructing small tibbles by hand:
+データを変形するのにピボットがどう使えるのか見てきましたので、次に少し時間を取って、ピボットがデータに何をしているのか、直観を養いましょう。
+とても単純なデータセットからはじめて、何が起きているのか見やすくしましょう。
+`id`がA、B、Cの3人の患者がいて、患者ごとに2回血圧測定するとします。
+小さなtibbleを手書きで作る手軽な関数`tribble()`を使って、データを作ります。
 
 ```{r}
 df <- tribble(
@@ -269,8 +269,8 @@ df <- tribble(
 )
 ```
 
-We want our new dataset to have three variables: `id` (already exists), `measurement` (the column names), and `value` (the cell values).
-To achieve this, we need to pivot `df` longer:
+欲しいのは、`id` (これは既にあります) 、`measurement` (列名) 、`value` (セルの値) の3つの変数を持つ新しいデータセットです。
+そうするには、`df`をピボットして長くする必要があります。
 
 ```{r}
 df |> 
@@ -281,27 +281,26 @@ df |>
   )
 ```
 
-How does the reshaping work?
-It's easier to see if we think about it column by column.
-As shown in @fig-pivot-variables, the values in a column that was already a variable in the original dataset (`id`) need to be repeated, once for each column that is pivoted.
+変形はどう機能していますか？
+列ごとに考えると見やすくなります。
+@fig-pivot-variables に示したように、元のデータセットに既にあった変数 (`id`) の列にあった値は、ピボットされる列の数だけ繰り返されています。
 
 ```{r}
 #| label: fig-pivot-variables
 #| echo: false
 #| fig-cap: | 
-#|   Columns that are already variables need to be repeated, once for
-#|   each column that is pivoted.
+#|   既に変数だった列は、ピボットされる列の数だけ繰り返される。
 #| fig-alt: | 
-#|   A diagram showing how `pivot_longer()` transforms a simple
-#|   dataset, using color to highlight how the values in the `id` column
-#|   ("A", "B", "C") are each repeated twice in the output because there are
-#|   two columns being pivoted ("bp1" and "bp2").
+#|   `pivot_longer()`が単純なデータセットを変形する仕方を示すダイアグラム。
+#|   出力では、`id`列の値 ("A", "B", "C") がそれぞれ2回繰り返されている
+#|   ことを色を使ってハイライト。繰り返しが2回なのは、ピボットされる
+#|   列 ("bp1" and "bp2") が2つだから。
 
 knitr::include_graphics("diagrams/tidy-data/variables.png", dpi = 270)
 ```
 
-The column names become values in a new variable, whose name is defined by `names_to`, as shown in @fig-pivot-names.
-They need to be repeated once for each row in the original dataset.
+@fig-pivot-names に示すように、列名は新変数の値になり、新変数の名前は`names_to`で指定した名前になります。
+元のデータセットの行数回だけ繰り返されます。
 
 ```{r}
 #| label: fig-pivot-names
