@@ -20,7 +20,7 @@ source("_common.R")
 整理データとtidyverseのパッケージ群が提供する整理された道具をひとたび入手すれば、データをある表現から別の表現に変えるのにかける時間を節約して、気になるデータについての質問に時間をかけることができます。
 
 本章では、最初に整理データの定義を学習して、簡単な学習用データセットに適用してみます。
-それから、データを整理するのに使う主要な道具であるピボットに入っていきます。
+それから、データを整理するのに使う主要な道具であるピボット (旋回) に入っていきます。
 ピボットを使うと、値を変えることなく、データの形式を変えられます。
 
 ### 準備するもの
@@ -292,69 +292,71 @@ df |>
 #|   既に変数だった列は、ピボットされる列の数だけ繰り返される。
 #| fig-alt: | 
 #|   `pivot_longer()`が単純なデータセットを変形する仕方を示すダイアグラム。
-#|   出力では、`id`列の値 ("A", "B", "C") がそれぞれ2回繰り返されている
+#|   出力では、`id`列の値 ("A"、"B"、"C") がそれぞれ2回繰り返されている
 #|   ことを色を使ってハイライト。繰り返しが2回なのは、ピボットされる
-#|   列 ("bp1" and "bp2") が2つだから。
+#|   列 ("bp1"、"bp2") が2つだから。
 
 knitr::include_graphics("diagrams/tidy-data/variables.png", dpi = 270)
 ```
 
 @fig-pivot-names に示すように、列名は新変数の値になり、新変数の名前は`names_to`で指定した名前になります。
-元のデータセットの行数回だけ繰り返されます。
+列名だった値は元のデータセットの行数回だけ繰り返されます。
 
 ```{r}
 #| label: fig-pivot-names
 #| echo: false
 #| fig-cap: |
-#|   The column names of pivoted columns become values in a new column. The 
-#|   values need to be repeated once for each row of the original dataset.
+#|   ピボットされた列の列名は新しく出来る列の値になる。
+#|   それらの値は元のデータセットの行数回繰り返される必要がある。
 #| fig-alt: | 
-#|   A diagram showing how `pivot_longer()` transforms a simple
-#|   data set, using color to highlight how column names ("bp1" and 
-#|   "bp2") become the values in a new `measurement` column. They are repeated
-#|   three times because there were three rows in the input.
+#|   `pivot_longer()`が単純なデータセットを変形する仕方を示すダイアグラム。
+#|   出力では、列名 ("bp1"、"bp2") が新しく出来る`measurement`列の
+#|   値になることを色を使ってハイライト。
+#|   それらが3回繰り返されているのは、入力が3行だったから。
 
 knitr::include_graphics("diagrams/tidy-data/column-names.png", dpi = 270)
 ```
 
-The cell values also become values in a new variable, with a name defined by `values_to`.
-They are unwound row by row.
-@fig-pivot-values illustrates the process.
+セル値も、`values_to`で名前を指定した新変数の値になります。
+行ごとに展開されます。
+@fig-pivot-values でその過程を示します。
 
 ```{r}
 #| label: fig-pivot-values
 #| echo: false
 #| fig-cap: |
-#|   The number of values is preserved (not repeated), but unwound
-#|   row-by-row.
+#|   値の数は維持される (繰り返されることはない) が、
+#|   行ごとに展開される。
 #| fig-alt: | 
-#|   A diagram showing how `pivot_longer()` transforms data,
-#|   using color to highlight how the cell values (blood pressure measurements)
-#|   become the values in a new `value` column. They are unwound row-by-row,
-#|   so the original rows (100,120), then (140,115), then (120,125), become 
-#|   a column running from 100 to 125.
+#|   `pivot_longer()`が単純なデータセットを変形する仕方を示すダイアグラム。
+#|   出力では、セル値 (血圧測定値) が新しく出来る`value`列の
+#|   値になることを色を使ってハイライト。
+#|   セル値は行ごとに展開される。
+#|   だから、元の最初の行 (100,120)、次の行 (140,115)、その次の行 (120,125)の
+#|   順に100から125までの列になる。
 
 knitr::include_graphics("diagrams/tidy-data/cell-values.png", dpi = 270)
 ```
 
-### Many variables in column names
+### 列名に多数の変数が入っている場合
 
-A more challenging situation occurs when you have multiple pieces of information crammed into the column names, and you would like to store these in separate new variables.
-For example, take the `who2` dataset, the source of `table1` and friends that you saw above:
+列名に複数の情報が詰め込まれて、それぞれ別々の新変数に入れたい場合、より挑戦的な状況になります。
+例えば、上で見た`table1`とその仲間たちの出所である`who2`を見てみましょう。
 
 ```{r}
 who2
 ```
 
-This dataset, collected by the World Health Organisation, records information about tuberculosis diagnoses.
-There are two columns that are already variables and are easy to interpret: `country` and `year`.
-They are followed by 56 columns like `sp_m_014`, `ep_m_4554`, and `rel_m_3544`.
-If you stare at these columns for long enough, you'll notice there's a pattern.
-Each column name is made up of three pieces separated by `_`.
-The first piece, `sp`/`rel`/`ep`, describes the method used for the diagnosis, the second piece, `m`/`f` is the `gender` (coded as a binary variable in this dataset), and the third piece, `014`/`1524`/`2534`/`3544`/`4554`/`5564`/`65` is the `age` range (`014` represents 0-14, for example).
+この世界保健機関が収集したデータセットは、結核診断数について情報を記録しています。
+既に変数になっており、解釈が容易な列が、`country`と`year`の2つあります。
+その先には56列あり、`sp_m_014`、`ep_m_4554`、`rel_m_3544`などの列名です。
+これらの列名を十分長い時間見つめていると、パターンに気付きます。
+各列名は、`_`で区切られた3つの情報から出来ています。
+1つ目は`sp`/`rel`/`ep`で診断方法を、2つ目は`m`/`f`で`gender` (このデータセットでは男女2区分コードの性別) を、3つ目は`014`/`1524`/`2534`/`3544`/`4554`/`5564`/`65`で`age` (年齢層。例えば、`014`は0-14のこと) を表す。
 
-So in this case we have six pieces of information recorded in `who2`: the country and the year (already columns); the method of diagnosis, the gender category, and the age range category (contained in the other column names); and the count of patients in that category (cell values).
-To organize these six pieces of information in six separate columns, we use `pivot_longer()` with a vector of column names for `names_to` and instructors for splitting the original variable names into pieces for `names_sep` as well as a column name for `values_to`:
+ですから、この場合、`who2`に記録されている情報は6つあることになります。(
+既に列になっている) 国、年と、(残りの列名に含まれている) 診断方法、性別カテゴリ、年齢層カテゴリと、(セル値である) 各カテゴリごとの患者数の6つです。
+これら6つの情報を6つの別々の列に整頓するには、`pivot_longer()`で`names_to`に列名ベクトルを指定、`names_sep`で元の変数名を分割する方法を指示、そして`values_to`にセル値を入れる列名を指定します。
 
 ```{r}
 who2 |> 
@@ -366,26 +368,26 @@ who2 |>
   )
 ```
 
-An alternative to `names_sep` is `names_pattern`, which you can use to extract variables from more complicated naming scenarios, once you've learned about regular expressions in @sec-regular-expressions.
+@sec-regular-expressions で正規表現を学習すれば、より複雑な名付け方法であっても変数を取り出せる`names_pattern`を、`names_sep`の替わりに使えるようになります。
 
-Conceptually, this is only a minor variation on the simpler case you've already seen.
-@fig-pivot-multiple-names shows the basic idea: now, instead of the column names pivoting into a single column, they pivot into multiple columns.
-You can imagine this happening in two steps (first pivoting and then separating) but under the hood it happens in a single step because that's faster.
+概念的には、これまでに見てきたより単純なケースから、ほんの少しだけ違っているだけです。
+@fig-pivot-multiple-names では、基本的な考え方を示しています。こ
+こでは、 列名が1つの列にピボットするのではなく、複数の列にピボットします。
+(まずピボットして、次に分ける) 2ステップで処理していると想像できますが、内部ではその方が速いので1ステップで処理しています。
 
 ```{r}
 #| label: fig-pivot-multiple-names
 #| echo: false
 #| fig-cap: |
-#|   Pivoting columns with multiple pieces of information in the names 
-#|   means that each column name now fills in values in multiple output 
-#|   columns.
+#|   列名に複数の情報を含む列のピボット。
+#|   出力では、複数の情報は、複数のそれぞれの列で値となる。
 #| fig-alt: |
-#|   A diagram that uses color to illustrate how supplying `names_sep` 
-#|   and multiple `names_to` creates multiple variables in the output.
-#|   The input has variable names "x_1" and "y_2" which are split up
-#|   by "_" to create name and number columns in the output. This is
-#|   is similar case with a single `names_to`, but what would have been a
-#|   single output variable is now separated into multiple variables.
+#|   `names_sep`を指定、`names_to`に複数の列名を与えて、
+#|   出力では複数の変数を作るのを、色を使ってハイライトしたダイアグラム。
+#|   入力には"x_1"と"y_2"の変数名があり、"_"で切り分けることで、
+#|   出力では"name"と"number"の列を作る。
+#|   `names_to`に1つの列名を与えるケースと似ているが、
+#|   出力では1つの変数だったものが、ここでは複数の変数に分かれている。
 
 knitr::include_graphics("diagrams/tidy-data/multiple-names.png", dpi = 270)
 ```
