@@ -392,19 +392,20 @@ who2 |>
 knitr::include_graphics("diagrams/tidy-data/multiple-names.png", dpi = 270)
 ```
 
-### Data and variable names in the column headers
+### 列名に変数名とデータが入っている場合
 
-The next step up in complexity is when the column names include a mix of variable values and variable names.
-For example, take the `household` dataset:
+もう一段複雑さが増すのは、列名が変数名と別変数の値のミックスになっている場合です。
+例えば、`household`データセットを見てみましょう。
 
 ```{r}
 household
 ```
 
-This dataset contains data about five families, with the names and dates of birth of up to two children.
-The new challenge in this dataset is that the column names contain the names of two variables (`dob`, `name)` and the values of another (`child,` with values 1 or 2).
-To solve this problem we again need to supply a vector to `names_to` but this time we use the special `".value"` sentinel; this isn't the name of a variable but a unique value that tells `pivot_longer()` to do something different.
-This overrides the usual `values_to` argument to use the first component of the pivoted column name as a variable name in the output.
+このデータセットには5つの家庭のデータがあり、家庭ごとに2人までの子どもの名前と誕生日が入っています。
+このデータセットで新たな挑戦となるのは、列名に2つの変数名 (`dob`と`name)` と、もう一つ変数の値 (`child`が1か2) が入っていることです。
+この問題を解くには、また`names_to`に列名ベクトルを指定する必要がありますが、ここでは特殊な列名`".value"`を使います。こ
+れは変数名ではなく、`pivot_longer()`に違った動作をしてもらうために指定する特殊な値です。
+いつもは`values_to`引数で値が入る変数名を指定しますが、以下のようにするとピボットされた列名の最初の構成要素が値が入る変数名になります。
 
 ```{r}
 household |> 
@@ -416,41 +417,42 @@ household |>
   )
 ```
 
-We again use `values_drop_na = TRUE`, since the shape of the input forces the creation of explicit missing variables (e.g., for families with only one child).
+ここでも`values_drop_na = TRUE`として、元のデータセットの形のせいで強制的に作られていた明示的欠損値 (例えば、子どもが1人の家庭での2人目のセル) を除去しています。
 
-@fig-pivot-names-and-values illustrates the basic idea with a simpler example.
-When you use `".value"` in `names_to`, the column names in the input contribute to both values and variable names in the output.
+@fig-pivot-names-and-values はより簡単な例で基本的な考え方を示しています。
+`names_to`の中で`".value"`を使うと、入力の列名は出力の値と変数名の両方に分かれて入ります。
 
 ```{r}
 #| label: fig-pivot-names-and-values
 #| echo: false
 #| fig-cap: |
-#|   Pivoting with `names_to = c(".value", "num")` splits the column names
-#|   into two components: the first part determines the output column
-#|   name (`x` or `y`), and the second part determines the value of the
-#|   `num` column.
+#|   `names_to = c(".value", "num")`としてピボットすると、列名は2つの
+#|   構成要素に分割される。第1の構成要素が出力での列名 (`x`と`y`) を
+#|   決め、第2の構成要素が`num`列の値となる。
 #| fig-alt: |
-#|   A diagram that uses color to illustrate how the special ".value"
-#|   sentinel works. The input has names "x_1", "x_2", "y_1", and "y_2",
-#|   and we want to use the first component ("x", "y") as a variable name
-#|   and the second ("1", "2") as the value for a new "num" column.
+#|   特殊な列名".value"の指定がどう機能するかを色を使って表したダイアグラム。
+#|   ピボットで入力する列名は"x_1"、"x_2"、"y_1"、"y_2"で、第1の構成要素
+#|   ("x"と"y") を変数名に、第2の構成要素 ("1"と"2") は新しい列"num"の値に
+#|   使いたい。
 
 knitr::include_graphics("diagrams/tidy-data/names-and-values.png", dpi = 270)
 ```
 
-## Widening data
+## データを幅広に
 
-So far we've used `pivot_longer()` to solve the common class of problems where values have ended up in column names.
-Next we'll pivot (HA HA) to `pivot_wider()`, which makes datasets **wider** by increasing columns and reducing rows and helps when one observation is spread across multiple rows.
-This seems to arise less commonly in the wild, but it does seem to crop up a lot when dealing with governmental data.
+ここまでは`pivot_longer()`を使って、列名に値が入ってしまっている、というよくあるタイプの問題を解いてきました。
+次に旋回して、`pivot_wider()`にピボット (笑) しましょう。`p`
+`ivot_wider()`は列数を増やし行数を減らすことで、データセットを**幅広に**します。一
+つの観測が複数列にわたる場合、助けになります。
+そこいらではあまりお目にかからないかもしれませんが、政府データを処理する場合はよくあることのように思われます。
 
-We'll start by looking at `cms_patient_experience`, a dataset from the Centers of Medicare and Medicaid services that collects data about patient experiences:
+米国保健福祉省のメディケア・メディケイド・サービスセンターが収集した患者体験についてのデータセット`cms_patient_experience`を見ることからはじめます。
 
 ```{r}
 cms_patient_experience
 ```
 
-The core unit being studied is an organization, but each organization is spread across six rows, with one row for each measurement taken in the survey organization.
+調査対象のコア単位は組織 The core unit being studied is an organization, but each organization is spread across six rows, with one row for each measurement taken in the survey organization.
 We can see the complete set of values for `measure_cd` and `measure_title` by using `distinct()`:
 
 ```{r}
