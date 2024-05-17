@@ -441,7 +441,7 @@ knitr::include_graphics("diagrams/tidy-data/names-and-values.png", dpi = 270)
 ## データを幅広に
 
 ここまでは`pivot_longer()`を使って、列名に値が入ってしまっている、というよくあるタイプの問題を解いてきました。
-次に旋回して、`pivot_wider()`にピボット (笑) しましょう。`p`
+次に、`pivot_wider()`にピボット (笑) しましょう。`p`
 `ivot_wider()`は列数を増やし行数を減らすことで、データセットを**幅広に**します。一
 つの観測が複数列にわたる場合、助けになります。
 そこいらではあまりお目にかからないかもしれませんが、政府データを処理する場合はよくあることのように思われます。
@@ -452,18 +452,20 @@ knitr::include_graphics("diagrams/tidy-data/names-and-values.png", dpi = 270)
 cms_patient_experience
 ```
 
-調査対象のコア単位は組織 The core unit being studied is an organization, but each organization is spread across six rows, with one row for each measurement taken in the survey organization.
-We can see the complete set of values for `measure_cd` and `measure_title` by using `distinct()`:
+調査対象のコア単位は組織ですが、組織ごとに6行あって、その組織で取られたアンケート結果が各行になっています。
+`distinct()`を使って、`measure_cd`と`measure_title`の値の完全なセットを見ることができます。
 
 ```{r}
 cms_patient_experience |> 
   distinct(measure_cd, measure_title)
 ```
 
-Neither of these columns will make particularly great variable names: `measure_cd` doesn't hint at the meaning of the variable and `measure_title` is a long sentence containing spaces.
-We'll use `measure_cd` as the source for our new column names for now, but in a real analysis you might want to create your own variable names that are both short and meaningful.
+これらの列はどちらも特に優れた変数名になりそうもありません。
+`measure_cd`の6つの値は、意味のヒントになる変数名になりませんし、`measure_title`の6つの値はそれぞれスペースを含む長い文章です。
+ここでは`measure_cd`を新しい列名の源として使いますが、実際に分析する際は、短くて意味のある変数名を自分で作りたくなるかもしれません。
 
-`pivot_wider()` has the opposite interface to `pivot_longer()`: instead of choosing new column names, we need to provide the existing columns that define the values (`values_from`) and the column name (`names_from)`:
+`pivot_wider()`のインターフェースは`pivot_longer()`の逆になっています。新
+しい列名を選ぶのではなく、値が入っている既存の列 (`values_from`) と、変数名が入っている既存の列 (`names_from`) を指定する必要があります。
 
 ```{r}
 cms_patient_experience |> 
