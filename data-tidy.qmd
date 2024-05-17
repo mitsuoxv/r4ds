@@ -464,7 +464,7 @@ cms_patient_experience |>
 `measure_cd`の6つの値は、意味のヒントになる変数名になりませんし、`measure_title`の6つの値はそれぞれスペースを含む長い文章です。
 ここでは`measure_cd`を新しい列名の源として使いますが、実際に分析する際は、短くて意味のある変数名を自分で作りたくなるかもしれません。
 
-`pivot_wider()`のインターフェースは`pivot_longer()`の逆になっています。新
+`pivot_wider()`のインターフェースは、`pivot_longer()`の逆です。新
 しい列名を選ぶのではなく、値が入っている既存の列 (`values_from`) と、変数名が入っている既存の列 (`names_from`) を指定する必要があります。
 
 ```{r}
@@ -475,8 +475,10 @@ cms_patient_experience |>
   )
 ```
 
-The output doesn't look quite right; we still seem to have multiple rows for each organization.
-That's because, we also need to tell `pivot_wider()` which column or columns have values that uniquely identify each row; in this case those are the variables starting with `"org"`:
+この出力は正しくないようです。依
+然、組織ごとに複数の行があります。
+単一の行をユニークに特定する1つ、または、複数のID列も、`pivot_wider()`に伝える必要がある、ということです。
+このケースでは、それは組織を特定する`"org"`で始まる2つの変数です。
 
 ```{r}
 cms_patient_experience |> 
@@ -487,12 +489,13 @@ cms_patient_experience |>
   )
 ```
 
-This gives us the output that we're looking for.
+これで、望んでいた出力になりました。
 
-### How does `pivot_wider()` work?
+### `pivot_wider()`はどう機能するのか？
 
-To understand how `pivot_wider()` works, let's again start with a very simple dataset.
-This time we have two patients with `id`s A and B, we have three blood pressure measurements on patient A and two on patient B:
+`pivot_wider()`がどう機能するのか理解するため、再びとても単純なデータセットを使ってはじめます。
+患者は2人で`id`はAとB。患
+者Aには3度、患者Bには2度、血圧測定したとします。
 
 ```{r}
 df <- tribble(
@@ -505,7 +508,7 @@ df <- tribble(
 )
 ```
 
-We'll take the values from the `value` column and the names from the `measurement` column:
+`value`列から値を、`measurement`列から変数名を取ります。
 
 ```{r}
 df |> 
@@ -515,8 +518,8 @@ df |>
   )
 ```
 
-To begin the process `pivot_wider()` needs to first figure out what will go in the rows and columns.
-The new column names will be the unique values of `measurement`.
+`pivot_wider()`が処理をはじめるには、何が行と列に入るのか、まず伝える必要があります。
+新しい変数名は`measurement`のユニークな値です。
 
 ```{r}
 df |> 
@@ -524,9 +527,9 @@ df |>
   pull()
 ```
 
-By default, the rows in the output are determined by all the variables that aren't going into the new names or values.
-These are called the `id_cols`.
-Here there is only one column, but in general there can be any number.
+デフォルトでは、出力での行は、新しい変数名にも値にも入らないその他全ての変数から決まります。
+それを`id_cols`と呼びます。
+ここでは列が1つだけですが、一般的に複数にもなりえます。
 
 ```{r}
 df |> 
@@ -534,7 +537,7 @@ df |>
   distinct()
 ```
 
-`pivot_wider()` then combines these results to generate an empty data frame:
+次に、`pivot_wider()`はこれらの結果を組み合わせて、空のデータフレームを生成します。
 
 ```{r}
 df |> 
@@ -543,12 +546,12 @@ df |>
   mutate(x = NA, y = NA, z = NA)
 ```
 
-It then fills in all the missing values using the data in the input.
-In this case, not every cell in the output has a corresponding value in the input as there's no third blood pressure measurement for patient B, so that cell remains missing.
-We'll come back to this idea that `pivot_wider()` can "make" missing values in @sec-missing-values.
+それから、入力のデータを使って全ての欠損値を埋めます。
+このケースでは、患者Bに3度目の血圧測定値がないので、出力の全てのセルに該当する入力の値があるわけではなく、欠損値が残ります。
+@sec-missing-values で、`pivot_wider()`が明示的な欠損値を作り出す、この考え方に立ち戻ります。
 
-You might also wonder what happens if there are multiple rows in the input that correspond to one cell in the output.
-The example below has two rows that correspond to `id` "A" and `measurement` "bp1":
+出力の1つのセルに該当する入力の行が複数あったらどうなるのか、とも思うかもしれません。
+以下の例では、`id`が"A"で、`measurement`が"bp1"な行が2つあります。
 
 ```{r}
 df <- tribble(
@@ -561,7 +564,8 @@ df <- tribble(
 )
 ```
 
-If we attempt to pivot this we get an output that contains list-columns, which you'll learn more about in @sec-rectangling:
+これをピボットしようとすると、リスト型の列を含む出力を得ることになります。リ
+スト型の列については、@sec-rectangling でさらに学習します。
 
 ```{r}
 df |>
@@ -571,7 +575,7 @@ df |>
   )
 ```
 
-Since you don't know how to work with this sort of data yet, you'll want to follow the hint in the warning to figure out where the problem is:
+この種のデータに取り組む方法をまだ知らないので、警告の中のヒントに従って、どこに問題があるのか探り出したいとなるでしょう。
 
 ```{r}
 df |> 
@@ -580,21 +584,26 @@ df |>
   filter(n > 1)
 ```
 
-It's then up to you to figure out what's gone wrong with your data and either repair the underlying damage or use your grouping and summarizing skills to ensure that each combination of row and column values only has a single row.
+データで何がまずかったのか探り出し、根底にある損害を修復するか、グループ化と要約の技能を使って行と列の各組み合わせセルに該当する行を1つだけにするか、あなた次第です。
 
-## Summary
+## まとめ
 
-In this chapter you learned about tidy data: data that has variables in columns and observations in rows.
-Tidy data makes working in the tidyverse easier, because it's a consistent structure understood by most functions, the main challenge is transforming the data from whatever structure you receive it in to a tidy format.
-To that end, you learned about `pivot_longer()` and `pivot_wider()` which allow you to tidy up many untidy datasets.
-The examples we presented here are a selection of those from `vignette("pivot", package = "tidyr")`, so if you encounter a problem that this chapter doesn't help you with, that vignette is a good place to try next.
+本章では、列に変数を行に観測を持つデータである、整理データを学習しました。
+整理データは、tidyverseのほとんどの関数が理解する首尾一貫した構造なので、作業が容易になります。受
+け取ったデータの構造がどうであれ、それを整理データに変換することが主な挑戦となります。
+そのために、多くの未整理データセットを整理データにできる、`pivot_longer()`と`pivot_wider()`を学習しました。
+ここで示した例は、`vignette("pivot", package = "tidyr")`から選んだものです。で
+すから、本章では足らない問題に出会ったら、そこを見ると良いでしょう。
 
-Another challenge is that, for a given dataset, it can be impossible to label the longer or the wider version as the "tidy" one.
-This is partly a reflection of our definition of tidy data, where we said tidy data has one variable in each column, but we didn't actually define what a variable is (and it's surprisingly hard to do so).
-It's totally fine to be pragmatic and to say a variable is whatever makes your analysis easiest.
-So if you're stuck figuring out how to do some computation, consider switching up the organisation of your data; don't be afraid to untidy, transform, and re-tidy as needed!
+もう一つの挑戦は、データセットを所与として、縦長版と幅広版のどちらが"整理データ"か、レッテルを貼れないことがあることです。
+部分的には、整理データの定義のせいです。整
+理データは列ごとに1つの変数を持つと言いましたが、実際には変数とは何か定義しませんでした (そうするのは驚くほど難しいのです)。
+実務的になって、分析が最も容易になるよう変数を決めて、全く問題ありません。
+ある計算の仕方が見出だせなくなったら、データの構成を切り替えることを検討しましょう。必
+要ならば、整理を解いたり、変換したり、再度整理したり、することを恐れないでください！
 
-If you enjoyed this chapter and want to learn more about the underlying theory, you can learn more about the history and theoretical underpinnings in the [Tidy Data](https://www.jstatsoft.org/article/view/v059i10) paper published in the Journal of Statistical Software.
+本章を楽しめて、さらに根底にある理論を学習したいのなら、Journal of Statistical Softwareに掲載された論文 [Tidy Data](https://www.jstatsoft.org/article/view/v059i10) を読めば、歴史と理論的基礎についてさらに学習できます。
 
-Now that you're writing a substantial amount of R code, it's time to learn more about organizing your code into files and directories.
-In the next chapter, you'll learn all about the advantages of scripts and projects, and some of the many tools that they provide to make your life easier.
+ここまでで、相当な量のRコードを書いてきました。書
+いたコードをファイルやディレクトリに整頓することについてさらに学習する頃合いです。
+次章では、スクリプトとプロジェクトの利点と、仕事を楽にしてくれる多くの道具について学習します。
