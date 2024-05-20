@@ -1,4 +1,4 @@
-# Workflow: scripts and projects {#sec-workflow-scripts-projects}
+# ワークフロー：スクリプトとプロジェクト {#sec-workflow-scripts-projects}
 
 ```{r}
 #| echo: false
@@ -6,37 +6,36 @@
 source("_common.R")
 ```
 
-This chapter will introduce you to two essential tools for organizing your code: scripts and projects.
+本章では、コードを整頓するのに欠かせない2つの道具、スクリプトとプロジェクトを紹介します。
 
-## Scripts
+## スクリプト
 
-So far, you have used the console to run code.
-That's a great place to start, but you'll find it gets cramped pretty quickly as you create more complex ggplot2 graphics and longer dplyr pipelines.
-To give yourself more room to work, use the script editor.
-Open it up by clicking the File menu, selecting New File, then R script, or using the keyboard shortcut Cmd/Ctrl + Shift + N.
-Now you'll see four panes, as in @fig-rstudio-script.
-The script editor is a great place to experiment with your code.
-When you want to change something, you don't have to re-type the whole thing, you can just edit the script and re-run it.
-And once you have written code that works and does what you want, you can save it as a script file to easily return to later.
+ここまでは、コードを実行するのにコンソールを使ってきました。
+そこからはじめるのは良いのですが、より複雑なggplot2のグラフやより長いdplyrのパイプラインを作るにつれて、たちまち手狭に感じるようになります。
+作業余地を広げるために、スクリプト・エディタを使いましょう。
+Fileメニューをクリック、New Fileを選んで、その中からR scriptとするか、キーボード・ショートカット Cmd/Ctrl + Shift + N を使って、スクリプト・エディタをオープンします。
+@fig-rstudio-script のように、区画が4つになります。
+スクリプト・エディタはコードで実験するのに向いています。
+コードのどこかを変えたい場合、全体を打ち直す必要はなく、スクリプトを編集して再実行するだけで済みます。
+それに、コードがきちんと機能して、やりたいことができたなら、スクリプト・ファイルとして保存すれば、後から容易に戻ってくることができます。
 
 ```{r}
 #| label: fig-rstudio-script
 #| echo: false
 #| out-width: ~
 #| fig-cap: |
-#|   Opening the script editor adds a new pane at the top-left of the
-#|   IDE.
+#|   スクリプト・エディタを開くと、IDEの左上に新しい区画が増える。
 #| fig-alt: |
-#|   RStudio IDE with Editor, Console, and Output highlighted.
+#|   エディタ、コンソール、出力の区画がハイライトされたRStudio IDE。
 knitr::include_graphics("diagrams/rstudio/script.png", dpi = 270)
 ```
 
-### Running code
+### コードの実行
 
-The script editor is an excellent place for building complex ggplot2 plots or long sequences of dplyr manipulations.
-The key to using the script editor effectively is to memorize one of the most important keyboard shortcuts: Cmd/Ctrl + Enter.
-This executes the current R expression in the console.
-For example, take the code below.
+スクリプト・エディタは、複雑なggplot2のプロットやdplyr操作の長い連鎖を構築できる、素晴らしい場所です。
+スクリプト・エディタを効率的に使いこなす鍵は、最も重要なキーボード・ショートカット Cmd/Ctrl + Enter を記憶することです。
+これで、現下のRの表現式をコンソールで実行します。
+例えば、以下のコードを見てみましょう。
 
 ```{r}
 #| eval: false
@@ -52,59 +51,59 @@ not_cancelled |>
   summarize(mean = mean(dep_delay))
 ```
 
-If your cursor is at █, pressing Cmd/Ctrl + Enter will run the complete command that generates `not_cancelled`.
-It will also move the cursor to the following statement (beginning with `not_cancelled |>`).
-That makes it easy to step through your complete script by repeatedly pressing Cmd/Ctrl + Enter.
+カーソルが█にあるときに、Cmd/Ctrl + Enter を押すと、そこのコマンド全体を実行して、`not_cancelled`を生成します。
+また、カーソルは (`not_cancelled |>`ではじまる) 次の文に移動します。
+そのおかげで、Cmd/Ctrl + Enter を繰り返し押して、スクリプト全体を表現式ごとに実行していくことが簡単になっています。
 
-Instead of running your code expression-by-expression, you can also execute the complete script in one step with Cmd/Ctrl + Shift + S.
-Doing this regularly is a great way to ensure that you've captured all the important parts of your code in the script.
+コードを表現式ごとに実行する替わりに、Cmd/Ctrl + Shift + S とすれば、スクリプト全体を一発で実行することもできます。
+これをつどつど行うことで、スクリプト内のコードの全ての重要な部分を忘れずに取り込むことができます。
 
-We recommend you always start your script with the packages you need.
-That way, if you share your code with others, they can easily see which packages they need to install.
-Note, however, that you should never include `install.packages()` in a script you share.
-It's inconsiderate to hand off a script that will change something on their computer if they're not being careful!
+スクリプトは必要なパッケージからはじめることをお薦めします。
+そうすることで、他の人とコードを共有する際、インストールが必要なパッケージが何かすぐに分かります。
+ただ、共有するスクリプトには`install.packages()`は決して含めないでください。
+他の人が不注意だとコンピュータをいじってしまうようなスクリプトを放つことは、思いやりに欠けます！
 
-When working through future chapters, we highly recommend starting in the script editor and practicing your keyboard shortcuts.
-Over time, sending code to the console in this way will become so natural that you won't even think about it.
+今後の章から、スクリプト・エディタを使いはじめ、キーボード・ショートカットを練習するよう是非にもお薦めします。
+しばらくすれば、このやり方でコードをコンソールに送ることがごく自然になり、意識することもなくなるでしょう。
 
-### RStudio diagnostics
+### RStudioによる診断
 
-In the script editor, RStudio will highlight syntax errors with a red squiggly line and a cross in the sidebar:
+スクリプト・エディタでは、RStudioは文法エラーを見つけると、赤い波線とサイドバーのバッテンマークでハイライトします。
 
 ```{r}
 #| echo: false
 #| out-width: ~
 #| fig-alt: |
-#|   Script editor with the script x y <- 10. A red X indicates that there is 
-#|   syntax error. The syntax error is also highlighted with a red squiggly line.
+#|   x y <- 10と書かれたスクリプト・エディタ。赤いバッテンマークが
+#|   文法エラーがあることを表す。文法エラーは赤い波線でもハイライトされる。
 
 knitr::include_graphics("screenshots/rstudio-diagnostic.png")
 ```
 
-Hover over the cross to see what the problem is:
+バッテンマークの上にカーソルを置くと、何が問題か表示されます。
 
 ```{r}
 #| echo: false
 #| out-width: ~
 #| fig-alt: |
-#|   Script editor with the script x y <- 10. A red X indicates that there is 
-#|   syntax error. The syntax error is also highlighted with a red squiggly line.
-#|   Hovering over the X shows a text box with the text unexpected token y and 
-#|   unexpected token <-.
+#|   x y <- 10と書かれたスクリプト・エディタ。赤いバッテンマークが
+#|   文法エラーがあることを表す。文法エラーは赤い波線でもハイライトされる。
+#|   バッテンマークの上にカーソルを置くと、テキスト・ボックスが現れ、
+#|   unexpected token y と unexpected token <- と表示される。
 
 knitr::include_graphics("screenshots/rstudio-diagnostic-tip.png")
 ```
 
-RStudio will also let you know about potential problems:
+RStudioはまた、潜在的な問題についても教えてくれます。
 
 ```{r}
 #| echo: false
 #| out-width: ~
 #| fig-alt: |
-#|   Script editor with the script 3 == NA. A yellow exclamation mark 
-#|   indicates that there may be a potential problem. Hovering over the 
-#|   exclamation mark shows a text box with the text use is.na to check 
-#|   whether expression evaluates to NA.
+#|   3 == NA と書かれたスクリプト・エディタ。黄色のビックリマークは、
+#|   潜在的な問題を表す。ビックリマークの上にカーソルを置くと、
+#|   テキスト・ボックスが現れ、use is.na to check 
+#|   whether expression evaluates to NA と表示される。
 
 knitr::include_graphics("screenshots/rstudio-diagnostic-warn.png")
 ```
