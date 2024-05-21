@@ -160,62 +160,67 @@ report-draft-notes.txt
 
 ## プロジェクト
 
-One day, you will need to quit R, go do something else, and return to your analysis later.
-One day, you will be working on multiple analyses simultaneously and you want to keep them separate.
-One day, you will need to bring data from the outside world into R and send numerical results and figures from R back out into the world.
+ある日、Rを停止して、何か他のことをしに出掛けて、それから分析に戻らなければいけない。
+ある日、複数の分析を同時並行で行っていて、混じらないよう別々に保っておきたい。
+ある日、外界からデータをRに持ち込んで、計算結果と図をRから外界へ戻さなければならない。
 
-To handle these real life situations, you need to make two decisions:
+こうした実生活での状況に対処するためには、2つのことを決めなければなりません。
 
-1.  What is the source of truth?
-    What will you save as your lasting record of what happened?
+1.  あなたの真実を担保するものは何か？
+    何が起きたのか後々の記録として、何を保存する？
 
-2.  Where does your analysis live?
+2.  あなたの分析の居場所をどこにするか？
 
-### What is the source of truth?
+### あなたの真実を担保するものは何か？
 
-As a beginner, it's okay to rely on your current Environment to contain all the objects you have created throughout your analysis.
-However, to make it easier to work on larger projects or collaborate with others, your source of truth should be the R scripts.
-With your R scripts (and your data files), you can recreate the environment.
-With only your environment, it's much harder to recreate your R scripts: you'll either have to retype a lot of code from memory (inevitably making mistakes along the way) or you'll have to carefully mine your R history.
+分析中に作成した全てのオブジェクトを含む現在の"環境 (Environment)"に頼ることは、初心者としては構いません。
+しかし、より大規模なプロジェクトに取り組んだり、他者と協力したりするには、あなたの真実を担保するものはRスクリプトでなければなりません。
+Rスクリプト (とデータ・ファイル) があれば、環境を再現できます。
+環境だけから、Rスクリプトを再現するのはずっと困難です。記
+憶から多数のコードを思い出して打ち込み直す (その過程で、間違いを犯すことは避けられません) か、注意深くRヒストリーを掘り出すかしなければならないでしょう。
 
-To help keep your R scripts as the source of truth for your analysis, we highly recommend that you instruct RStudio not to preserve your workspace between sessions.
-You can do this either by running `usethis::use_blank_slate()`[^workflow-scripts-2] or by mimicking the options shown in @fig-blank-slate. This will cause you some short-term pain, because now when you restart RStudio, it will no longer remember the code that you ran last time nor will the objects you created or the datasets you read be available to use.
-But this short-term pain saves you long-term agony because it forces you to capture all important procedures in your code.
-There's nothing worse than discovering three months after the fact that you've only stored the results of an important calculation in your environment, not the calculation itself in your code.
+Rスクリプトをあなた分析の真実性を担保するものとする助けとして、セッション間でワークスペースを保持しないようRStudioに指示することを強くお薦めします。
+`usethis::use_blank_slate()` [^workflow-scripts-2] を実行するか、@fig-blank-slate で囲った箇所のオプションを同様に設定すると、そうできます。
+こうするこで、RStudioは再起動のたびに、前回実行したコードも、作成したオブジェクトも、使用するため読み込んだデータセットも、忘れてしまいます。
+短期的には苦痛に感じるかもしれませんが、長期的には苦悩からは解放されたのです。
+今や全ての重要な手順をコードに取り込まざるをえなくなったのですから。
+環境内の重要な計算結果だけを保存していて、コード内の計算自体を保存し忘れていたことに、3カ月後に気付くことほど悪いことはありません。
 
-[^workflow-scripts-2]: If you don't have usethis installed, you can install it with `install.packages("usethis")`.
+[^workflow-scripts-2]: usethisパッケージをまだインストールしていないのなら、`install.packages("usethis")`でインストールできます。
 
 ```{r}
 #| label: fig-blank-slate
 #| echo: false
 #| fig-cap: |
-#|   Copy these options in your RStudio options to always start your 
-#|   RStudio session with a clean slate.
+#|   RStudioセッションを常に白紙状態からはじめるには、
+#|   RStudioオプションをこのように設定すること。
 #| fig-alt: |
-#|   RStudio Global Options window where the option Restore .RData into workspace 
-#|   at startup is not checked. Also, the option Save workspace to .RData 
-#|   on exit is set to Never.
+#|   RStudioのGlobal Optionsのウィンドウ。
+#|   Restore .RData into workspace at startup
+#|   のオプションはチェックがはずれている。
+#|   また、Save workspace to .RData on exit
+#|   のオプションはNeverに設定されている。
 #| out-width: ~
 
 knitr::include_graphics("diagrams/rstudio/clean-slate.png", dpi = 270)
 ```
 
-There is a great pair of keyboard shortcuts that will work together to make sure you've captured the important parts of your code in the editor:
+エディタ内にコードの重要な部分を確実に取り込むために役立つ、大切なキーボード・ショートカットのペアがあります。
 
-1.  Press Cmd/Ctrl + Shift + 0/F10 to restart R.
-2.  Press Cmd/Ctrl + Shift + S to re-run the current script.
+1.  Cmd/Ctrl + Shift + 0/F10 でRを再起動。
+2.  Cmd/Ctrl + Shift + S で現在のスクリプトを再実行。
 
-We collectively use this pattern hundreds of times a week.
+私たちは合わせると週に何百回もこのパターンを使っています。
 
-Alternatively, if you don't use keyboard shortcuts, you can go to Session \> Restart R and then highlight and re-run your current script.
+キーボード・ショートカットを使わないなら、SessionメニューからRestart Rを選択、それから現在のスクリプトを選んで右上のSourceをクリック、でもできます。
 
 ::: callout-note
 ## RStudio server
 
-If you're using RStudio server, your R session is never restarted by default.
-When you close your RStudio server tab, it might feel like you're closing R, but the server actually keeps it running in the background.
-The next time you return, you'll be in exactly the same place you left.
-This makes it even more important to regularly restart R so that you're starting with a clean slate.
+RStudio serverを使っている場合は、デフォルトでRセッションを白紙状態からはじめることはできません。
+RStudio serverのタブを閉じると、Rを終了したと感じるかもしれませんが、実際にはserverのバックグラウンドで実行が続いています。
+次回戻ってくると、前回閉じたのと全く同じ場所に戻ってきます。
+そのため、RStudio serverを使う場合はなおさら、白紙状態からはじめるために、定期的にRを再起動させることが大事です。
 :::
 
 ### Where does your analysis live?
