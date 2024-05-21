@@ -108,19 +108,19 @@ RStudioはまた、潜在的な問題についても教えてくれます。
 knitr::include_graphics("screenshots/rstudio-diagnostic-warn.png")
 ```
 
-### Saving and naming
+### 保存と名付け方
 
-RStudio automatically saves the contents of the script editor when you quit, and automatically reloads it when you re-open.
-Nevertheless, it's a good idea to avoid Untitled1, Untitled2, Untitled3, and so on and instead save your scripts and to give them informative names.
+RStudioは自動的にスクリプト・エディタの内容を終了時に保存して、自動的に再開時に元のようにしてくれます。
+けれども、Untitled1、Untitled2、Untitled3などとせずに、スクリプトに分かりやすい名前を付けて保存することをお薦めします。
 
-It might be tempting to name your files `code.R` or `myscript.R`, but you should think a bit harder before choosing a name for your file.
-Three important principles for file naming are as follows:
+ファイルに`code.R`とか`myscript.R`とか名前を付けたくなるかもしれませんが、先々楽ができるよう、名前を選択する前に今少しよく考えるべきです。
+ファイルの名付け方の3つの重要な原則は、以下の通りです。
 
-1.  File names should be **machine** readable: avoid spaces, symbols, and special characters. Don't rely on case sensitivity to distinguish files.
-2.  File names should be **human** readable: use file names to describe what's in the file.
-3.  File names should play well with default ordering: start file names with numbers so that alphabetical sorting puts them in the order they get used.
+1.  **機械**が読めるファイル名にすべし。スペース、シンボル、特殊文字を使わない。ファイルの区別するのに、大文字小文字の違いに頼るな。
+2.  **人間**が読めるファイル名にすべし。ファイルの中身が何か分かるファイル名を使え。
+3.  デフォルトの順番付けと馴染むファイル名にすべし。アルファベット順に並ぶとバラバラになるのなら、ファイル名の頭に数字を付けて望む順に並ぶようにせよ。
 
-For example, suppose you have the following files in a project folder.
+例えば、プロジェクトのフォルダに以下のファイルがあるとします。
 
 ```         
 alternative model.R
@@ -134,11 +134,13 @@ run-first.r
 temp.txt
 ```
 
-There are a variety of problems here: it's hard to find which file to run first, file names contain spaces, there are two files with the same name but different capitalization (`finalreport` vs. `FinalReport`[^workflow-scripts-1]), and some names don't describe their contents (`run-first` and `temp`).
+ここには、複数の問題があります。ど
+のファイルを最初に実行すべきか見つけ出すのが大変、ファイル名にスペースが入っている、同名で大文字小文字だけが違うファイルが2つある (`finalreport` 対 `FinalReport` [^workflow-scripts-1]) 、そして、中身が分からない名前 (`run-first`と`temp`) がいくつかある。
 
-[^workflow-scripts-1]: Not to mention that you're tempting fate by using "final" in the name 😆 The comic Piled Higher and Deeper has a [fun strip on this](https://phdcomics.com/comics/archive.php?comicid=1531).
+[^workflow-scripts-1]: そもそもファイル名に"final"なんて使うのは命知らずの所業😆です。P
+    iled Higher and Deeper のコミックに、[それに関する愉快な一片](https://phdcomics.com/comics/archive.php?comicid=1531)が載っています。
 
-Here's a better way of naming and organizing the same set of files:
+以下が、同じファイル群のより良い名付け方と整頓法です。
 
 ```         
 01-load-data.R
@@ -152,11 +154,11 @@ report-2022-04-02.qmd
 report-draft-notes.txt
 ```
 
-Numbering the key scripts make it obvious in which order to run them and a consistent naming scheme makes it easier to see what varies.
-Additionally, the figures are labelled similarly, the reports are distinguished by dates included in the file names, and `temp` is renamed to `report-draft-notes` to better describe its contents.
-If you have a lot of files in a directory, taking organization one step further and placing different types of files (scripts, figures, etc.) in different directories is recommended.
+重要なスクリプトに番号を付けておけば、どの順に実行すべきか明白になり、首尾一貫した名付け法によりどこが違うのか見やすくなります。
+さらに、図には似た名前を付け、報告書のファイル名には日付を入れて区別、`temp`は`report-draft-notes`に名前を変えて中身が分かりやすくしています。
+ディレクトリ内にたくさんファイルがある場合、もう一段整頓を進めて、異なるファイル・タイプ (スクリプトや図など) ごとにディレクトリを分けることをお薦めします。
 
-## Projects
+## プロジェクト
 
 One day, you will need to quit R, go do something else, and return to your analysis later.
 One day, you will be working on multiple analyses simultaneously and you want to keep them separate.
