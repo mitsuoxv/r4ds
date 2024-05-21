@@ -169,7 +169,7 @@ report-draft-notes.txt
 1.  あなたの真実を担保するものは何か？
     何が起きたのか後々の記録として、何を保存する？
 
-2.  あなたの分析の居場所をどこにするか？
+2.  あなたの分析の居場所はどこか？
 
 ### あなたの真実を担保するものは何か？
 
@@ -223,22 +223,22 @@ RStudio serverのタブを閉じると、Rを終了したと感じるかもし�
 そのため、RStudio serverを使う場合はなおさら、白紙状態からはじめるために、定期的にRを再起動させることが大事です。
 :::
 
-### Where does your analysis live?
+### あなたの分析の居場所はどこか？
 
-R has a powerful notion of the **working directory**.
-This is where R looks for files that you ask it to load, and where it will put any files that you ask it to save.
-RStudio shows your current working directory at the top of the console:
+Rには**ワーキング・ディレクトリ**という強力な概念があります。
+そこはRが、ファイルをロードするよう頼まれるとそれを探す場所であり、ファイルを保存するよう頼まれるとそこに置く場所です。
+RStudioではコンソールの上部に、現在のワーキング・ディレクトリが表示されます。
 
 ```{r}
 #| echo: false
 #| fig-alt: |
-#|   The Console tab shows the current working directory as 
-#|   ~/Documents/r4ds.
+#|   コンソールのタブに現在のワーキング・ディレクトリ
+#|   ~/Documents/r4ds が表示されている。
 #| out-width: ~
 knitr::include_graphics("screenshots/rstudio-wd.png")
 ```
 
-And you can print this out in R code by running `getwd()`:
+Rコードの中で`getwd()`と実行すれば、ワーキング・ディレクトリをプリントできます。
 
 ```{r}
 #| eval: false
@@ -246,53 +246,57 @@ getwd()
 #> [1] "/Users/hadley/Documents/r4ds"
 ```
 
-In this R session, the current working directory (think of it as "home") is in hadley's Documents folder, in a subfolder called r4ds.
-This code will return a different result when you run it, because your computer has a different directory structure than Hadley's!
+このRセッションでは、現在のワーキング・ディレクトリ ("ホーム"と考えましょう) は、hadleyのDocumentsフォルダの中のr4dsというサブフォルダにあります。
+あなたがこのコードは実行すると異なる結果になるでしょう。あ
+なたのコンピュータは、Hadleyのものとはディレクトリ構成が違っているでしょうから！
 
-As a beginning R user, it's OK to let your working directory be your home directory, documents directory, or any other weird directory on your computer.
-But you're more than a handful of chapters into this book, and you're no longer a beginner.
-Very soon now you should evolve to organizing your projects into directories and, when working on a project, set R's working directory to the associated directory.
+初心者のRユーザなら、ワーキング・ディレクトリを、あなたのコンピュータ上のホーム・ディレクトリにしても、documentsディレクトリにしても、その他のどこにしても構いません。
+しかし、本書をここまでかなりの程度読み進めたあなたは、もはや初心者ではありません。
+すぐに、プロジェクトをディレクトリに整頓して、プロジェクトで作業する際は、Rのワーキング・ディレクトリの関連するディレクトリに設定するようになります。
 
-You can set the working directory from within R but **we** **do not recommend it**:
+Rの中でワーキング・ディレクトリを設定することができますが、**お薦めしません**。
 
 ```{r}
 #| eval: false
 setwd("/path/to/my/CoolProject")
 ```
 
-There's a better way; a way that also puts you on the path to managing your R work like an expert.
-That way is the **RStudio** **project**.
+それよりも良い方法があります。R
+での作業を専門家のように管理する道に通じる方法でもあります。
+それは、**RStudio**の**プロジェクト**を使う方法です。
 
-### RStudio projects
+### RStudioのプロジェクト
 
-Keeping all the files associated with a given project (input data, R scripts, analytical results, and figures) together in one directory is such a wise and common practice that RStudio has built-in support for this via **projects**.
-Let's make a project for you to use while you're working through the rest of this book.
-Click File \> New Project, then follow the steps shown in @fig-new-project.
+あるプロジェクトに関連する全てのファイル (入力データ、Rスクリプト、分析結果と図) を1つのディレクトリに一緒にしておくことはとても賢明な慣行なので、RStudioは**プロジェクト**を通じてその慣行を支持するよう組み込んでいます。
+本書の残りを通じて作業する際は、プロジェクトを作って使いましょう。
+FileメニューからNew Projectを選択、それから @fig-new-project に示されたステップに従います。
 
 ```{r}
 #| label: fig-new-project
 #| echo: false
 #| fig-cap: | 
-#|   To create new project: (top) first click New Directory, then (middle)
-#|   click New Project, then (bottom) fill in the directory (project) name,
-#|   choose a good subdirectory for its home and click Create Project.
+#|   新しくプロジェクトを作るために、(一番上) まず New Directory をクリック、
+#|   (真ん中) 次に New Project をクリック、(一番下) そして、ディレクトリ名
+#|   (プロジェクト名) を入力、そのディレクトリがサブディレクトリとして
+#|   入るのにふさわしいディレクトリを選択して、Create Projectをクリック。
 #| fig-alt: |
-#|   Three screenshots of the New Project menu. In the first screenshot, 
-#|   the Create Project window is shown and New Directory is selected. 
-#|   In the second screenshot, the Project Type window is shown and 
-#|   Empty Project is selected. In the third screenshot, the Create New
-#|   Project  window is shown and the directory name is given as r4ds and
-#|   the project is being created as subdirectory of the Desktop.
+#|   New Projectメニューの3つのスクリーンショット。1番目のスクリーンショット
+#|   は、Create Project ウィンドウで、New Directoryが選択されている。
+#|   2番目のスクリーンショットは、Project Type ウィンドウで、Empty Project が
+#|   選択されている。3番目のスクリーンショットは、Create New Project
+#|   ウィンドウで、directory name に r4ds と入力され、Desktopの
+#|   サブディレクトリとしてプロジェクトが作成されようとしている。
 #| out-width: ~
 
 knitr::include_graphics("diagrams/new-project.png")
 ```
 
-Call your project `r4ds` and think carefully about which subdirectory you put the project in.
-If you don't store it somewhere sensible, it will be hard to find it in the future!
+プロジェクト名は`r4ds`。プ
+ロジェクトをどこのサブディレクトリに置くべきか、慎重に検討してください。
+どこか分かりやすい所に置かないと、将来探すのが難しくなりますよ！
 
-Once this process is complete, you'll get a new RStudio project just for this book.
-Check that the "home" of your project is the current working directory:
+この過程を完了すれば、本書のためだけの新しいRStudioのプロジェクトが出来ます。
+プロジェクトの"ホーム"が現在のワーキング・ディレクトリになっていることを確認します。
 
 ```{r}
 #| eval: false
@@ -300,11 +304,12 @@ getwd()
 #> [1] /Users/hadley/Documents/r4ds
 ```
 
-Now enter the following commands in the script editor, and save the file, calling it "diamonds.R".
-Then, create a new folder called "data".
-You can do this by clicking on the "New Folder" button in the Files pane in RStudio.
-Finally, run the complete script which will save a PNG and CSV file into your project directory.
-Don't worry about the details, you'll learn them later in the book.
+では、以下のコマンドをスクリプト・エディタに入力して、ファイルを"diamonds.R"と名付けて保存します。
+それから、"data"という名の新しいフォルダを作成。
+RStudioのFiles区画で"New Folder"ボタンをクリックすれば、作成できます。
+最後に、スクリプト全体を実行。す
+ると、プロジェクト・ディレクトリにPNGファイルとCSVファイルが保存されます。
+細かいことは、本書の先で学習しますので、今は悩む必要はありません。
 
 ```{r}
 #| label: toy-line
@@ -319,58 +324,65 @@ ggsave("diamonds.png")
 write_csv(diamonds, "data/diamonds.csv")
 ```
 
-Quit RStudio.
-Inspect the folder associated with your project --- notice the `.Rproj` file.
-Double-click that file to re-open the project.
-Notice you get back to where you left off: it's the same working directory and command history, and all the files you were working on are still open.
-Because you followed our instructions above, you will, however, have a completely fresh environment, guaranteeing that you're starting with a clean slate.
+RStudioを終了。
+プロジェクトに関連付けたフォルダの中を調べてみましょう。`.`
+`Rproj`ファイルがありますね。そ
+のファイルをダブル・クリックして、プロジェクトを再開します。
+プロジェクトから離れた場所に戻っています。ワ
+ーキング・ディレクトリが同じですし、コマンド履歴も同じ、作業中だった全てのファイルは開いたままです。
+ただ、上記の指示に従ったおかげで、完全にフレッシュな環境、白紙状態からはじめていることが保証されています。
 
-In your favorite OS-specific way, search your computer for `diamonds.png` and you will find the PNG (no surprise) but *also the script that created it* (`diamonds.R`).
-This is a huge win!
-One day, you will want to remake a figure or just understand where it came from.
-If you rigorously save figures to files **with R code** and never with the mouse or the clipboard, you will be able to reproduce old work with ease!
+あなたのコンピュータのOS特有の仕方で`diamonds.png`を探すと、そのPNGファイル (当然です) だけでなく、それを作成したスクリプト (`diamonds.R`) も見つかります。
+大勝利です！
+いつの日か、図を作成し直したくなったり、もしくは、どこから作成されたのか理解だけでもしたくなったりするでしょう。
+図を必ず**Rコードと一緒に**保存するようにして、決してマウスやクリップボードを使って保存しないのなら、昔の仕事を再現することは容易にできます！
 
-### Relative and absolute paths
+### 相対パスと絶対パス
 
-Once you're inside a project, you should only ever use relative paths not absolute paths.
-What's the difference?
-A relative path is relative to the working directory, i.e. the project's home.
-When Hadley wrote `data/diamonds.csv` above it was a shortcut for `/Users/hadley/Documents/r4ds/data/diamonds.csv`.
-But importantly, if Mine ran this code on her computer, it would point to `/Users/Mine/Documents/r4ds/data/diamonds.csv`.
-This is why relative paths are important: they'll work regardless of where the R project folder ends up.
+プロジェクト内に入ったら、相対パスだけを使い、絶対パスは使わないようにします。
+どこが違うのかって？
+相対パスは、ワーキング・ディレクトリ、つまりはプロジェクトのホーム、に対して相対的です。
+Hadleyが上記で`data/diamonds.csv`と書いた際は、`/Users/hadley/Documents/r4ds/data/diamonds.csv`のショートカットになっています。
+しかし、重要なことに、Mineが彼女のコンピュータでこのコードを実行する際は、それは`/Users/Mine/Documents/r4ds/data/diamonds.csv`を指しています。
+だから、相対パスが重要なのです。R
+プロジェクト・フォルダがどこに置かれていても、相対パスなら機能するのです。
 
-Absolute paths point to the same place regardless of your working directory.
-They look a little different depending on your operating system.
-On Windows they start with a drive letter (e.g., `C:`) or two backslashes (e.g., `\\servername`) and on Mac/Linux they start with a slash "/" (e.g., `/users/hadley`).
-You should **never** use absolute paths in your scripts, because they hinder sharing: no one else will have exactly the same directory configuration as you.
+絶対パスは、ワーキング・ディレクトリがどこであれ、同じ場所を指します。
+OSによって少々違った格好になります。
+Windowsでは、ドライブを表す文字 (例えば、`C:`) か、2つのバックスラッシュ (例えば、`\\servername`) からはじまります。M
+ac/Linuxでは、スラッシュ "/" (例えば、`/users/hadley`) からはじまります。
+共有できなくなるので、スクリプトの中で絶対パスを**決して**使ってはなりません。あ
+なたと全く同じディレクトリ構成にしている人などいないでしょう。
 
-There's another important difference between operating systems: how you separate the components of the path.
-Mac and Linux uses slashes (e.g., `data/diamonds.csv`) and Windows uses backslashes (e.g., `data\diamonds.csv`).
-R can work with either type (no matter what platform you're currently using), but unfortunately, backslashes mean something special to R, and to get a single backslash in the path, you need to type two backslashes!
-That makes life frustrating, so we recommend always using the Linux/Mac style with forward slashes.
+OSでもう一つ重要な違いは、パスの構成要素を区切る仕方です。
+Mac/Linuxはスラッシュで区切ります (例えば、`data/diamonds.csv`) が、Windowsはバックスラッシュで区切ります (例えば、`data\diamonds.csv`)。
+(あなたが現在使っているOSが何であれ) Rはどちらの区切りでも動作しますが、残念なことにRにとってバックスラッシュは別の特殊な意味があるので、パスにバックスラッシュを一つ記すためには、二つのバックスラッシュを打ち込む必要があります！
+そんなこと、面倒過ぎる。と
+いうわけで、パスの区切りにはMac/Linuxスタイルのスラッシュを常に使うことをお薦めします。
 
-## Exercises
+## 練習問題
 
-1.  Go to the RStudio Tips Twitter account, <https://twitter.com/rstudiotips> and find one tip that looks interesting.
-    Practice using it!
+1.  X (旧Twitter) のアカウント RStudio Tips <https://twitter.com/rstudiotips> を見て、面白そうなヒントを一つ探し出しなさい。
+    使ってみよ！
 
-2.  What other common mistakes will RStudio diagnostics report?
-    Read <https://support.posit.co/hc/en-us/articles/205753617-Code-Diagnostics> to find out.
+2.  RStudioが診断で報告してくれる、その他よくある間違いは何か？
+    <https://support.posit.co/hc/en-us/articles/205753617-Code-Diagnostics> を読んで、探し出しなさい。
 
-## Summary
+## まとめ
 
-In this chapter, you've learned how to organize your R code in scripts (files) and projects (directories).
-Much like code style, this may feel like busywork at first.
-But as you accumulate more code across multiple projects, you'll learn to appreciate how a little up front organisation can save you a bunch of time down the road.
+本章では、Rコードをスクリプト (ファイル) とプロジェクト (ディレクトリ) に整頓する方法を学習しました。
+コード・スタイルと同じく、最初は面倒なだけと感じられるかもしれません。
+しかし、複数のプロジェクトでもっとコードを蓄積していくにつれ、最初に少々整頓しておいたことが、その先で大いに時間を節約してくれることに、感謝するようになるでしょう。
 
-In summary, scripts and projects give you a solid workflow that will serve you well in the future:
+まとめると、スクリプトとプロジェクトは、将来にわたって役立つ、以下のような堅固なワークフローを与えてくれます。
 
--   Create one RStudio project for each data analysis project.
--   Save your scripts (with informative names) in the project, edit them, run them in bits or as a whole. Restart R frequently to make sure you've captured everything in your scripts.
--   Only ever use relative paths, not absolute paths.
+-   データ分析プロジェクトごとに一つのRStudioのプロジェクトを作成。
+-   プロジェクト内のスクリプトを (分かりやすい名前を付けて) 保存、編集、コマンドごとに、あるいは、全体で実行。しょっちゅうRを再起動して、確実に全てをスクリプトに取り込む。
+-   相対パスのみを使い、決して絶対パスは使わない。
 
-Then everything you need is in one place and cleanly separated from all the other projects that you are working on.
+こうすれば、必要なもの全てを一箇所に集め、作業中の他のプロジェクトとはきれいに分離できます。
 
-So far, we've worked with datasets bundled inside of R packages.
-This makes it easier to get some practice on pre-prepared data, but obviously your data won't be available in this way.
-So in the next chapter, you're going to learn how load data from disk into your R session using the readr package.
+ここまでは、Rパッケージ内にバンドルされたデータセットで作業してきました。
+練習しやすいように、予め用意されたデータを使っていました。し
+かし、あなたのデータは、明らかに、同じように用意されていません。
+なので、次章では、readrパッケージを使って、ディスクからデータをRセッションへロードする方法を学習します。
