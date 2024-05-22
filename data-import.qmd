@@ -1,4 +1,4 @@
-# Data import {#sec-data-import}
+# データのインポート {#sec-data-import}
 
 ```{r}
 #| echo: false
@@ -6,19 +6,19 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
-Working with data provided by R packages is a great way to learn data science tools, but you want to apply what you've learned to your own data at some point.
-In this chapter, you'll learn the basics of reading data files into R.
+Rパッケージが提供するデータで作業することは、データサイエンス道具を学習するのには向いていますが、どこかの時点で、あなたが持つデータに学習したことを応用したくなります。
+本章では、データ・ファイルをRに読み込む基礎を学習します。
 
-Specifically, this chapter will focus on reading plain-text rectangular files.
-We'll start with practical advice for handling features like column names, types, and missing data.
-You will then learn about reading data from multiple files at once and writing data from R to a file.
-Finally, you'll learn how to handcraft data frames in R.
+特に、本章は矩形のテキストだけのファイルを読み込むことにフォーカスします。
+列の名前、型や欠損値などの特徴を扱うための実務的な助言からはじめます。
+それから、複数のファイルから一度にデータを読み込むことや、データをRからファイルに書き出すことを学習します。
+最後に、Rの中でデータフレームを手作りする方法を学習します。
 
-### Prerequisites
+### 準備するもの
 
-In this chapter, you'll learn how to load flat files in R with the **readr** package, which is part of the core tidyverse.
+本章では、tidyverseのコアの一部である、**readr**パッケージを使って、平坦なファイルをRにロードする方法を学習します。
 
 ```{r}
 #| label: setup
@@ -27,12 +27,13 @@ In this chapter, you'll learn how to load flat files in R with the **readr** pac
 library(tidyverse)
 ```
 
-## Reading data from a file
+## ファイルからデータを読み込む
 
-To begin, we'll focus on the most common rectangular data file type: CSV, which is short for comma-separated values.
-Here is what a simple CSV file looks like.
-The first row, commonly called the header row, gives the column names, and the following six rows provide the data.
-The columns are separated, aka delimited, by commas.
+最初は、最もよくある矩形データのファイル・タイプであるCSV (comma-separated values の略称です) にフォーカスします。
+以下が簡単なCSVファイルの例です。
+最初の行は、ヘッダー行と通常呼ばれ、列名が並びます。そ
+の下の6行がデータです。
+コンマが列名の区切り (delimiter) になっています。
 
 ```{r}
 #| echo: false
@@ -42,7 +43,7 @@ The columns are separated, aka delimited, by commas.
 read_lines("data/students.csv") |> cat(sep = "\n")
 ```
 
-@tbl-students-table shows a representation of the same data as a table.
+@tbl-students-table は、同じデータを表にしたものです。
 
 ```{r}
 #| label: tbl-students-table
@@ -54,9 +55,10 @@ read_csv("data/students.csv") |>
   knitr::kable()
 ```
 
-We can read this file into R using `read_csv()`.
-The first argument is the most important: the path to the file.
-You can think about the path as the address of the file: the file is called `students.csv` and that it lives in the `data` folder.
+`read_csv()`を使って、このファイルをRに読み込めます。
+第1引数が最も大事で、ファイルへのパスを指定します。
+パスはファイルの住所と考えられます。こ
+のファイルは名前が`students.csv`で、`data`フォルダの中に住んでいます。
 
 ```{r}
 #| message: true
@@ -64,8 +66,9 @@ You can think about the path as the address of the file: the file is called `stu
 students <- read_csv("data/students.csv")
 ```
 
-The code above will work if you have the `students.csv` file in a `data` folder in your project.
-You can download the `students.csv` file from <https://pos.it/r4ds-students-csv> or you can read it directly from that URL with:
+上記コードが機能するのは、あなたのプロジェクトの中の`data`フォルダの中に`students.csv`が入っている場合です。
+`students.csv`は<https://pos.it/r4ds-students-csv>からダウンロードできます。も
+しくは、以下のようにURLから直接読み込むこともできます。
 
 ```{r}
 #| eval: false
@@ -73,11 +76,11 @@ You can download the `students.csv` file from <https://pos.it/r4ds-students-csv>
 students <- read_csv("https://pos.it/r4ds-students-csv")
 ```
 
-When you run `read_csv()`, it prints out a message telling you the number of rows and columns of data, the delimiter that was used, and the column specifications (names of columns organized by the type of data the column contains).
-It also prints out some information about retrieving the full column specification and how to quiet this message.
-This message is an integral part of readr, and we'll return to it in @sec-col-types.
+`read_csv()`を実行すると、データの行数と列数、使用されたdelimiter、列の仕様 (列が含むデータの型ごとに整頓された列名) が、メッセージとしてプリントされます。
+列の仕様の全てを引き出すことに関する情報もいくつかプリントすると同時に、そのメッセージをプリントさせない方法も示唆します。
+このメッセージはreadrの統合された一部であり、@sec-col-types で戻ってきます。
 
-### Practical advice
+### 実務的な助言
 
 Once you read data in, the first step usually involves transforming it in some way to make it easier to work with in the rest of your analysis.
 Let's take another look at the `students` data with that in mind.
