@@ -82,16 +82,18 @@ students <- read_csv("https://pos.it/r4ds-students-csv")
 
 ### 実務的な助言
 
-Once you read data in, the first step usually involves transforming it in some way to make it easier to work with in the rest of your analysis.
-Let's take another look at the `students` data with that in mind.
+いったんデータを読み込んでしまえば、次の最初のステップは普通、後の分析で作業しやすい形式に変換することです。
+そのことを心に留めて、`students`データを今一度見てみましょう。
 
 ```{r}
 students
 ```
 
-In the `favourite.food` column, there are a bunch of food items, and then the character string `N/A`, which should have been a real `NA` that R will recognize as "not available".
-This is something we can address using the `na` argument.
-By default, `read_csv()` only recognizes empty strings (`""`) in this dataset as `NA`s, we want it to also recognize the character string `"N/A"`.
+`favourite.food`列には食べ物が並んでいますが、中には`N/A`という文字列があります。本
+来、Rが"not available"と認識する本物の`NA`であるべきだったものです。
+`na`引数を使うことで、正すことができます。
+デフォルトでは、このデータ中では空の文字列 (`""`) だけを`read_csv()`は`NA`と認識します。こ
+こでは`"N/A"`という文字列も認識させます。
 
 ```{r}
 #| message: false
@@ -100,9 +102,10 @@ students <- read_csv("data/students.csv", na = c("N/A", ""))
 students
 ```
 
-You might also notice that the `Student ID` and `Full Name` columns are surrounded by backticks.
-That's because they contain spaces, breaking R's usual rules for variable names; they're **non-syntactic** names.
-To refer to these variables, you need to surround them with backticks, `` ` ``:
+`Student ID`と`Full Name`の列名がバッククォートで囲まれていることにも、あなたは気付いたかもしれません。
+列名にスペースがあり、変数名についてのRの普通の規則を破っているせいです。こ
+れらは、**掟破りな**名前なのです。
+これらの変数を指すには、バッククォートで囲む `` ` ``必要があります。
 
 ```{r}
 students |> 
@@ -112,9 +115,10 @@ students |>
   )
 ```
 
-An alternative approach is to use `janitor::clean_names()` to use some heuristics to turn them all into snake case at once[^data-import-1].
+別のやり方は、`janitor::clean_names()`を使うことです。い
+くつかの経験則に沿って、これらを snake case に一挙に変えてくれます[^data-import-1]。
 
-[^data-import-1]: The [janitor](http://sfirke.github.io/janitor/) package is not part of the tidyverse, but it offers handy functions for data cleaning and works well within data pipelines that use `|>`.
+[^data-import-1]: [janitor](http://sfirke.github.io/janitor/)パッケージはtidyverseの一部ではありませんが、データ・クリーニングのための使い勝手の良い関数を提供してくれますし、`|>`を使ったパイプラインでの上手く機能します。
 
 ```{r}
 #| message: false
@@ -122,8 +126,8 @@ An alternative approach is to use `janitor::clean_names()` to use some heuristic
 students |> janitor::clean_names()
 ```
 
-Another common task after reading in data is to consider variable types.
-For example, `meal_plan` is a categorical variable with a known set of possible values, which in R should be represented as a factor:
+データを読み込んでからよくあるもう一つの仕事は、変数の型を検討することです。
+例えば、`meal_plan`は限られた値だけを取るカテゴリ変数であり、Rではファクタとして表されるべきです。
 
 ```{r}
 students |>
@@ -131,12 +135,13 @@ students |>
   mutate(meal_plan = factor(meal_plan))
 ```
 
-Note that the values in the `meal_plan` variable have stayed the same, but the type of variable denoted underneath the variable name has changed from character (`<chr>`) to factor (`<fct>`).
-You'll learn more about factors in @sec-factors.
+`meal_plan`変数の値は同じままですが、変数名の下に表示される変数の型は文字列 (`<chr>`) からファクタ (`<fct>`) に変わっています。
+ファクタについては、@sec-factors でさらに学習します。
 
-Before you analyze these data, you'll probably want to fix the `age` and `id` columns.
-Currently, `age` is a character variable because one of the observations is typed out as `five` instead of a numeric `5`.
-We discuss the details of fixing this issue in @sec-import-spreadsheets.
+このデータを分析する前に、おそらく`age`列も修正したいでしょう。
+このままだと、`age`は文字列変数です。
+観測の1つで、数字の`5`ではなく`five`と入力されたせいです。
+この件の修正に関する詳細は @sec-import-spreadsheets で議論します。
 
 ```{r}
 students <- students |>
@@ -149,13 +154,13 @@ students <- students |>
 students
 ```
 
-A new function here is `if_else()`, which has three arguments.
-The first argument `test` should be a logical vector.
-The result will contain the value of the second argument, `yes`, when `test` is `TRUE`, and the value of the third argument, `no`, when it is `FALSE`.
-Here we're saying if `age` is the character string `"five"`, make it `"5"`, and if not leave it as `age`.
-You will learn more about `if_else()` and logical vectors in @sec-logicals.
+ここで新しく出て来た関数は`if_else()`で、3つの引数があります。
+第1引数`test`は論理ベクトルでなければなりません。
+`test`が`TRUE`であれば第2引数`yes`の値を、`FALSE`であれば第3引数`no`の値を返します。
+ここでは、もし`age`が文字列`"five"`であれば`"5"`にせよ、そうでなければ`age`のままにせよ、と言っています。
+`if_else()`と論理ベクトルについては @sec-logicals でさらに学習します。
 
-### Other arguments
+### その他の引数
 
 There are a couple of other important arguments that we need to mention, and they'll be easier to demonstrate if we first show you a handy trick: `read_csv()` can read text strings that you've created and formatted like a CSV file:
 
