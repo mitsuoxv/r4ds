@@ -162,7 +162,8 @@ students
 
 ### その他の引数
 
-There are a couple of other important arguments that we need to mention, and they'll be easier to demonstrate if we first show you a handy trick: `read_csv()` can read text strings that you've created and formatted like a CSV file:
+その他にも述べておく必要がある重要な引数が2、3ありますが、その実演を容易にする使い勝手の良いトリックをまず紹介します。
+CSVのような形式で文字列を作れば、`read_csv()`は読み込むことができます。
 
 ```{r}
 #| message: false
@@ -174,9 +175,11 @@ read_csv(
 )
 ```
 
-Usually, `read_csv()` uses the first line of the data for the column names, which is a very common convention.
-But it's not uncommon for a few lines of metadata to be included at the top of the file.
-You can use `skip = n` to skip the first `n` lines or use `comment = "#"` to drop all lines that start with (e.g.) `#`:
+通常、`read_csv()`はデータの1行目を列名に使います。そ
+れがとても一般的な慣行だからです。
+しかし、ファイルの頭に数行のメタデータがあることも珍しくありません。
+`skip = n`とすれば、最初の`n`行をスキップできます。あ
+るいは、 `comment = "#"`とすれば、`#`ではじまる全ての行を落とせます。
 
 ```{r}
 #| message: false
@@ -197,8 +200,8 @@ read_csv(
 )
 ```
 
-In other cases, the data might not have column names.
-You can use `col_names = FALSE` to tell `read_csv()` not to treat the first row as headings and instead label them sequentially from `X1` to `Xn`:
+データに列名が入っていないこともあります。
+`col_names = FALSE`とすれば、1行目をヘッダーとして扱うのを止めて、列名は`X1`から`Xn`まで順番に付けていきます。
 
 ```{r}
 #| message: false
@@ -210,7 +213,7 @@ read_csv(
 )
 ```
 
-Alternatively, you can pass `col_names` a character vector which will be used as the column names:
+もしくは、`col_names`で、列名に使う文字列ベクトルを指定することもできます。
 
 ```{r}
 #| message: false
@@ -222,38 +225,41 @@ read_csv(
 )
 ```
 
-These arguments are all you need to know to read the majority of CSV files that you'll encounter in practice.
-(For the rest, you'll need to carefully inspect your `.csv` file and read the documentation for `read_csv()`'s many other arguments.)
+これらの引数を知っておけば、実務で出会う大半のCSVファイルを読み込めます。
+(大半から漏れたCSVファイルでは、`.csv`を注意深く検査して、`read_csv()`のその他多くの引数についてのドキュメントを読む必要があります。)
 
-### Other file types
+### その他のファイル・タイプ
 
-Once you've mastered `read_csv()`, using readr's other functions is straightforward; it's just a matter of knowing which function to reach for:
+いったん`read_csv()`を修得すれば、readrの他の関数は単刀直入に使えます。ど
+の関数を使うべきか知るだけのことです。
 
--   `read_csv2()` reads semicolon-separated files.
-    These use `;` instead of `,` to separate fields and are common in countries that use `,` as the decimal marker.
+-   `read_csv2()`は、セミコロン区切りファイルを読み込む。
+    フィールドの区切りに`,`ではなく`;`を使うファイル。小
+    数点に`,`を使う国で一般的。
 
--   `read_tsv()` reads tab-delimited files.
+-   `read_tsv()`は、タブ区切りファイルを読み込む。
 
--   `read_delim()` reads in files with any delimiter, attempting to automatically guess the delimiter if you don't specify it.
+-   `read_delim()`は、どんな区切り (delimiter) のファイルも読み込む。d
+    elimiterを指定しないと、自動的に推定する。
 
--   `read_fwf()` reads fixed-width files.
-    You can specify fields by their widths with `fwf_widths()` or by their positions with `fwf_positions()`.
+-   `read_fwf()`は、固定幅ファイルを読み込む。
+    `fwf_widths()`でフィールド幅を、または、`fwf_positions()`でフィールドの位置を指定できる。
 
--   `read_table()` reads a common variation of fixed-width files where columns are separated by white space.
+-   `read_table()`は、列がホワイト・スペースで区切られている固定幅ファイルのよくある変種を読み込む。
 
--   `read_log()` reads Apache-style log files.
+-   `read_log()`は、ウェブサーバー Apache スタイルのログ・ファイルを読み込む。
 
-### Exercises
+### 練習問題
 
-1.  What function would you use to read a file where fields were separated with "\|"?
+1.  フィールドが"\|"で区切られているファイルを読み込むにはどの関数を使う？
 
-2.  Apart from `file`, `skip`, and `comment`, what other arguments do `read_csv()` and `read_tsv()` have in common?
+2.  `file`、`skip`、`comment`以外に、どんな引数が`read_csv()`と`read_tsv()`で共通か？
 
-3.  What are the most important arguments to `read_fwf()`?
+3.  `read_fwf()`で最も重要な引数は？
 
-4.  Sometimes strings in a CSV file contain commas.
-    To prevent them from causing problems, they need to be surrounded by a quoting character, like `"` or `'`. By default, `read_csv()` assumes that the quoting character will be `"`.
-    To read the following text into a data frame, what argument to `read_csv()` do you need to specify?
+4.  CSVファイルの文字列の中にコンマが入っていることがある。
+    問題が生じないよう、`"`か`'`のような引用符で囲む必要がある。 デフォルトでは、`read_csv()`は`"`を引用符と想定する。
+    以下のテキストをデータフレームに読み込むため、指定する必要がある引数は何か？
 
     ```{r}
     #| eval: false
@@ -261,8 +267,8 @@ Once you've mastered `read_csv()`, using readr's other functions is straightforw
     "x,y\n1,'a,b'"
     ```
 
-5.  Identify what is wrong with each of the following inline CSV files.
-    What happens when you run the code?
+5.  以下の各インラインCSVファイルのどこがおかしいのか特定せよ。
+    このままコードを実行すると、どうなるか？
 
     ```{r}
     #| eval: false
