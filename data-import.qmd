@@ -251,7 +251,7 @@ read_csv(
 
 ### 練習問題
 
-1.  フィールドが"\|"で区切られているファイルを読み込むにはどの関数を使う？
+1.  フィールドが"\|"で区切られているファイルを読み込むにはどの関数を使うか？
 
 2.  `file`、`skip`、`comment`以外に、どんな引数が`read_csv()`と`read_tsv()`で共通か？
 
@@ -267,7 +267,7 @@ read_csv(
     "x,y\n1,'a,b'"
     ```
 
-5.  以下の各インラインCSVファイルのどこがおかしいのか特定せよ。
+5.  以下の各インラインCSVファイルのどこがおかしいのか特定しなさい。
     このままコードを実行すると、どうなるか？
 
     ```{r}
@@ -280,12 +280,12 @@ read_csv(
     read_csv("a;b\n1;3")
     ```
 
-6.  Practice referring to non-syntactic names in the following data frame by:
+6.  以下のデータフレームで、掟破りな名前を指す練習をしなさい。
 
-    a.  Extracting the variable called `1`.
-    b.  Plotting a scatterplot of `1` vs. `2`.
-    c.  Creating a new column called `3`, which is `2` divided by `1`.
-    d.  Renaming the columns to `one`, `two`, and `three`.
+    a.  `1`という変数を選択。
+    b.  `1`対`2`の散布図を描く。
+    c.  `3`という新しい列を作って、`2`割る`1`にする。
+    d.  列名を`one`、`two`、`three`に変更。
 
     ```{r}
     annoying <- tibble(
@@ -294,13 +294,14 @@ read_csv(
     )
     ```
 
-## Controlling column types {#sec-col-types}
+## 列の型を管理 {#sec-col-types}
 
-A CSV file doesn't contain any information about the type of each variable (i.e. whether it's a logical, number, string, etc.), so readr will try to guess the type.
-This section describes how the guessing process works, how to resolve some common problems that cause it to fail, and, if needed, how to supply the column types yourself.
-Finally, we'll mention a few general strategies that are useful if readr is failing catastrophically and you need to get more insight into the structure of your file.
+CSVファイルには各変数の型 (論理、数値、文字列など) についての情報は含まれていません。で
+すから、readrは型を推定しようとします。
+このセッションでは、推定の働き方、それを失敗させるいくつかのよくある問題を解決する方法、そして、必要なら、列の型を自分で指定する方法について述べます。
+最後に、readrが壊滅的に失敗して、ファイルの構造について、さらに洞察を得る必要がある場合に役立つ2、3の一般的な戦略に触れます。
 
-### Guessing types
+### 型の推定
 
 readr uses a heuristic to figure out the column types.
 For each column, it pulls the values of 1,000[^data-import-2] rows spaced evenly from the first row to the last, ignoring missing values.
