@@ -303,18 +303,18 @@ CSVファイルには各変数の型 (論理、数値、文字列など) につ�
 
 ### 型の推定
 
-readr uses a heuristic to figure out the column types.
-For each column, it pulls the values of 1,000[^data-import-2] rows spaced evenly from the first row to the last, ignoring missing values.
-It then works through the following questions:
+readrは経験則を用いて列の型を探し出します。
+列ごとに、最初の行から最後の行まで欠損値は除いて均等に1,000[^data-import-2] 行の値を引き出します。
+次に、以下の質問に従って働きます。
 
-[^data-import-2]: You can override the default of 1000 with the `guess_max` argument.
+[^data-import-2]: `guess_max`引数を使えば、デフォルトの1000から変更できます。
 
--   Does it contain only `F`, `T`, `FALSE`, or `TRUE` (ignoring case)? If so, it's a logical.
--   Does it contain only numbers (e.g., `1`, `-4.5`, `5e6`, `Inf`)? If so, it's a number.
--   Does it match the ISO8601 standard? If so, it's a date or date-time. (We'll return to date-times in more detail in @sec-creating-datetimes).
--   Otherwise, it must be a string.
+-   (大文字小文字は無視して) `F`、`T`、`FALSE`、`TRUE`ばかりか？　そうなら論理。
+-   (例えば、`1`、`-4.5`、`5e6`、`Inf`などの) 数値ばかりか？　そうなら数値。
+-   ISO8601標準に合致するか？　そうなら日付か日付時間。(日付時間の詳細には @sec-creating-datetimes で戻ってきます)。
+-   そのどれでもなければ、文字列。
 
-You can see that behavior in action in this simple example:
+以下の簡単な例で、その通りに働いているのが分かります。
 
 ```{r}
 #| message: false
@@ -327,14 +327,15 @@ read_csv("
 ")
 ```
 
-This heuristic works well if you have a clean dataset, but in real life, you'll encounter a selection of weird and beautiful failures.
+データセットがきれいなら、この経験則は上手くいきます。し
+かし、実生活では、いろいろと奇妙で美しい失敗に出会うことでしょう。
 
-### Missing values, column types, and problems
+### 欠損値、列の型と問題
 
-The most common way column detection fails is that a column contains unexpected values, and you get a character column instead of a more specific type.
-One of the most common causes for this is a missing value, recorded using something other than the `NA` that readr expects.
+列の型推定が失敗するよくある道筋は、列に予期せぬ値があり、より特定の型ではなく文字列にされてしまうことです。
+最もよくある原因は欠損値で、readrが予期している`NA`以外で記録されている場合です。
 
-Take this simple 1 column CSV file as an example:
+この1列だけのCSVファイルを例としましょう。
 
 ```{r}
 simple_csv <- "
@@ -345,7 +346,7 @@ simple_csv <- "
   30"
 ```
 
-If we read it without any additional arguments, `x` becomes a character column:
+何も追加で引数の指定をしないで読み込むと、`x`列の型は文字列になります。
 
 ```{r}
 #| message: false
@@ -353,10 +354,11 @@ If we read it without any additional arguments, `x` becomes a character column:
 read_csv(simple_csv)
 ```
 
-In this very small case, you can easily see the missing value `.`.
-But what happens if you have thousands of rows with only a few missing values represented by `.`s sprinkled among them?
-One approach is to tell readr that `x` is a numeric column, and then see where it fails.
-You can do that with the `col_types` argument, which takes a named list where the names match the column names in the CSV file:
+このとても小さいケースでは、簡単に`.`が欠損値と見て取れます。
+しかし、数千行あって、その中のほんの2、3行に欠損値`.`が散らばっていたら、どうでしょう？
+一つの方法は、readrに`x`列の型は数値だと指定して、どこで失敗するか見てみることです。
+`col_types`引数でそうすることができます。C
+SVファイルの列名と一致する名前を付けたリストで指定します。
 
 ```{r}
 df <- read_csv(
@@ -365,15 +367,15 @@ df <- read_csv(
 )
 ```
 
-Now `read_csv()` reports that there was a problem, and tells us we can find out more with `problems()`:
+こうすれば、`read_csv()`は問題があることを報告し、`problems()`を使ってより深く探れることを伝えてくれます。
 
 ```{r}
 problems(df)
 ```
 
-This tells us that there was a problem in row 3, col 1 where readr expected a double but got a `.`.
-That suggests this dataset uses `.` for missing values.
-So then we set `na = "."`, the automatic guessing succeeds, giving us the numeric column that we want:
+行番3、列番1に問題があり、readrはdoubleを予期していたのに、`.`だったと教えてくれます。
+これで、このデータセットは欠損値に`.`を使っているらしいと分かります。
+だから次に`na = "."`と設定すると、自動推定は成功し、望み通り数値列が得られます。
 
 ```{r}
 #| message: false
@@ -381,18 +383,19 @@ So then we set `na = "."`, the automatic guessing succeeds, giving us the numeri
 read_csv(simple_csv, na = ".")
 ```
 
-### Column types
+### 列の型
 
-readr provides a total of nine column types for you to use:
+readrは全部で9つの列の型を使えるよう提供してくれます。
 
--   `col_logical()` and `col_double()` read logicals and real numbers. They're relatively rarely needed (except as above), since readr will usually guess them for you.
--   `col_integer()` reads integers. We seldom distinguish integers and doubles in this book because they're functionally equivalent, but reading integers explicitly can occasionally be useful because they occupy half the memory of doubles.
--   `col_character()` reads strings. This can be useful to specify explicitly when you have a column that is a numeric identifier, i.e., long series of digits that identifies an object but doesn't make sense to apply mathematical operations to. Examples include phone numbers, social security numbers, credit card numbers, etc.
--   `col_factor()`, `col_date()`, and `col_datetime()` create factors, dates, and date-times respectively; you'll learn more about those when we get to those data types in @sec-factors and @sec-dates-and-times.
--   `col_number()` is a permissive numeric parser that will ignore non-numeric components, and is particularly useful for currencies. You'll learn more about it in @sec-numbers.
--   `col_skip()` skips a column so it's not included in the result, which can be useful for speeding up reading the data if you have a large CSV file and you only want to use some of the columns.
+-   `col_logical()`と`col_double()`は、論理と実数を読みます。通常readrが推定してくれるので、(上では使いましたが) 使う必要があることはまれです。
+-   `col_integer()`は、整数を読みます。整数と実数は機能的に等価なので、本書ではほとんど区別しません。ただ、整数は実数の半分のメモリしか占拠しないので、明示的に整数を読むのが役に立つことがたまにあります。
+-   `col_character()`は、文字列を読みます。数字の羅列でオブジェクトを表しているが、足したり引いたりする意味はない、数字によるIDが列の場合、明示的に指定すると役に立つかもしれません。例としては、電話番号、社会保障番号、クレジットカード番号などです。
+-   `col_factor()`、`col_date()`、`col_datetime()`は、それぞれファクタ、日付、日付時間を作ります。こららについては、@sec-factors や @sec-dates-and-times でこれらのデータの型に至った際、さらに学習します。
+-   `col_number()`は、数字以外の構成要素は無視して数値にしてくれるパーサーで、特に金額では役に立ちます。@sec-numbers でさらに学習します。
+-   `col_skip()`は、指定された列をスキップして、結果に含まれないようにします。CSVファイルが巨大で、使いたいのはその内のいくつかの列だけの場合に、データを読み込むのが速くなるので、役立ちます。
 
-It's also possible to override the default column by switching from `list()` to `cols()` and specifying `.default`:
+デフォルトの列の型を変更することもできます。`l`
+`ist()`から`cols()`に切り替えて、`.default`を指定します。
 
 ```{r}
 another_csv <- "
@@ -405,7 +408,7 @@ read_csv(
 )
 ```
 
-Another useful helper is `cols_only()` which will read in only the columns you specify:
+もう一つ役に立つヘルパー関数は`cols_only()`で、そこに指定した列だけを読み込みます。
 
 ```{r}
 read_csv(
