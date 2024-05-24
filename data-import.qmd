@@ -524,9 +524,10 @@ file.remove("students.rds")
 
 ## データ入力
 
-Sometimes you'll need to assemble a tibble "by hand" doing a little data entry in your R script.
-There are two useful functions to help you do this which differ in whether you layout the tibble by columns or by rows.
-`tibble()` works by column:
+ときには、Rスクリプトの中でちょっとしたデータを入力して、"手作業で"tibbleを組み立てる必要があることがあります。
+そんなときに助けになる2つの関数があります。列
+で組み立てる関数と、行で組み立てる関数です。
+`tibble()`は列で組み立てます。
 
 ```{r}
 tibble(
@@ -536,9 +537,12 @@ tibble(
 )
 ```
 
-Laying out the data by column can make it hard to see how the rows are related, so an alternative is `tribble()`, short for **tr**ansposed t**ibble**, which lets you lay out your data row by row.
-`tribble()` is customized for data entry in code: column headings start with `~` and entries are separated by commas.
-This makes it possible to lay out small amounts of data in an easy to read form:
+列で組み立てると行ごとの関係が見えにくい場合のために、もう一つ`tribble()`があります。**t**
+**r**ansposed t**ibble**の略称になっています。行
+で組み立てられます。
+`tribble()`はコード内のデータ入力向きです。列
+名は`~`ではじめ、入力はコンマで区切ります。
+ちょっとしたデータなら読みやすい形式で組み立てることができます。
 
 ```{r}
 tribble(
@@ -549,11 +553,13 @@ tribble(
 )
 ```
 
-## Summary
+## まとめ
 
-In this chapter, you've learned how to load CSV files with `read_csv()` and to do your own data entry with `tibble()` and `tribble()`.
-You've learned how csv files work, some of the problems you might encounter, and how to overcome them.
-We'll come to data import a few times in this book: @sec-import-spreadsheets from Excel and Google Sheets, @sec-import-databases will show you how to load data from databases, @sec-arrow from parquet files, @sec-rectangling from JSON, and @sec-scraping from websites.
+本章では、`read_csv()`を使ってCSVファイルをロードするやり方と、`tibble()`と`tribble()`を使って自分のデータを入力するやり方を学習しました。
+CSVファイルの働き方、出会いそうな問題のいくつか、それらを克服する方法を学びました。
+本書では後ほど数度、データのインポートが出て来ます。@
+sec-import-spreadsheets ではエクセルとグーグル・シーツから、@sec-import-databases ではデータベースから、@sec-arrow ではparquetファイルから、@sec-rectangling ではJSONから、@sec-scraping ではウェブサイトから、データをロードする方法が出て来ます。
 
-We're just about at the end of this section of the book, but there's one important last topic to cover: how to get help.
-So in the next chapter, you'll learn some good places to look for help, how to create a reprex to maximize your chances of getting good help, and some general advice on keeping up with the world of R.
+本書のこの部も終わりに近付いてきましたが、最後に重要なトピックが一つ残っています。ヘ
+ルプを得る方法です。
+なので、次章では、ヘルプを探すのに向いた場所、良いヘルプを得られる可能性を最大化するreprexの作り方、Rの世界に付いて行くための一般的な助言を学習します。
