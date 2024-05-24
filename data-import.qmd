@@ -417,11 +417,11 @@ read_csv(
 )
 ```
 
-## Reading data from multiple files {#sec-readr-directory}
+## 複数のファイルからデータを読み込む {#sec-readr-directory}
 
-Sometimes your data is split across multiple files instead of being contained in a single file.
-For example, you might have sales data for multiple months, with each month's data in a separate file: `01-sales.csv` for January, `02-sales.csv` for February, and `03-sales.csv` for March.
-With `read_csv()` you can read these data in at once and stack them on top of each other in a single data frame.
+ときには、データが一つのファイルに入っているのではなく、複数のファイルに分かれていることがあります。
+例えば、複数の月の販売データがあったとして、1月は`01-sales.csv`、2月は`02-sales.csv`、3月は`03-sales.csv`という具合に、月ごとにファイルが分かれている場合です。
+`read_csv()`では、これらのデータを一挙に読み込んで、次々に積み上げて一つのデータフレームにすることができます。
 
 ```{r}
 #| message: false
@@ -430,8 +430,9 @@ sales_files <- c("data/01-sales.csv", "data/02-sales.csv", "data/03-sales.csv")
 read_csv(sales_files, id = "file")
 ```
 
-Once again, the code above will work if you have the CSV files in a `data` folder in your project.
-You can download these files from <https://pos.it/r4ds-01-sales>, <https://pos.it/r4ds-02-sales>, and <https://pos.it/r4ds-03-sales> or you can read them directly with:
+ここでも、上記コードが機能するためには、あなたのプロジェクト内の`data`フォルダの中にCSVファイルが入っている必要があります。
+こららのファイルは、<https://pos.it/r4ds-01-sales>、<https://pos.it/r4ds-02-sales>、<https://pos.it/r4ds-03-sales>からダウンロードできます。あ
+るいは、以下のように直接読み込むこともできます。
 
 ```{r}
 #| eval: false
@@ -444,23 +445,22 @@ sales_files <- c(
 read_csv(sales_files, id = "file")
 ```
 
-The `id` argument adds a new column called `file` to the resulting data frame that identifies the file the data come from.
-This is especially helpful in circumstances where the files you're reading in do not have an identifying column that can help you trace the observations back to their original sources.
+`id`引数は出力するデータフレームに`file`という新しい列を追加します。こ
+の列はデータ元のファイルを特定します。
+読み込むファイルに観測のデータ元をたどれるID列がない場合に、特に役立ちます。
 
-If you have many files you want to read in, it can get cumbersome to write out their names as a list.
-Instead, you can use the base `list.files()` function to find the files for you by matching a pattern in the file names.
-You'll learn more about these patterns in @sec-regular-expressions.
+読み込みたいファイルが多数の場合、対象ファイルをリストに書き出すのは面倒かもしれません。
+そうする替わりに、ベース関数の`list.files()`を使えば、ファイル名からパターンの一致するファイルを見つけ出してくれます。
+パターンについては、@sec-regular-expressions でさらに学習します。
 
 ```{r}
 sales_files <- list.files("data", pattern = "sales\\.csv$", full.names = TRUE)
 sales_files
 ```
 
-## Writing to a file {#sec-writing-to-a-file}
+## ファイルへ書き出す {#sec-writing-to-a-file}
 
-readr also comes with two useful functions for writing data back to disk: `write_csv()` and `write_tsv()`.
-The most important arguments to these functions are `x` (the data frame to save) and `file` (the location to save it).
-You can also specify how missing values are written with `na`, and if you want to `append` to an existing file.
+readrにはデータをディスクに書き戻すのに役立つ2つの関数`write_csv()`と`write_tsv()があります。 これらの関数で最も重要な引数は`x`(保存するデータフレーム) と`file`(保存するパス)です。`na`引数で欠損値をどう書き出すか、`append\`引数で既存ファイルに追加するか否か、を指定できます。
 
 ```{r}
 #| eval: false
@@ -468,8 +468,9 @@ You can also specify how missing values are written with `na`, and if you want t
 write_csv(students, "students.csv")
 ```
 
-Now let's read that csv file back in.
-Note that the variable type information that you just set up is lost when you save to CSV because you're starting over with reading from a plain text file again:
+では、書き出したCSVファイルを読み込んでみましょう。
+設定したばかりの変数の型情報はCSVファイルに保存したときに失われています。平
+坦なテキスト・ファイルから読み込み直したからです。
 
 ```{r}
 #| warning: false
@@ -480,20 +481,21 @@ write_csv(students, "students-2.csv")
 read_csv("students-2.csv")
 ```
 
-This makes CSVs a little unreliable for caching interim results---you need to recreate the column specification every time you load in.
-There are two main alternatives:
+中間結果をCSVファイルに一時保存するのは信頼性に欠けることになります。ロ
+ードするたびに列の仕様を再現しなければならないのですから。
+主に2つ代替策があります。
 
-1.  `write_rds()` and `read_rds()` are uniform wrappers around the base functions `readRDS()` and `saveRDS()`.
-    These store data in R's custom binary format called RDS.
-    This means that when you reload the object, you are loading the *exact same* R object that you stored.
+1.  `write_rds()`と`read_rds()`は、ベース関数`saveRDS()`と`readRDS()`を均質に包装した関数です。
+    RDSというR特有のバイナリ形式でデータを保存します。
+    オブジェクトを再ロードすれば、保存したときと*全く同じ*Rオブジェクトをロードできるということです。
 
     ```{r}
     write_rds(students, "students.rds")
     read_rds("students.rds")
     ```
 
-2.  The arrow package allows you to read and write parquet files, a fast binary file format that can be shared across programming languages.
-    We'll return to arrow in more depth in @sec-arrow.
+2.  arrowパッケージを使えば、複数のプログラム言語で共有可能な高速なバイナリ・ファイル形式であるparquetファイルの読み書きができます。
+    arrowについては、@sec-arrow で詳細について戻ってきます。
 
     ```{r}
     #| eval: false
@@ -512,7 +514,7 @@ There are two main alternatives:
     #> 6          6 Güvenç Attila    Ice cream          Lunch only              6
     ```
 
-Parquet tends to be much faster than RDS and is usable outside of R, but does require the arrow package.
+parquetはRDSより概ねずっと高速で、Rの外でも使えますが、arrowパッケージが必須です。
 
 ```{r}
 #| include: false
@@ -520,7 +522,7 @@ file.remove("students-2.csv")
 file.remove("students.rds")
 ```
 
-## Data entry
+## データ入力
 
 Sometimes you'll need to assemble a tibble "by hand" doing a little data entry in your R script.
 There are two useful functions to help you do this which differ in whether you layout the tibble by columns or by rows.
