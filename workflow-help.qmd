@@ -1,4 +1,4 @@
-# Workflow: getting help {#sec-workflow-getting-help}
+# ワークフロー：ヘルプを得る {#sec-workflow-getting-help}
 
 ```{r}
 #| echo: false
@@ -6,49 +6,56 @@
 source("_common.R")
 ```
 
-This book is not an island; there is no single resource that will allow you to master R.
-As you begin to apply the techniques described in this book to your own data, you will soon find questions that we do not answer.
-This section describes a few tips on how to get help and to help you keep learning.
+本書は孤島ではありません。そ
+こだけあたればRを修得できるような単一の資源などありません。
+本書に記述されているテクニックを自分のデータに当てはめはじめるとすぐに、本書には答えがない質問を見出すでしょう。
+このセクションでは、ヘルプを得る方法や、学習を続けるのを助ける方法について、ヒントをいくつか述べます。
 
-## Google is your friend
+## グーグル検索はあなたの友
 
-If you get stuck, start with Google.
-Typically adding "R" to a query is enough to restrict it to relevant results: if the search isn't useful, it often means that there aren't any R-specific results available.
-Additionally, adding package names like "tidyverse" or "ggplot2" will help narrow down the results to code that will feel more familiar to you as well, e.g., "how to make a boxplot in R" vs. "how to make a boxplot in R with ggplot2".
-Google is particularly useful for error messages.
-If you get an error message and you have no idea what it means, try googling it!
-Chances are that someone else has been confused by it in the past, and there will be help somewhere on the web.
-(If the error message isn't in English, run `Sys.setenv(LANGUAGE = "en")` and re-run the code; you're more likely to find help for English error messages.)
+手詰まりになったら、まずグーグル検索です。
+通常、検索文に"R"を追加しておけば、意味のある結果に絞り込めます。そ
+れでも、役に立たなければ、R特有の結果がウェブ上にないということです。
+追加的に、"tidyverse"や"ggplot2"といったパッケージ名を加えると、もっと馴染みのあるコードに結果を絞り込む助けになります。例
+えば、"how to make a boxplot in R"よりも、"how to make a boxplot in R with ggplot2"とします。
+エラーメッセージについて、グーグル検索は特に有益です。
+エラーメッセージが出て来たが、意味が分からない、というときは、グーグル検索してみましょう！
+誰か他の人が過去に混乱していたはずで、ウェブ上のどこかにヘルプがあるでしょう。
+(エラーメッセージが英語でない場合は、`Sys.setenv(LANGUAGE = "en")`を実行後、コードを再実行して、英語のエラーメッセージを得ましょう。英
+語のエラーメッセージで検索した方がヘルプを見つけられる可能性が高いからです。)
 
-If Google doesn't help, try [Stack Overflow](https://stackoverflow.com).
-Start by spending a little time searching for an existing answer, including `[R]`, to restrict your search to questions and answers that use R.
+グーグル検索では役に立たなかったときは、[Stack Overflow](https://stackoverflow.com)を試してみましょう。
+Rを使う質問と回答に検索を絞るために`[R]`を含めて、既存の回答を時間をかけて検索することからはじめます。
 
-## Making a reprex
+## reprexの作成
 
-If your googling doesn't find anything useful, it's a really good idea to prepare a **reprex,** short for minimal **repr**oducible **ex**ample.
-A good reprex makes it easier for other people to help you, and often you'll figure out the problem yourself in the course of making it.
-There are two parts to creating a reprex:
+検索では役立ちそうなものが見つからなかった場合、**reprex**を用意するのは実に良い考えです。r
+eprexは**repr**oducible **ex**ampleの略称で、再現可能な最小例のことです。
+良いreprexを準備できれば、他の人達があなたを助けるのが容易になりますし、その作成中に自分で問題に気付くこともしばしばとなるでしょう。
+reprexの作成には2つの部分があります。
 
--   First, you need to make your code reproducible.
-    This means that you need to capture everything, i.e. include any `library()` calls and create all necessary objects.
-    The easiest way to make sure you've done this is using the reprex package.
+-   第1に、コードを再現可能にすること。
+    全てをコードに取り込むべし、ということ。つ
+    まり、`library()`呼び出しを含めて、全ての必要なオブジェクトをコードで作る。
+    確実にそうする一番簡単な方法は、reprexパッケージを使うこと。
 
--   Second, you need to make it minimal.
-    Strip away everything that is not directly related to your problem.
-    This usually involves creating a much smaller and simpler R object than the one you're facing in real life or even using built-in data.
+-   第2に、最小にすること。
+    あなたの問題と直接関係ない全てを剥ぎ取る。
+    実際に直面しているものよりずっと小さく簡素なRオブジェクトを作ったり、組み込みデータを使ったりするのが通常。
 
-That sounds like a lot of work!
-And it can be, but it has a great payoff:
+大作業に聞こえますね！
+実際、大作業になるかもしれませんが、割に合います。
 
--   80% of the time, creating an excellent reprex reveals the source of your problem.
-    It's amazing how often the process of writing up a self-contained and minimal example allows you to answer your own question.
+-   80％の場合、優れたreprexを作ることで、問題の発生源が明らかになる。
+    自己完結した最小例を書き上げることで、自分で質問の答えを見つけてしまう頻度の高さには驚くばかり。
 
--   The other 20% of the time, you will have captured the essence of your problem in a way that is easy for others to play with.
-    This substantially improves your chances of getting help!
+-   残りの20％では、他の人があれこれやってみるのが容易になるよう、問題の本質を取り込めている。
+    こうすることで、ヘルプを得られる可能性を高められる！
 
-When creating a reprex by hand, it's easy to accidentally miss something, meaning your code can't be run on someone else's computer.
-Avoid this problem by using the reprex package, which is installed as part of the tidyverse.
-Let's say you copy this code onto your clipboard (or, on RStudio Server or Cloud, select it):
+手作業でreprexを作成すると、たまたま何かを入れ忘れて、あなたのコードが他の人のコンピュータでは動かないことがよくあります。
+reprexパッケージを使ってこの問題を回避しましょう。r
+eprexパッケージはtidyverseの一部としてインストールされています。
+以下のコードをクリップボードにコピー (もしくは、RStudio ServerやCloudなら、選択) するとします。
 
 ```{r}
 #| eval: false
@@ -57,14 +64,16 @@ y <- 1:4
 mean(y)
 ```
 
-Then call `reprex()`, where the default output is formatted for GitHub:
+次に、`reprex()`を呼び出します。デ
+フォルトの出力はGitHub用の形式です。
 
 ``` r
 reprex::reprex()
 ```
 
-A nicely rendered HTML preview will display in RStudio's Viewer (if you're in RStudio) or your default browser otherwise.
-The reprex is automatically copied to your clipboard (on RStudio Server or Cloud, you will need to copy this yourself):
+きれいに作られたHTMLプレビューが、RStudioを使っていればRStudioのViewerに、そうでなければあなたのデフォルトのブラウザに、表示されます。
+reprexは自動的にクリップボードにコピーされます。R
+Studio ServerやCloudの場合、自分でコピーする必要があります。
 
 ````         
 ``` r
@@ -74,8 +83,8 @@ mean(y)
 ```
 ````
 
-This text is formatted in a special way, called Markdown, which can be pasted to sites like StackOverflow or Github and they will automatically render it to look like code.
-Here's what that Markdown would look like rendered on GitHub:
+このテキストはマークダウンという特殊な形式になっており、StackOverflowやGithubといったサイトにペーストすると、自動的にコードに見えるようになります。
+マークダウンはGitHubでは以下のように見えます。
 
 ```{r}
 #| eval: false
@@ -85,11 +94,12 @@ mean(y)
 #> [1] 2.5
 ```
 
-Anyone else can copy, paste, and run this immediately.
+誰もがすぐにコピー、ペーストして実行できます。
 
-There are three things you need to include to make your example reproducible: required packages, data, and code.
+例を再現可能にするためには、必要なパッケージ、データ、コードの3つを含めなければなりません。
 
-1.  **Packages** should be loaded at the top of the script so it's easy to see which ones the example needs.
+1.  **パッケージ**はスクリプトの最初にロードすべし。例
+    が必要とするパッケージが何か、それで見やすくなる。
     This is a good time to check that you're using the latest version of each package; you may have discovered a bug that's been fixed since you installed or last updated the package.
     For packages in the tidyverse, the easiest way to check is to run `tidyverse_update()`.
 
