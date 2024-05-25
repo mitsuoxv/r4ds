@@ -98,46 +98,49 @@ mean(y)
 
 例を再現可能にするためには、必要なパッケージ、データ、コードの3つを含めなければなりません。
 
-1.  **パッケージ**はスクリプトの最初にロードすべし。例
-    が必要とするパッケージが何か、それで見やすくなる。
-    This is a good time to check that you're using the latest version of each package; you may have discovered a bug that's been fixed since you installed or last updated the package.
-    For packages in the tidyverse, the easiest way to check is to run `tidyverse_update()`.
+1.  **パッケージ**はスクリプトの最初にロードします。
+    例が必要とするパッケージが何か、それで見やすくなります。
+    各パッケージが最新バージョンになっているか確認する良い機会です。
+    インストール、または、最後にアップデートした後に修正されたバグを見つけたのかもしれません。
+    tidyverseのパッケージであれば、最も簡単な確認方法は`tidyverse_update()`を実行することです。
 
-2.  The easiest way to include **data** is to use `dput()` to generate the R code needed to recreate it.
-    For example, to recreate the `mtcars` dataset in R, perform the following steps:
+2.  **データ**を含める最も簡単な方法は、`dput()`を使って、それを再生するのに必要なRコードを生成することです。
+    例えば、`mtcars`データセットをRの中で再生するには、以下のステップを踏みます。
 
-    1.  Run `dput(mtcars)` in R
-    2.  Copy the output
-    3.  In reprex, type `mtcars <-`, then paste.
+    1.  Rで`dput(mtcars)`を実行、
+    2.  出力をコピー、
+    3.  reprexの中で`mtcars <-`と打ち込み、それからペースト。
 
-    Try to use the smallest subset of your data that still reveals the problem.
+    問題が依然発生するデータの最小サブセットを使うよう努めましょう。
 
-3.  Spend a little bit of time ensuring that your **code** is easy for others to read:
+3.  少々時間をかけて、他の人が読みやすい**コード**になっていることを確認します。
 
-    -   Make sure you've used spaces and your variable names are concise yet informative.
+    -   スペースを活用していること、変数名が簡潔かつ分かりやすくなっていることを確認。
 
-    -   Use comments to indicate where your problem lies.
+    -   コメントを使って、問題がどこにあるか示す。
 
-    -   Do your best to remove everything that is not related to the problem.
+    -   問題と関係ないものは全て削除するよう最大限努める。
 
-    The shorter your code is, the easier it is to understand and the easier it is to fix.
+    コードが短ければ短いほど、理解が容易になり、修正しやすくなります。
 
-Finish by checking that you have actually made a reproducible example by starting a fresh R session and copying and pasting your script.
+最後に、Rセッションを再起動、スクリプトをコピー、ペーストして、実際に再現可能な例になっていること
 
-Creating reprexes is not trivial, and it will take some practice to learn to create good, truly minimal reprexes.
-However, learning to ask questions that include the code, and investing the time to make it reproducible will continue to pay off as you learn and master R.
+reprexを作ることは些事ではありません。上
+手な、真に最小のreprexを作れるようになるには、いくらか練習が必要です。
+それでも、コードを含めて質問することを学ぶこと、そのコードを再現可能にするのに時間を投資することは、Rを学習し、修得するにつれて割に合うことでしょう。
 
-## Investing in yourself
+## 自分自身に投資する
 
-You should also spend some time preparing yourself to solve problems before they occur.
-Investing a little time in learning R each day will pay off handsomely in the long run.
-One way is to follow what the tidyverse team is doing on the [tidyverse blog](https://www.tidyverse.org/blog/).
-To keep up with the R community more broadly, we recommend reading [R Weekly](https://rweekly.org): it's a community effort to aggregate the most interesting news in the R community each week.
+また、問題が起こる前に、いくらか時間をかけて、自分で問題が解けるよう準備するべきです。
+毎日Rを学習するのにいくらか時間を投資することは、長期的には十分に割に合います。
+tidyverseチームが何をしているのかフォローする一つの方法は、[tidyverse blog](https://www.tidyverse.org/blog/)を読むことです。
+より広くRコミュニティのフォローするには、[R Weekly](https://rweekly.org)を読むことをお薦めします。コ
+ミュニティの努力で、Rコミュニティの最も興味深いニュースを毎週集めています。
 
-## Summary
+## まとめ
 
-This chapter concludes the Whole Game part of the book.
-You've now seen the most important parts of the data science process: visualization, transformation, tidying and importing.
-Now you've got a holistic view of the whole process, and we start to get into the details of small pieces.
+本章で、本書の「ゲームの全体像」部分は終了です。
+ここまで、データサイエンス過程の最も大切な部分である、可視化、変換、整理、インポートを見てきました。
+過程全ての全体的な視点が得られたので、これからは、小さな部分の詳細に入っていきます。
 
-The next part of the book, Visualize, does a deeper dive into the grammar of graphics and creating data visualizations with ggplot2, showcases how to use the tools you've learned so far to conduct exploratory data analysis, and introduces good practices for creating plots for communication.
+次の部は可視化で、グラフィックの文法、ggplot2を使ったデータ可視化により深く潜り、ここまでに学習した道具をどう使って探索的データ分析を行うか展示、コミュニケーションのためのプロットを作成する優れた実践を紹介します。
