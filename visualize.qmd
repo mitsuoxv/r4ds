@@ -1,4 +1,4 @@
-# Visualize {#sec-visualize .unnumbered}
+# 可視化 {#sec-visualize .unnumbered}
 
 ```{r}
 #| echo: false
@@ -6,33 +6,34 @@
 source("_common.R")
 ```
 
-After reading the first part of the book, you understand (at least superficially) the most important tools for doing data science.
-Now it's time to start diving into the details.
-In this part of the book, you'll learn about visualizing data in further depth.
+本書第1部を読んだ後なので、データサイエンスを行うための最も大切な道具を (少なくとも表面的には) 理解しているはずです。
+ここからは、詳細に潜って行きます。
+本書第2部では、可視化についてさらに深く学習します。
 
 ```{r}
 #| label: fig-ds-visualize
 #| echo: false
 #| fig-cap: |
-#|   Data visualization is often the first step in data exploration.
+#|   データ可視化は通常、データ探索の第一歩。
 #| fig-alt: |
-#|   Our data science model, with visualize highlighted in blue.
+#|   データサイエンスのモデル。可視化が青でハイライトされている。
 #| out.width: NULL
 
 knitr::include_graphics("diagrams/data-science/visualize.png", dpi = 270)
 ```
 
-Each chapter addresses one to a few aspects of creating a data visualization.
+以下の各章ごとに、データ可視化を作成する1つから2、3の側面に取り組みます。
 
--   In @sec-layers you will learn about the layered grammar of graphics.
+-   @sec-layers では、レイヤー化されたグラフィックの文法について学びます。
 
--   In @sec-exploratory-data-analysis, you'll combine visualization with your curiosity and skepticism to ask and answer interesting questions about data.
+-   @sec-exploratory-data-analysis では、可視化と好奇心、懐疑心を組み合わせることで、データに関する興味深い質問と回答を行います。
 
--   Finally, in @sec-communication you will learn how to take your exploratory graphics, elevate them, and turn them into expository graphics, graphics that help the newcomer to your analysis understand what's going on as quickly and easily as possible.
+-   最後に、@sec-communication では、探索用グラフをどう高めると解説用グラフにできるか学びます。解
+    説用グラフは、分析を初めて見る人に何がどうなっているのか、可能な限り素早くかつ容易に、理解してもらうためのものです。
 
-These three chapters get you started in the world of visualization, but there is much more to learn.
-The absolute best place to learn more is the ggplot2 book: [*ggplot2: Elegant graphics for data analysis*](https://ggplot2-book.org/).
-It goes into much more depth about the underlying theory, and has many more examples of how to combine the individual pieces to solve practical problems.
-Another great resource is the ggplot2 extensions gallery <https://exts.ggplot2.tidyverse.org/gallery/>.
-This site lists many of the packages that extend ggplot2 with new geoms and scales.
-It's a great place to start if you're trying to do something that seems hard with ggplot2.
+これら3章で、可視化の世界の入り口に立つことはできますが、学ぶことはまだまだあります。
+その先を学ぶなら、ggplot2 book: [*ggplot2: Elegant graphics for data analysis*](https://ggplot2-book.org/)が絶対のお薦めです。
+根底にある理論をより深く掘り下げ、ずっと多くの例で個々の部品を組み合わせて実務の問題を解いています。
+もう一つ、お薦めなのは、ggplot2 extensions gallery <https://exts.ggplot2.tidyverse.org/gallery/>です。
+このサイトはggplot2を拡張する、新しいgeomやscaleを有する、多くのパッケージをリストアップしています。
+ggplot2だけでは困難と思われる何かに挑戦するなら、まずは覗いてみることです。
