@@ -1,4 +1,4 @@
-# Layers {#sec-layers}
+# レイヤー {#sec-layers}
 
 ```{r}
 #| echo: false
@@ -6,24 +6,24 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
-In @sec-data-visualization, you learned much more than just how to make scatterplots, bar charts, and boxplots.
-You learned a foundation that you can use to make *any* type of plot with ggplot2.
+@sec-data-visualization で学んだことは、散布図、棒グラフ、ボックスプロットの作り方だけではありません。
+ggplot2を使って*どんな*タイプのプロットでも作るのに使える基礎を学んだのです。
 
-In this chapter, you'll expand on that foundation as you learn about the layered grammar of graphics.
-We'll start with a deeper dive into aesthetic mappings, geometric objects, and facets.
-Then, you will learn about statistical transformations ggplot2 makes under the hood when creating a plot.
-These transformations are used to calculate new values to plot, such as the heights of bars in a bar plot or medians in a box plot.
-You will also learn about position adjustments, which modify how geoms are displayed in your plots.
-Finally, we'll briefly introduce coordinate systems.
+本章では、その基礎を拡張して、レイヤー化されたグラフィックの文法を学習します。
+外観属性のマッピング、幾何オブジェクト、ファセットにより深く潜り込むところからはじめます。
+次に、ggplot2がプロット作成中に袖の下で行っている統計変換を学習します。
+棒グラフの棒の高さやボックスプロット中の中央値などの、プロットに必要な新しい値を計算するために、これらの変換が使われます。
+プロットにおいてgeomの表示され方を修正する、position調整も学習します。
+最後に、coordinateシステムを簡潔に紹介します。
 
-We will not cover every single function and option for each of these layers, but we will walk you through the most important and commonly used functionality provided by ggplot2 as well as introduce you to packages that extend ggplot2.
+これらレイヤーのそれぞれの全ての関数、オプションはカバーしませんが、ggplot2が提供する最も大切で最もよく使われている機能は網羅しますし、ggplot2を拡張するパッケージも紹介します。
 
-### Prerequisites
+### 用意するもの
 
-This chapter focuses on ggplot2.
-To access the datasets, help pages, and functions used in this chapter, load the tidyverse by running this code:
+本章はggplot2にフォーカスします。
+本章で使用するデータセット、ヘルプページ、関数にアクセスできるよう、以下コードを実行してtidyverseをロードします。
 
 ```{r}
 #| label: setup
@@ -32,64 +32,66 @@ To access the datasets, help pages, and functions used in this chapter, load the
 library(tidyverse)
 ```
 
-## Aesthetic mappings
+## 外観属性マッピング
 
-> "The greatest value of a picture is when it forces us to notice what we never expected to see." --- John Tukey
+> "図の最大の価値は、予期していなかったことに気付かせてくれることにある。" --- John Tukey
 
-Remember that the `mpg` data frame bundled with the ggplot2 package contains `r nrow(mpg)` observations on `r mpg |> distinct(model) |> nrow()` car models.
+ggplot2パッケージにバンドルされている`mpg`データフレームには、`r mpg |> distinct(model) |> nrow()`車種のモデルについて、`r nrow(mpg)`個の観測 が入っています。
 
 ```{r}
 mpg
 ```
 
-Among the variables in `mpg` are:
+`mpg`には以下の変数が含まれている。
 
-1.  `displ`: A car's engine size, in liters.
-    A numerical variable.
+1.  `displ`: 車の排気量をリッターで表記。
+    数値変数。
 
-2.  `hwy`: A car's fuel efficiency on the highway, in miles per gallon (mpg).
-    A car with a low fuel efficiency consumes more fuel than a car with a high fuel efficiency when they travel the same distance.
-    A numerical variable.
+2.  `hwy`: 高速道路での車の燃料効率をガロン当たりマイル (mpg) で表記。
+    同じ距離を走るのに、低効率車は高効率車よりも多くの燃料を消費する。
+    数値変数。
 
-3.  `class`: Type of car.
-    A categorical variable.
+3.  `class`: 車の種類。
+    カテゴリ変数。
 
-Let's start by visualizing the relationship between `displ` and `hwy` for various `class`es of cars.
-We can do this with a scatterplot where the numerical variables are mapped to the `x` and `y` aesthetics and the categorical variable is mapped to an aesthetic like `color` or `shape`.
+`class`ごとに`displ`と`hwy`の間の関係を可視化するところからはじめましょう。
+数値変数を外観属性`x`と`y`にマップして、カテゴリ変数を`color`か`shape`の外観属性にマップした散布図で可視化できます。
 
 ```{r}
 #| layout-ncol: 2
 #| fig-width: 4
 #| fig-alt: |
-#|   Two scatterplots next to each other, both visualizing highway fuel 
-#|   efficiency versus engine size of cars and showing a negative 
-#|   association. In the plot on the left class is mapped to the color 
-#|   aesthetic, resulting in different colors for each class. 
-#|   In the plot on the right class is mapped the shape aesthetic, 
-#|   resulting in different plotting character shapes for each class,
-#|   except for suv. Each plot comes with a legend that shows the 
-#|   mapping between color or shape and levels of the class variable.
+#|   2つの散布図が並んでいる。どちらも、車の高速道路での燃料効率、対、
+#|   排気量を可視化、負の相関を表している。
+#|   左のプロットでは、 classは外観属性colorにマップされ、その結果、
+#|   classごとに色が違っている。
+#|   右のプロットでは、 classは外観属性shapeにマップされ、その結果、
+#|   suvを除いてclassごとに形が違っている。
+#|   どちらのプロットにも凡例があり、colorもしくはshapeとclass変数間の
+#|   マッピングを表している。
 
-# Left
+# 左
 ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
   geom_point()
 
-# Right
+# 右
 ggplot(mpg, aes(x = displ, y = hwy, shape = class)) +
   geom_point()
 ```
 
-When `class` is mapped to `shape`, we get two warnings:
+`class`を`shape`にマップすると、2つ警告が出て来ます。
 
 > 1: The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate; you have 7.
 > Consider specifying shapes manually if you must have them.
 >
 > 2: Removed 62 rows containing missing values (`geom_point()`).
 
-Since ggplot2 will only use six shapes at a time, by default, additional groups will go unplotted when you use the shape aesthetic.
-The second warning is related -- there are 62 SUVs in the dataset and they're not plotted.
+デフォルトではggplot2が使えるshapeは6つまでなので、外観属性shapeを使うと7つ目以降のグループはプロットされません。
+2つ目の警告も関係があります。デ
+ータセットには62個のSUVがあり、それらがプロットされていないのです。
 
-Similarly, we can map `class` to `size` or `alpha` aesthetics as well, which control the shape and the transparency of the points, respectively.
+同様に、`class`を外観属性`size`や`alpha`にマップすることもできます。そ
+れぞれ、点のサイズと透明度を制御します。
 
 ```{r}
 #| layout-ncol: 2
