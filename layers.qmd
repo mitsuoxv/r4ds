@@ -90,60 +90,62 @@ ggplot(mpg, aes(x = displ, y = hwy, shape = class)) +
 2つ目の警告も関係があります。デ
 ータセットには62個のSUVがあり、それらがプロットされていないのです。
 
-同様に、`class`を外観属性`size`や`alpha`にマップすることもできます。そ
-れぞれ、点のサイズと透明度を制御します。
+同様に、`class`を外観属性`size`や`alpha`にマップすることもできます。
+それぞれ、点のサイズと透明度を制御します。
 
 ```{r}
 #| layout-ncol: 2
 #| fig-width: 4
 #| fig-alt: |
-#|   Two scatterplots next to each other, both visualizing highway fuel 
-#|   efficiency versus engine size of cars and showing a negative 
-#|   association. In the plot on the left class is mapped to the size 
-#|   aesthetic, resulting in different sizes for each class. 
-#|   In the plot on the right class is mapped the alpha aesthetic, 
-#|   resulting in different alpha (transparency) levels for each class. 
-#|   Each plot comes with a legend that shows the mapping between size 
-#|   or alpha level and levels of the class variable.
+#|   2つの散布図が並んでいる。どちらも、車の高速道路での燃料効率、対、
+#|   排気量を可視化、負の相関を表している。
+#|   左のプロットでは、 classは外観属性sizeにマップされ、その結果、
+#|   classごとにサイズが違っている。
+#|   右のプロットでは、 classは外観属性alphaにマップされ、その結果、
+#|   classごとに透明度が違っている。
+#|   どちらのプロットにも凡例があり、sizeもしくはalphaの水準と
+#|   class変数間の水準のマッピングを表している。
 
-# Left
+# 左
 ggplot(mpg, aes(x = displ, y = hwy, size = class)) +
   geom_point()
 
-# Right
+# 右
 ggplot(mpg, aes(x = displ, y = hwy, alpha = class)) +
   geom_point()
 ```
 
-Both of these produce warnings as well:
+どちらにも同様の警告が出ています。
 
 > Using alpha for a discrete variable is not advised.
 
-Mapping an unordered discrete (categorical) variable (`class`) to an ordered aesthetic (`size` or `alpha`) is generally not a good idea because it implies a ranking that does not in fact exist.
+`class`のような順番のない離散変数 (カテゴリ変数) を、`size`や`alpha`のような順番のある外観属性にマップすることは、一般にお薦めできません。実
+際には存在しない順位を示唆してしまうからです。
 
-Once you map an aesthetic, ggplot2 takes care of the rest.
-It selects a reasonable scale to use with the aesthetic, and it constructs a legend that explains the mapping between levels and values.
-For x and y aesthetics, ggplot2 does not create a legend, but it creates an axis line with tick marks and a label.
-The axis line provides the same information as a legend; it explains the mapping between locations and values.
+外観属性へのマップを済ませば、後はggplot2が面倒を見てくれます。
+外観属性に使うのが理にかなうscaleを選択して、水準と値の間のマッピングを説明する凡例を構築してくれます。
+外観属性xとyについては、ggplot2は凡例は作成しませんが、目盛りとラベルの付いた軸を作成してくれます。
+軸は凡例と同じ情報を提供してくれます。水
+準と値の間のマッピングを説明してくれているのです。
 
-You can also set the visual properties of your geom manually as an argument of your geom function (*outside* of `aes()`) instead of relying on a variable mapping to determine the appearance.
-For example, we can make all of the points in our plot blue:
+外観を決めるのに変数マッピングに頼る替わりに、(`aes()`の*外側*で) geom関数の引数として、自分の手でgeomの可視属性を設定することもできます。
+例えば、プロットの全ての点を青色にできます。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars 
-#|   that shows a negative association. All points are blue.
+#|   車の高速道路での燃料効率、対、
+#|   排気量の散布図。負の相関を表している。全ての点が青色。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(color = "blue")
 ```
 
-Here, the color doesn't convey information about a variable, but only changes the appearance of the plot.
-You'll need to pick a value that makes sense for that aesthetic:
+ここでは、色は変数についての情報を伝えておらず、単にプロットの外観を変えているだけです。
+外観属性ごとに意味がある値を選ぶ必要があります。
 
--   The name of a color as a character string, e.g., `color = "blue"`
--   The size of a point in mm, e.g., `size = 1`
--   The shape of a point as a number, e.g, `shape = 1`, as shown in @fig-shapes.
+-   色の名前は文字列で設定。例えば、`color = "blue"`。
+-   点のサイズはミリで設定。例えば、`size = 1`。
+-   点の形は数値で設定。例えば、`shape = 1`だと、@fig-shapes の1番の形に。
 
 ```{r}
 #| label: fig-shapes
@@ -152,13 +154,12 @@ You'll need to pick a value that makes sense for that aesthetic:
 #| fig.asp: 0.364
 #| fig-align: "center"
 #| fig-cap: |
-#|   R has 25 built-in shapes that are identified by numbers. There are some 
-#|   seeming duplicates: for example, 0, 15, and 22 are all squares. The 
-#|   difference comes from the interaction of the `color` and `fill` 
-#|   aesthetics. The hollow shapes (0--14) have a border determined by `color`; 
-#|   the solid shapes (15--20) are filled with `color`; the filled shapes 
-#|   (21--24) have a border of `color` and are filled with `fill`. Shapes are 
-#|   arranged to keep similar shapes next to each other.  
+#|   Rには組み込み形が25個あり、数値で特定されている。重複している
+#|   ように見えるものがいくつかある。例えば、0、15、22はどれも四角。
+#|   違いは外観属性`color`と`fill`の相互交流にある。中が空の形 (0--14) は
+#|   境界線が`color`で決まり、中が黒で埋まっている形 (15--20) は中の色ごと
+#|   `color`で決まり、中が赤で埋まっている形 (21--24) は境界線が`color`で
+#|   中の色は`fill`で決まる。似た形が隣り合うよう形には番号が付けられている。
 #| fig-alt: |
 #|   Mapping between shapes and the numbers that represent them: 0 - square, 
 #|   1 - circle, 2 - triangle point up, 3 - plus, 4 - cross, 5 - diamond, 
