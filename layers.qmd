@@ -154,27 +154,29 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 #| fig.asp: 0.364
 #| fig-align: "center"
 #| fig-cap: |
-#|   Rには組み込み形が25個あり、数値で特定されている。重複している
-#|   ように見えるものがいくつかある。例えば、0、15、22はどれも四角。
+#|   Rには組み込み形が26個あり、数値で特定されている。重複して
+#|   見えるものがいくつかある。例えば、0、15、22はどれも四角。
 #|   違いは外観属性`color`と`fill`の相互交流にある。中が空の形 (0--14) は
-#|   境界線が`color`で決まり、中が黒で埋まっている形 (15--20) は中の色ごと
-#|   `color`で決まり、中が赤で埋まっている形 (21--24) は境界線が`color`で
-#|   中の色は`fill`で決まる。似た形が隣り合うよう形には番号が付けられている。
+#|   境界線が`color`で決まり、境界線のない黒塗りの形 (15--18) は塗り色が
+#|   `color`で決まり、境界線のある黒塗りの形 (19--20) は境界線、塗り色
+#|   ともに`color`で決まり、
+#|   境界線のある赤塗りの形 (21--25) は境界線が`color`で
+#|   塗り色は`fill`で決まる。似た形が隣り合うよう形には番号が付けられている。
 #| fig-alt: |
-#|   Mapping between shapes and the numbers that represent them: 0 - square, 
-#|   1 - circle, 2 - triangle point up, 3 - plus, 4 - cross, 5 - diamond, 
-#|   6 - triangle point down, 7 - square cross, 8 - star, 9 - diamond plus, 
-#|   10 - circle plus, 11 - triangles up and down, 12 - square plus, 
-#|   13 - circle cross, 14 - square and triangle down, 15 - filled square, 
-#|   16 - filled circle, 17 - filled triangle point-up, 18 - filled diamond, 
-#|   19 - solid circle, 20 - bullet (smaller circle), 21 - filled circle blue, 
-#|   22 - filled square blue, 23 - filled diamond blue, 24 - filled triangle 
-#|   point-up blue, 25 - filled triangle point down blue.
+#|   形とそれを表す数値のマッピング。0 - 四角、 
+#|   1 - 丸、2 - 上向き三角、3 - プラス、4 - バツ、5 - ダイアモンド、 
+#|   6 - 下向き三角、7 - 四角にバツ、8 - 星, 9 - ダイアモンドにプラス, 
+#|   10 - 丸にプラス、11 - 上向き三角に下向き三角、12 - 四角にプラス、
+#|   13 - 丸にバツ、14 - 四角に上向き三角、15 - 境界線なし黒塗り四角、
+#|   16 - 黒塗り丸、17 - 黒塗り上向き三角、18 - 黒塗りダイアモンド、
+#|   19 - 境界線あり黒塗り丸、20 - ブレット (小型の丸)、21 - 境界線あり赤塗り丸、
+#|   22 - 赤塗り四角、23 - 赤塗りダイアモンド、24 - 赤塗り上向き三角、 
+#|   25 - 赤塗り赤塗り下向き三角。
 
 shapes <- tibble(
-  shape = c(0, 1, 2, 5, 3, 4, 6:19, 22, 21, 24, 23, 20),
-  x = (0:24 %/% 5) / 2,
-  y = (-(0:24 %% 5)) / 4
+  shape = c(0, 1, 2, 5, 3, 4, 6:19, 22, 21, 24, 23, 20, 25),
+  x = (0:25 %/% 5) / 2,
+  y = (-(0:25 %% 5)) / 4
 )
 ggplot(shapes, aes(x, y)) + 
   geom_point(aes(shape = shape), size = 5, fill = "red") +
