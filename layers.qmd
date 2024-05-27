@@ -288,32 +288,33 @@ ggplot(mpg, aes(x = displ, y = hwy, linetype = drv)) +
   geom_smooth()
 ```
 
-Here, `geom_smooth()` separates the cars into three lines based on their `drv` value, which describes a car's drive train.
-One line describes all of the points that have a `4` value, one line describes all of the points that have an `f` value, and one line describes all of the points that have an `r` value.
-Here, `4` stands for four-wheel drive, `f` for front-wheel drive, and `r` for rear-wheel drive.
+ここでは、`geom_smooth()`は駆動方式`drv`の値に基づいて車を3つの線に分けています。
+一つの線は`4`値の全ての点を、一つの線は`f`値の全ての点を、そして、もう一つの線は`r`値の全ての点を描写しています。
+ここで、`4`は四輪駆動、`f`は前輪駆動、`r`は後輪駆動を表しています。
 
-If this sounds strange, we can make it clearer by overlaying the lines on top of the raw data and then coloring everything according to `drv`.
+奇妙に聞こえるようなら、より明確になるように、生のデータの上に線を重ね、`drv`ごとに点も線も色を変えることもできます。
 
 ```{r}
 #| message: false
 #| fig-alt: |
-#|   A plot of highway fuel efficiency versus engine size of cars. The data 
-#|   are represented with points (colored by drive train) as well as smooth 
-#|   curves (where line type is determined based on drive train as well). 
-#|   Confidence intervals around the smooth curves are also displayed.
+#|   車の高速道路での燃料効率、対、排気量のプロット。データは
+#|   (駆動方式ごとに異なる色の) 点と (駆動方式ごとに色と線種が異なる)
+#|   滑らかな曲線で表されている。
+#|   滑らかな曲線の周りに信頼区間も表示されている。
 
 ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
   geom_point() +
   geom_smooth(aes(linetype = drv))
 ```
 
-Notice that this plot contains two geoms in the same graph.
+同じグラフに2つのgeomが入っていますね。
 
-Many geoms, like `geom_smooth()`, use a single geometric object to display multiple rows of data.
-For these geoms, you can set the `group` aesthetic to a categorical variable to draw multiple objects.
-ggplot2 will draw a separate object for each unique value of the grouping variable.
-In practice, ggplot2 will automatically group the data for these geoms whenever you map an aesthetic to a discrete variable (as in the `linetype` example).
-It is convenient to rely on this feature because the `group` aesthetic by itself does not add a legend or distinguishing features to the geoms.
+`geom_smooth()`などの多くのgeomは、複数行のデータを表示するのに単一の幾何オブジェクトを使います。
+これらのgeomでは、外観属性`group`をカテゴリ変数にマップすることで、複数のオブジェクトを描けます。
+グループ化変数のユニークな値ごとに、別々のオブジェクトをggplot2は描きます。
+実際には、これらのgeomで (例えば、`linetype`のような) 外観属性を離散変数にマップすれば、ggplot2は自動的にデータをグループ化します。
+この機能に頼るのが便利です。外
+観属性`group`自身は、geomに凡例もこれといった特徴も追加しないのですから。
 
 ```{r}
 #| layout-ncol: 3
@@ -321,24 +322,21 @@ It is convenient to rely on this feature because the `group` aesthetic by itself
 #| fig-asp: 1
 #| message: false
 #| fig-alt: |
-#|   Three plots, each with highway fuel efficiency on the y-axis and engine 
-#|   size of cars, where data are represented by a smooth curve. The first plot 
-#|   only has these two variables, the center plot has three separate smooth 
-#|   curves for each level of drive train, and the right plot not only has the 
-#|   same three separate smooth curves for each level of drive train but these 
-#|   curves are plotted in different colors, with a legend explaining which 
-#|   color maps to which level. Confidence intervals around the smooth curves 
-#|   are also displayed.
+#|   3つのプロット。どれも、y軸に車の高速道路での燃料効率、
+#|   x軸に排気量。データは滑らかな曲線で表されている。
+#|   左のプロットはこの2変数だけ、真ん中のプロットは駆動方式ごとに別々の
+#|   3つの滑らかな曲線、右のプロットはさらに曲線の色も別々にしている。
+#|   滑らかな曲線の周りに信頼区間も表示されている。
 
-# Left
+# 左
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth()
 
-# Middle
+# 中
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(aes(group = drv))
 
-# Right
+# 右
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth(aes(color = drv), show.legend = FALSE)
 ```
