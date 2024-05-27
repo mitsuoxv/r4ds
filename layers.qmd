@@ -163,7 +163,17 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 #|   境界線のある赤塗りの形 (21--25) は境界線が`color`で
 #|   塗り色は`fill`で決まる。似た形が隣り合うよう形には番号が付けられている。
 #| fig-alt: |
-#|   形とそれを表す数値のマッピング。0 - 四角、 
+#|   形とそれを表す数値のマッピング。
+#|   0 - square open, 
+#|   1 - circle open, 2 - triangle open, 3 - plus, 4 - cross, 5 - diamond open, 
+#|   6 - triangle down open, 7 - square cross, 8 - asterisk, 9 - diamond plus, 
+#|   10 - circle plus, 11 - star, 12 - square plus, 
+#|   13 - circle cross, 14 - square triangle, 15 - square, 
+#|   16 - circle small, 17 - triangle, 18 - diamond, 
+#|   19 - circle, 20 - bullet, 21 - circle filled, 
+#|   22 - square filled, 23 - diamond filled, 24 - triangle filled, 
+#|   25 - triangle down filled.
+#|   0 - 四角、 
 #|   1 - 丸、2 - 上向き三角、3 - プラス、4 - バツ、5 - ダイアモンド、 
 #|   6 - 下向き三角、7 - 四角にバツ、8 - 星, 9 - ダイアモンドにプラス, 
 #|   10 - 丸にプラス、11 - 上向き三角に下向き三角、12 - 四角にプラス、
