@@ -495,12 +495,12 @@ ggplot2が提供する全てのgeomと関数を網羅的にざっと眺めるに
 
 ## ファセット
 
-In @sec-data-visualization you learned about faceting with `facet_wrap()`, which splits a plot into subplots that each display one subset of the data based on a categorical variable.
+@sec-data-visualization で、プロットをサブプロットに分け、それぞれがデータをカテゴリ変数に基づいて分けたサブセットを表示するファセットを、`facet_wrap()`を使って学びました。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars, 
-#|   faceted by class, with facets spanning two rows.
+#|   車の高速道路での燃料効率、対、排気量の散布図。
+#|   エンジンのシリンダ数ごとにファセットされ、2行にわたって表示。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
