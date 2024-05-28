@@ -764,22 +764,22 @@ ggplot2は20を超えるstatが使えるよう提供しています。
 
 ## 位置調整
 
-There's one more piece of magic associated with bar charts.
-You can color a bar chart using either the `color` aesthetic, or, more usefully, the `fill` aesthetic:
+棒グラフに関連して、もう一つ魔法があります。
+外観属性の`color`、もしくは、より役に立つ`fill`を使って、棒グラフに色を付けられます。
 
 ```{r}
 #| layout-ncol: 2
 #| fig-width: 4
 #| fig-alt: |
-#|   Two bar charts of drive types of cars. In the first plot, the bars have 
-#|   colored borders. In the second plot, they're filled with colors. Heights 
-#|   of the bars correspond to the number of cars in each cut category.
+#|   車の駆動方式の2つの棒グラフ。第1のプロットでは、
+#|   棒の境界線が色付けされている。第2のプロットでは、棒が色塗りされている。
+#|   棒の高さは駆動方式ごとの車の数に対応している。
 
-# Left
+# 左
 ggplot(mpg, aes(x = drv, color = drv)) + 
   geom_bar()
 
-# Right
+# 右
 ggplot(mpg, aes(x = drv, fill = drv)) + 
   geom_bar()
 ```
