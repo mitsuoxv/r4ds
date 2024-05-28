@@ -856,9 +856,9 @@ ggplot(mpg, aes(x = drv, fill = class)) +
       geom_bar(position = "dodge")
     ```
 
-There's one other type of adjustment that's not useful for bar charts, but can be very useful for scatterplots.
-Recall our first scatterplot.
-Did you notice that the plot displays only 126 points, even though there are 234 observations in the dataset?
+もう一つ、棒グラフでは役に立たないけれど、散布図ではとても役に立つ調整のタイプがあります。
+最初の散布図を思い出してみましょう。
+データセットには234個の観測があるのに、プロットには126個の点しかないことに気付いていましたか？
 
 ```{r}
 #| echo: false
@@ -870,14 +870,14 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point()
 ```
 
-The underlying values of `hwy` and `displ` are rounded so the points appear on a grid and many points overlap each other.
-This problem is known as **overplotting**.
-This arrangement makes it difficult to see the distribution of the data.
-Are the data points spread equally throughout the graph, or is there one special combination of `hwy` and `displ` that contains 109 values?
+元になった`hwy`の`displ`値は丸められているので、点はグリッド上に現れてお互いに重なっています。
+この問題は**overplotting**として知られています。
+このままでは、データの分布を見るのは困難です。
+重なりはグラフ中で均等に散らばっているのか、それとも、一つの特殊な`hwy`と`displ`の組み合わせに109個の値が集中しているのか？
 
-You can avoid this gridding by setting the position adjustment to "jitter".
-`position = "jitter"` adds a small amount of random noise to each point.
-This spreads the points out because no two points are likely to receive the same amount of random noise.
+位置調整を"jitter"に設定すれば、このグリッドによる重複を回避することができます。
+`position = "jitter"`は、各点に小さなランダム・ノイズを加えます。
+2つの点が同じランダム・ノイズを受ける可能性は低いので、点は散らばることになります。
 
 ```{r}
 #| fig-alt: |
@@ -888,15 +888,15 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point(position = "jitter")
 ```
 
-Adding randomness seems like a strange way to improve your plot, but while it makes your graph less accurate at small scales, it makes your graph *more* revealing at large scales.
-Because this is such a useful operation, ggplot2 comes with a shorthand for `geom_point(position = "jitter")`: `geom_jitter()`.
+ランダムさを加えることでプロットを改良するのは奇妙な方法のように思えますが、グラフはごくわずかに不正確になる一方で、*大いに*分かりやすくなります。
+これはとても役に立つやり方なので、`geom_point(position = "jitter")`を略記できる`geom_jitter()`をggplot2は用意しています。
 
-To learn more about a position adjustment, look up the help page associated with each adjustment: `?position_dodge`, `?position_fill`, `?position_identity`, `?position_jitter`, and `?position_stack`.
+位置調整についてさらに学習するには、`?position_dodge`、`?position_fill`、`?position_identity`、`?position_jitter`、`?position_stack`として、各調整と関連するヘルプ・ページを探してください。
 
-### Exercises
+### 練習問題
 
-1.  What is the problem with the following plot?
-    How could you improve it?
+1.  以下プロットでは何が問題か？
+    どうすれば改良できる？
 
     ```{r}
     #| fig-show: hide
@@ -905,8 +905,8 @@ To learn more about a position adjustment, look up the help page associated with
       geom_point()
     ```
 
-2.  What, if anything, is the difference between the two plots?
-    Why?
+2.  以下2プロットに差があるとすれば、何か？
+    その理由は？
 
     ```{r}
     #| fig-show: hide
@@ -917,12 +917,12 @@ To learn more about a position adjustment, look up the help page associated with
       geom_point(position = "identity")
     ```
 
-3.  What parameters to `geom_jitter()` control the amount of jittering?
+3.  `geom_jitter()`のどの引数が揺らぎの程度を制御していますか？
 
-4.  Compare and contrast `geom_jitter()` with `geom_count()`.
+4.  `geom_jitter()`と`geom_count()`を比較、対照しなさい。
 
-5.  What's the default position adjustment for `geom_boxplot()`?
-    Create a visualization of the `mpg` dataset that demonstrates it.
+5.  `geom_boxplot()`のデフォルトの位置調整は何か？
+    `mpg`データセットを可視化して、実演しなさい。
 
 ## Coordinate systems
 
