@@ -784,77 +784,74 @@ ggplot(mpg, aes(x = drv, fill = drv)) +
   geom_bar()
 ```
 
-Note what happens if you map the fill aesthetic to another variable, like `class`: the bars are automatically stacked.
-Each colored rectangle represents a combination of `drv` and `class`.
+外観属性fillを`class`のような他の変数にマップしたらどうなるか、見てみましょう。棒
+が自動的に積み上げられています。
+色塗りされた長方形それぞれが、`drv`と`class`の組み合わせを表しています。
 
 ```{r}
 #| fig-alt: |
-#|   Segmented bar chart of drive types of cars, where each bar is filled with 
-#|   colors for the classes of cars. Heights of the bars correspond to the 
-#|   number of cars in each drive category, and heights of the colored 
-#|   segments are proportional to the number of cars with a given class 
-#|   level within a given drive type level.
+#|   車の駆動方式の棒グラフで、車のクラスごとに色分けされている。
+#|   棒の高さは駆動方式ごとの車の数に対応しており、
+#|   色分けされた部分の高さは駆動方式ごとのクラス水準ごとの車の数に
+#|   なっている。
 
 ggplot(mpg, aes(x = drv, fill = class)) + 
   geom_bar()
 ```
 
-The stacking is performed automatically using the **position adjustment** specified by the `position` argument.
-If you don't want a stacked bar chart, you can use one of three other options: `"identity"`, `"dodge"` or `"fill"`.
+`position`引数で指定する**位置調整**を使って、積み上げが自動的に行われています。
+積み上げ (`"stack"`) が嫌なら、他の3つのオプション、`"identity"`、`"dodge"`、`"fill"`、のどれかを使えます。
 
--   `position = "identity"` will place each object exactly where it falls in the context of the graph.
-    This is not very useful for bars, because it overlaps them.
-    To see that overlapping we either need to make the bars slightly transparent by setting `alpha` to a small value, or completely transparent by setting `fill = NA`.
+-   `position = "identity"`は、グラフの文脈においてそのままの位置に、各オブジェクトを配置します。
+    棒グラフでは重なってしまうので、あまり役に立ちません。
+    重なっていても見えるようにするには、`alpha`を小さい値に設定して棒を少々透明にするか、`fill = NA`と設定して完全に透明にするか、しなければなりません。
 
     ```{r}
     #| layout-ncol: 2
     #| fig-width: 4
     #| fig-alt: |
-    #|   Segmented bar chart of drive types of cars, where each bar is filled with 
-    #|   colors for the classes of cars. Heights of the bars correspond to the 
-    #|   number of cars in each drive category, and heights of the colored 
-    #|   segments are proportional to the number of cars with a given class 
-    #|   level within a given drive type level. However the segments overlap. In 
-    #|   the first plot the bars are filled with transparent colors
-    #|   and in the second plot they are only outlined with color.
+    #|   車の駆動方式の棒グラフで、車のクラスごとに色分けされている。
+    #|   色分けされた部分の高さは駆動方式ごとのクラス水準ごとの車の数に
+    #|   なっている。ただ、各部分は重なっている。
+    #|   第1のプロットでは、棒は透明な色に塗られている。
+    #|   第2のプロットでは、棒の境界線にだけ色が付いている。
 
-    # Left
+    # 左
     ggplot(mpg, aes(x = drv, fill = class)) + 
       geom_bar(alpha = 1/5, position = "identity")
 
-    # Right
+    # 右
     ggplot(mpg, aes(x = drv, color = class)) + 
       geom_bar(fill = NA, position = "identity")
     ```
 
-    The identity position adjustment is more useful for 2d geoms, like points, where it is the default.
+    位置調整をidentityとすることは、pointのような2次元geomではもっと役に立つので、そこではデフォルトになっています。
 
--   `position = "fill"` works like stacking, but makes each set of stacked bars the same height.
-    This makes it easier to compare proportions across groups.
+-   `position = "fill"`は、積み上げに似ていますが、積み上げ後の棒の高さを同じにします。
+    グループ間の比率を比較するのが容易になります。
 
--   `position = "dodge"` places overlapping objects directly *beside* one another.
-    This makes it easier to compare individual values.
+-   `position = "dodge"`は、オブジェクトを重ねるのではなく、すぐ*隣に*並べます。
+    個々の値を比較するのが容易になります。
 
     ```{r}
     #| layout-ncol: 2
     #| fig-width: 4
     #| fig-alt: |
-    #|   On the left, segmented bar chart of drive types of cars, where each bar is 
-    #|   filled with colors for the levels of class. Height of each bar is 1 and 
-    #|   heights of the colored segments represent the proportions of cars 
-    #|   with a given class level within a given drive type.
-    #|   On the right, dodged bar chart of drive types of cars. Dodged bars are 
-    #|   grouped by levels of drive type. Within each group bars represent each 
-    #|   level of class. Some classes are represented within some drive types and 
-    #|   not represented in others, resulting in unequal number of bars within each 
-    #|   group. Heights of these bars represent the number of cars with a given 
-    #|   level of drive type and class.
+    #|   左側は、車の駆動方式の棒グラフで、車のクラスごとに色分けされている。
+    #|   棒の高さは全て1。色分けされた部分の高さは、
+    #|   各駆動方式内でのクラス水準別の車数の比率を表している。
+    #|   右側は、車の駆動方式の棒グラフで横置きされている。
+    #|   棒は駆動方式の水準でグループ化され、各グループ内での各棒は
+    #|   クラス水準の車数を表している。ある駆動方式には存在するが、
+    #|   他の駆動方式では存在しないクラスがある。その結果、
+    #|   各グループで棒の数が異なっている。各棒の高さは駆動方式とクラス
+    #|   ごとの車数を表している。
 
-    # Left
+    # 左
     ggplot(mpg, aes(x = drv, fill = class)) + 
       geom_bar(position = "fill")
 
-    # Right
+    # 右
     ggplot(mpg, aes(x = drv, fill = class)) + 
       geom_bar(position = "dodge")
     ```
@@ -866,8 +863,8 @@ Did you notice that the plot displays only 126 points, even though there are 234
 ```{r}
 #| echo: false
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars that 
-#|   shows a negative association.
+#|   車の高速道路での燃料効率、対、排気量の散布図で、
+#|   負の相関を表している。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point()
@@ -884,8 +881,8 @@ This spreads the points out because no two points are likely to receive the same
 
 ```{r}
 #| fig-alt: |
-#|   Jittered scatterplot of highway fuel efficiency versus engine size of cars. 
-#|   The plot shows a negative association.
+#|   車の高速道路での燃料効率、対、排気量の散布図で、点に揺らぎを与えている。
+#|   プロットは負の相関を表している。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point(position = "jitter")
