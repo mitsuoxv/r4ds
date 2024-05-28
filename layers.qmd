@@ -507,38 +507,39 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   facet_wrap(~cyl)
 ```
 
-To facet your plot with the combination of two variables, switch from `facet_wrap()` to `facet_grid()`.
-The first argument of `facet_grid()` is also a formula, but now it's a double sided formula: `rows ~ cols`.
+2つの変数の組み合わせでファセットするには、`facet_wrap()`から`facet_grid()`に切り替えます。
+`facet_grid()`の第1引数はやはり式ですが、ただ両側に変数がある`rows ~ cols`の形を取ります。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars, faceted 
-#|   by number of cylinders across rows and by type of drive train across 
-#|   columns. This results in a 4x3 grid of 12 facets. Some of these facets have 
-#|   no observations: 5 cylinders and 4 wheel drive, 4 or 5 cylinders and front 
-#|   wheel drive.
+#|   車の高速道路での燃料効率、対、排気量の散布図。
+#|   エンジンのシリンダ数ごとに4列、駆動方式ごとに3行に分けて
+#|   ファセットされている。結果、4x3区画で12個のファセットになっている。
+#|   観測がないファセットもある。四輪駆動の5シリンダ、前輪駆動の4、5シリンダ
+#|   には観測がない。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
   facet_grid(drv ~ cyl)
 ```
 
-By default each of the facets share the same scale and range for x and y axes.
-This is useful when you want to compare data across facets but it can be limiting when you want to visualize the relationship within each facet better.
-Setting the `scales` argument in a faceting function to `"free"` will allow for different axis scales across both rows and columns, `"free_x"` will allow for different scales across rows, and `"free_y"` will allow for different scales across columns.
+デフォルトでは、各ファセットのx軸とy軸の尺度と範囲は同じです。
+ファセット間でデータを比較したいときにはそれで良いのですが、各ファセット内の関係をより見やすく可視化したいときには邪魔になります。
+ファセット関数の中の`scales`引数を`"free"`に設定することで、x軸とy軸ともに尺度を別々に、`"free_x"`とすればx軸だけの尺度を別々に、`"free_y"`とすればy軸だけの尺度を別々にできます。
+Setting the `scales` argument in a faceting function to `"free_x"` will allow for different scales of x-axis across columns, and `"free_y"` will allow for different scales on y-axis across rows, and `"free"` will allow both.
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars, 
-#|   faceted by number of cylinders across rows and by type of drive train 
-#|   across columns. This results in a 4x3 grid of 12 facets. Some of these 
-#|   facets have no observations: 5 cylinders and 4 wheel drive, 4 or 5 
-#|   cylinders and front wheel drive. Facets within a row share the same 
-#|   y-scale and facets within a column share the same x-scale.
+#|   車の高速道路での燃料効率、対、排気量の散布図。
+#|   エンジンのシリンダ数ごとに4列、駆動方式ごとに3行に分けて
+#|   ファセットされている。結果、4x3区画で12個のファセットになっている。
+#|   観測がないファセットもある。四輪駆動の5シリンダ、前輪駆動の4、5シリンダ
+#|   には観測がない。同じ行のファセットはy軸の尺度が同じで、
+#|   同じ列のファセットはx軸の尺度が同じ。
 
 ggplot(mpg, aes(x = displ, y = hwy)) + 
   geom_point() + 
-  facet_grid(drv ~ cyl, scales = "free_y")
+  facet_grid(drv ~ cyl, scales = "free")
 ```
 
 ### Exercises
