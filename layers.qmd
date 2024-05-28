@@ -381,43 +381,43 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
-Geoms are the fundamental building blocks of ggplot2.
-You can completely transform the look of your plot by changing its geom, and different geoms can reveal different features of your data.
-For example, the histogram and density plot below reveal that the distribution of highway mileage is bimodal and right skewed while the boxplot reveals two potential outliers.
+幾何オブジェクト geom は、ggplot2の根本的な構成単位です。
+geomを変更するとプロットの外観を完全に変換できますし、違ったgeomからデータの違った特徴が明らかになることがあります。
+例えば、以下のヒストグラムと密度プロットからは高速道路での燃料効率の分布には山が2つあって右に長く伸びていることが分かる一方、ボックスプロットからは外れ値らしきものが2つあることが分かります。
 
 ```{r}
 #| layout-ncol: 3
 #| fig-width: 3
 #| fig-alt: |
-#|   Three plots: histogram, density plot, and box plot of highway
-#|   mileage.
- 
-# Left
+#|   3つのプロット。高速道路での燃料効率の
+#|   ヒストグラム、密度プロット、ボックスプロット。
+
+# 左
 ggplot(mpg, aes(x = hwy)) +
   geom_histogram(binwidth = 2)
 
-# Middle
+# 中
 ggplot(mpg, aes(x = hwy)) +
   geom_density()
 
-# Right
+# 右
 ggplot(mpg, aes(x = hwy)) +
   geom_boxplot()
 ```
 
-ggplot2 provides more than 40 geoms but these don't cover all possible plots one could make.
-If you need a different geom, we recommend looking into extension packages first to see if someone else has already implemented it (see <https://exts.ggplot2.tidyverse.org/gallery/> for a sampling).
-For example, the **ggridges** package ([https://wilkelab.org/ggridges](https://wilkelab.org/ggridges/){.uri}) is useful for making ridgeline plots, which can be useful for visualizing the density of a numerical variable for different levels of a categorical variable.
-In the following plot not only did we use a new geom (`geom_density_ridges()`), but we have also mapped the same variable to multiple aesthetics (`drv` to `y`, `fill`, and `color`) as well as set an aesthetic (`alpha = 0.5`) to make the density curves transparent.
+ggplot2は40を超えるgeomを提供していますが、作成可能な全てのプロットをカバーしてはいません。
+ggplot2が提供するgeomとは違ったgeomが必要なら、まず誰か他の人が既に拡張パッケージを作成してくれていないか確認することをお薦めします (サンプルとして、<https://exts.ggplot2.tidyverse.org/gallery/>を見てみてください)。
+例えば、**ggridges**パッケージ ([https://wilkelab.org/ggridges](https://wilkelab.org/ggridges/){.uri}) は、ridgelineプロットを作成するのに役立ちます。カ
+テゴリ変数の別々の水準ごとに数値変数の密度を可視化するのに使えるプロットです。
+以下のプロットでは、新しいgeom (`geom_density_ridges()`) を使うだけでなく、同じ変数を複数の外観属性に (`drv`を`y`、`fill`、`color`に) マップし、密度曲線を透明にするために外観属性を (`alpha = 0.5`と) 設定しています。
 
 ```{r}
 #| fig-asp: 0.33
 #| fig-alt: 
-#|   Density curves for highway mileage for cars with rear wheel, 
-#|   front wheel, and 4-wheel drives plotted separately. The 
-#|   distribution is bimodal and roughly symmetric for real and 
-#|   4 wheel drive cars and unimodal and right skewed for front 
-#|   wheel drive cars.
+#|   車の高速道路での燃料効率の密度曲線を、後輪駆動、前輪駆動、
+#|   四輪駆動で別々にプロット。後輪駆動と四輪駆動では、分布には
+#|   山が2つありほぼ左右対称。前輪駆動での分布は山が1つで右に
+#|   長く伸びている。
 
 library(ggridges)
 
@@ -425,17 +425,17 @@ ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
   geom_density_ridges(alpha = 0.5, show.legend = FALSE)
 ```
 
-The best place to get a comprehensive overview of all of the geoms ggplot2 offers, as well as all functions in the package, is the reference page: <https://ggplot2.tidyverse.org/reference>.
-To learn more about any single geom, use the help (e.g., `?geom_smooth`).
+ggplot2が提供する全てのgeomと関数を網羅的にざっと眺めるには、referenceページ<https://ggplot2.tidyverse.org/reference>をお薦めします。
+個々のgeomを深く学習するには、ヘルプを使いましょう (例えば、`?geom_smooth`とします)。
 
-### Exercises
+### 練習問題
 
-1.  What geom would you use to draw a line chart?
-    A boxplot?
-    A histogram?
-    An area chart?
+1.  線グラフを描くのに使うgeomは何？
+    ボックスプロットでは何？
+    ヒストグラムでは何？
+    領域グラフでは何？
 
-2.  Earlier in this chapter we used `show.legend` without explaining it:
+2.  ここまでの本章で説明もせずに以下のように`show.legend`を使っている。
 
     ```{r}
     #| fig-show: hide
@@ -445,14 +445,14 @@ To learn more about any single geom, use the help (e.g., `?geom_smooth`).
       geom_smooth(aes(color = drv), show.legend = FALSE)
     ```
 
-    What does `show.legend = FALSE` do here?
-    What happens if you remove it?
-    Why do you think we used it earlier?
+    ここでの`show.legend = FALSE`の役目は？
+    それを削除するとどうなるか？
+    ここまでの本章でそれを使った理由は何だと思う？
 
-3.  What does the `se` argument to `geom_smooth()` do?
+3.  `geom_smooth()`での`se`引数の役割は何？
 
-4.  Recreate the R code necessary to generate the following graphs.
-    Note that wherever a categorical variable is used in the plot, it's `drv`.
+4.  以下のグラフを生成するのに必要なRコードを再現しなさい。
+    ちなみに、プロットで使われているカテゴリ変数は全て`drv`。
 
     ```{r}
     #| echo: false
@@ -460,20 +460,18 @@ To learn more about any single geom, use the help (e.g., `?geom_smooth`).
     #| layout-ncol: 2
     #| fig-width: 3
     #| fig-alt: |
-    #|   There are six scatterplots in this figure, arranged in a 3x2 grid. 
-    #|   In all plots highway fuel efficiency of cars are on the y-axis and 
-    #|   engine size is on the x-axis. The first plot shows all points in black 
-    #|   with a smooth curve overlaid on them. In the second plot points are 
-    #|   also all black, with separate smooth curves overlaid for each level of 
-    #|   drive train. On the third plot, points and the smooth curves are 
-    #|   represented in different colors for each level of drive train. In the 
-    #|   fourth plot the points are represented in different colors for each 
-    #|   level of drive train but there is only a single smooth line fitted to 
-    #|   the whole data. In the fifth plot, points are represented in different 
-    #|   colors for each level of drive train, and a separate smooth curve with 
-    #|   different line types are fitted to each level of drive train. And 
-    #|   finally in the sixth plot points are represented in different colors 
-    #|   for each level of drive train and they have a thick white border.
+    #|   本図には6つの散布図があり、3x2区画に並べられている。
+    #|   全てのプロットで、y軸は車の高速道路での燃料効率で、x軸は排気量。
+    #|   第1のプロットでは、全ての点は黒色で、滑らかな曲線1本が重なる。
+    #|   第2のプロットでも、 全ての点は黒色で、滑らかな曲線が重なるが、
+    #|   滑らかな曲線は駆動方式ごとの3本。
+    #|   第3のプロットでは、さらに点と線が駆動方式ごとに異なる色に。
+    #|   第4のプロットでは、点は駆動方式ごとに異なる色だが、
+    #|   線は全体にフィットした1本に。
+    #|   第5のプロットでは、点は駆動方式ごとに異なる色で、線は
+    #|   駆動方式ごとの3本で線種が異なる。
+    #|   最後に、第6のプロットでは、点は駆動方式ごとに異なる色で周りに厚い
+    #|   境界線がある。線はない。
 
     ggplot(mpg, aes(x = displ, y = hwy)) + 
       geom_point() + 
@@ -495,7 +493,7 @@ To learn more about any single geom, use the help (e.g., `?geom_smooth`).
       geom_point(aes(color = drv))
     ```
 
-## Facets
+## ファセット
 
 In @sec-data-visualization you learned about faceting with `facet_wrap()`, which splits a plot into subplots that each display one subset of the data based on a categorical variable.
 
