@@ -621,73 +621,74 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 
 ## 統計変換
 
-Consider a basic bar chart, drawn with `geom_bar()` or `geom_col()`.
-The following chart displays the total number of diamonds in the `diamonds` dataset, grouped by `cut`.
-The `diamonds` dataset is in the ggplot2 package and contains information on \~54,000 diamonds, including the `price`, `carat`, `color`, `clarity`, and `cut` of each diamond.
-The chart shows that more diamonds are available with high quality cuts than with low quality cuts.
+`geom_bar()`や`geom_col()`で描く、基本的な棒グラフを考えてみましょう。
+以下プロットは`diamonds`データセットでの`cut`ごとのダイアモンドの数合計を表示しています。
+`diamonds`データセットはggplot2パッケージに入っており、54,000個程度のダイアモンドの`price`、`carat`、`color`、`clarity`、`cut`などの情報を含んできます。
+以下プロットは、高品質カットのダイアモンドの方が低品質カットのものより多いことを表しています。
 
 ```{r}
 #| fig-alt: |
-#|   Bar chart of number of each cut of diamond. There are roughly 1500 
-#|   Fair, 5000 Good, 12000 Very Good, 14000 Premium, and 22000 Ideal cut 
-#|   diamonds.
+#|   ダイアモンドのカット水準ごとのカウントの棒グラフ。ざっと、1500個が 
+#|   Fair、5000個がGood、12000個がVery Good、14000個がPremium、 
+#|   そして、22000個がIdeal。
 
 ggplot(diamonds, aes(x = cut)) + 
   geom_bar()
 ```
 
-On the x-axis, the chart displays `cut`, a variable from `diamonds`.
-On the y-axis, it displays count, but count is not a variable in `diamonds`!
-Where does count come from?
-Many graphs, like scatterplots, plot the raw values of your dataset.
-Other graphs, like bar charts, calculate new values to plot:
+x軸には`cut`という`diamonds`からの変数が表示されています。
+y軸にはcountと表示されていますが、そんな変数は`diamonds`にはありません！
+一体どこから出て来たのでしょうか？
+散布図のような多くのグラフは、データセットのデータをそのままプロットします。
+棒グラフのようなその他のグラフは、プロットする新しい変数を計算します。
 
--   Bar charts, histograms, and frequency polygons bin your data and then plot bin counts, the number of points that fall in each bin.
+-   棒グラフ、ヒストグラム、頻度ポリゴンは、データをビンに詰めから、各ビンの中に入っている点の数、つまり、ビン・カウントをプロットします。
 
--   Smoothers fit a model to your data and then plot predictions from the model.
+-   滑らかな曲線は、データにモデルをフィットさせてから、モデルからの予測をプロットします。
 
--   Boxplots compute the five-number summary of the distribution and then display that summary as a specially formatted box.
+-   ボックスプロットは、分布の5つの数値要約を計算してから、特別な形式の箱の格好で要約を表示します。
 
-The algorithm used to calculate new values for a graph is called a **stat**, short for statistical transformation.
-@fig-vis-stat-bar shows how this process works with `geom_bar()`.
+グラフ用に新しい変数を計算するアルゴリズムのことを、統計変換 (statistical transformation) 、略して**stat**と呼びます。
+@fig-vis-stat-bar は、`geom_bar()`を使って、この過程がどう機能するのか示しています。
 
 ```{r}
 #| label: fig-vis-stat-bar
 #| echo: false
 #| out-width: "100%"
 #| fig-cap: |
-#|   When creating a bar chart we first start with the raw data, then
-#|   aggregate it to count the number of observations in each bar,
-#|   and finally map those computed variables to plot aesthetics.
+#|   棒グラフを作成するには、まず生のデータからはじめて、次に
+#|   棒ごとの観測数をカウントして集計、最後にこれらの計算された変数を
+#|   プロットの外観属性にマップする。
 #| fig-alt: |
-#|   A figure demonstrating three steps of creating a bar chart. 
-#|   Step 1. geom_bar() begins with the diamonds data set. Step 2. geom_bar() 
-#|   transforms the data with the count stat, which returns a data set of 
-#|   cut values and counts. Step 3. geom_bar() uses the transformed data to 
-#|   build the plot. cut is mapped to the x-axis, count is mapped to the y-axis.
+#|   図は棒グラフ作成の3つのステップを実演している。
+#|   ステップ1：geom_bar()は、diamondsデータセットを読み込む。
+#|   ステップ2：geom_bar()は、データを変換して、
+#|   cut値とcountのデータセットであるcount statにする。
+#|   ステップ3：geom_bar()は、変換後のデータを使ってプロットを構築する。
+#|   cutはx軸に、countはy軸にマップされる。
 
 knitr::include_graphics("images/visualization-stat-bar.png")
 ```
 
-You can learn which stat a geom uses by inspecting the default value for the `stat` argument.
-For example, `?geom_bar` shows that the default value for `stat` is "count", which means that `geom_bar()` uses `stat_count()`.
-`stat_count()` is documented on the same page as `geom_bar()`.
-If you scroll down, the section called "Computed variables" explains that it computes two new variables: `count` and `prop`.
+geomがどのstatを使っているかは、`stat`引数のデフォルト値を調べれば分かります。
+例えば、`?geom_bar`とすれば、`stat`引数のデフォルト値は"count"であると出ますので、`geom_bar()`は`stat_count()`を使っていると分かります。
+`stat_count()`は`geom_bar()`と同じページにヘルプがあります。
+下へスクロールすると、"Computed variables"のセクションで、それが2つの新しい変数`count`と`prop`を計算していることが説明されています。
 
-Every geom has a default stat; and every stat has a default geom.
-This means that you can typically use geoms without worrying about the underlying statistical transformation.
-However, there are three reasons why you might need to use a stat explicitly:
+geomごとにデフォルトのstatがあり、statごとにデフォルトのgeomがあります。
+そのおかげで、通常は根底にある統計変換について悩むことなくgeomを使えます。
+しかし、明示的にstatを使う必要が出てくる3つの理由があります。
 
-1.  You might want to override the default stat.
-    In the code below, we change the stat of `geom_bar()` from count (the default) to identity.
-    This lets us map the height of the bars to the raw values of a y variable.
+1.  statをデフォルトから変更したいかもしれません。
+    以下コードでは、`geom_bar()`のstatを (デフォルトの) countからidentityに変更しています。
+    これで、y変数の生データが棒の高さにマップされます。
 
     ```{r}
     #| warning: false
     #| fig-alt: |
-    #|   Bar chart of number of each cut of diamond. There are roughly 1500 
-    #|   Fair, 5000 Good, 12000 Very Good, 14000 Premium, and 22000 Ideal cut 
-    #|   diamonds.
+    #|   ダイアモンドのカット水準ごとのカウントの棒グラフ。ざっと、1500個が 
+    #|   Fair、5000個がGood、12000個がVery Good、14000個がPremium、 
+    #|   そして、22000個がIdeal。
 
     diamonds |>
       count(cut) |>
@@ -695,31 +696,29 @@ However, there are three reasons why you might need to use a stat explicitly:
       geom_bar(stat = "identity")
     ```
 
-2.  You might want to override the default mapping from transformed variables to aesthetics.
-    For example, you might want to display a bar chart of proportions, rather than counts:
+2.  外観属性にマップされる変換後の変数を、デフォルトから変更したいかもしれません。
+    例えば、棒グラフでカウントではなく比率を表示したいかもしれません。
 
     ```{r}
     #| fig-alt: |
-    #|   Bar chart of proportion of each cut of diamond. Roughly, Fair 
-    #|   diamonds make up 0.03, Good 0.09, Very Good 0.22, Premium 0.26, and 
-    #|   Ideal 0.40.
+    #|   ダイアモンドのカット水準ごとの比率の棒グラフ。ざっと、
+    #|   Fairが0.03、Goodが0.09、Very Goodが0.22、Premium 0.26、 
+    #|   Idealが0.40を占める。
 
     ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + 
       geom_bar()
     ```
 
-    To find the possible variables that can be computed by the stat, look for the section titled "computed variables" in the help for `geom_bar()`.
+    statで計算できる変数を探すには、`geom_bar()`のヘルプの中の"Computed variables"というタイトルのセクションを見てください。
 
-3.  You might want to draw greater attention to the statistical transformation in your code.
-    For example, you might use `stat_summary()`, which summarizes the y values for each unique x value, to draw attention to the summary that you're computing:
+3.  コード内で統計変換に、より注目を集めたいかもしれません。
+    例えば、xのユニークな値ごとにy値を要約する`stat_summary()`を使って、計算している要約に注目を集めたいかもしれません。
 
     ```{r}
     #| fig-alt: |
-    #|   A plot with depth on the y-axis and cut on the x-axis (with levels 
-    #|   fair, good, very good, premium, and ideal) of diamonds. For each level 
-    #|   of cut, vertical lines extend from minimum to maximum depth for diamonds 
-    #|   in that cut category, and the median depth is indicated on the line 
-    #|   with a point.
+    #|   ダイアモンドのcut (fair、good、very good、premium、idealの各水準)
+    #|   がx軸、depthがy軸のプロット。cutのカテゴリごとにdepthの最小値から
+    #|   最大値まで垂直線が伸び、depthの中央値が線上の点で示されている。
 
     ggplot(diamonds) + 
       stat_summary(
@@ -730,28 +729,29 @@ However, there are three reasons why you might need to use a stat explicitly:
       )
     ```
 
-ggplot2 provides more than 20 stats for you to use.
-Each stat is a function, so you can get help in the usual way, e.g., `?stat_bin`.
+ggplot2は20を超えるstatが使えるよう提供しています。
+各statは関数なので、いつものやり方でヘルプを得ることができます。例
+えば、`?stat_bin`とします。
 
-### Exercises
+### 練習問題
 
-1.  What is the default geom associated with `stat_summary()`?
-    How could you rewrite the previous plot to use that geom function instead of the stat function?
+1.  `stat_summary()`のデフォルトgeomは何か？
+    先のプロットを、stat関数ではなくgeom関数を使って描き直すには、どうするか？
 
-2.  What does `geom_col()` do?
-    How is it different from `geom_bar()`?
+2.  `geom_col()`は何をするか？
+    `geom_bar()`とどう違うのか？
 
-3.  Most geoms and stats come in pairs that are almost always used in concert.
-    Make a list of all the pairs.
-    What do they have in common?
-    (Hint: Read through the documentation.)
+3.  ほとんどのgeomとstatは、たいてい上手く機能するペアになっている。
+    それらペアの全リストを作成しなさい。
+    共通点は何か？
+    (ヒント：ヘルプを読め。)
 
-4.  What variables does `stat_smooth()` compute?
-    What arguments control its behavior?
+4.  `stat_smooth()`が計算する変数は何か？
+    その振る舞いを制御する引数は何か？
 
-5.  In our proportion bar chart, we needed to set `group = 1`.
-    Why?
-    In other words, what is the problem with these two graphs?
+5.  上の棒グラフで比率を描いた際、`group = 1`と設定する必要があった。
+    その理由は？
+    言い換えると、以下2つのグラフのどこが問題なのか？
 
     ```{r}
     #| fig-show: hide
@@ -762,7 +762,7 @@ Each stat is a function, so you can get help in the usual way, e.g., `?stat_bin`
       geom_bar()
     ```
 
-## Position adjustments
+## 位置調整
 
 There's one more piece of magic associated with bar charts.
 You can color a bar chart using either the `color` aesthetic, or, more usefully, the `fill` aesthetic:
