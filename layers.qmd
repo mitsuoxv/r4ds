@@ -924,23 +924,23 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 5.  `geom_boxplot()`のデフォルトの位置調整は何か？
     `mpg`データセットを可視化して、実演しなさい。
 
-## Coordinate systems
+## 座標システム
 
-Coordinate systems are probably the most complicated part of ggplot2.
-The default coordinate system is the Cartesian coordinate system where the x and y positions act independently to determine the location of each point.
-There are two other coordinate systems that are occasionally helpful.
+座標システムはおそらくggplot2で最も複雑な部分です。
+デフォルトの座標システムはCartesian座標システム `coord_cartesian()` で、各点の場所を決めるのにx位置とy位置は独立しています。
+他にも2つ、ときに役立つ座標システムがあります。
 
--   `coord_quickmap()` sets the aspect ratio correctly for geographic maps.
-    This is very important if you're plotting spatial data with ggplot2.
-    We don't have the space to discuss maps in this book, but you can learn more in the [Maps chapter](https://ggplot2-book.org/maps.html) of *ggplot2: Elegant graphics for data analysis*.
+-   `coord_quickmap()`は、地理的地図向けに正しいアスペクト比を設定します。
+    ggplot2で空間データをプロットする場合、とても重要です。
+    本書には地図を議論するスペースがありませんが、*ggplot2: Elegant graphics for data analysis*の[Maps chapter](https://ggplot2-book.org/maps.html)でさらに学習できます。
 
     ```{r}
     #| layout-ncol: 2
     #| fig-width: 3
     #| message: false
     #| fig-alt: |
-    #|   Two maps of the boundaries of New Zealand. In the first plot the aspect 
-    #|   ratio is incorrect, in the second plot it is correct.
+    #|   ニュージーランドの境界線の2つの地図。アスペクト比が、
+    #|   第1のプロットでは不正確で、第2のプロットでは正確。
 
     nz <- map_data("nz")
 
@@ -952,16 +952,16 @@ There are two other coordinate systems that are occasionally helpful.
       coord_quickmap()
     ```
 
--   `coord_polar()` uses polar coordinates.
-    Polar coordinates reveal an interesting connection between a bar chart and a Coxcomb chart.
+-   `coord_polar()`は、極性の座標システムを使います。
+    極性の座標システムは、棒グラフとCoxcombチャート間の興味深い関係を明らかにします。
 
     ```{r}
     #| layout-ncol: 2
     #| fig-width: 3
     #| fig-asp: 1
     #| fig-alt: |
-    #|   There are two plots. On the left is a bar chart of clarity of diamonds, 
-    #|   on the right is a Coxcomb chart of the same data.
+    #|   2つのプロット。左側はダイアモンドのclarityの棒グラフで、
+    #|   右側は同じデータのCoxcombチャート。
 
     bar <- ggplot(data = diamonds) + 
       geom_bar(
@@ -975,15 +975,15 @@ There are two other coordinate systems that are occasionally helpful.
     bar + coord_polar()
     ```
 
-### Exercises
+### 練習問題
 
-1.  Turn a stacked bar chart into a pie chart using `coord_polar()`.
+1.  `coord_polar()`を使って、積み上げ棒グラフをパイチャートに変えなさい。
 
-2.  What's the difference between `coord_quickmap()` and `coord_map()`?
+2.  `coord_quickmap()`と`coord_map()`の違いは何か？
 
-3.  What does the following plot tell you about the relationship between city and highway mpg?
-    Why is `coord_fixed()` important?
-    What does `geom_abline()` do?
+3.  以下プロットは市内燃料効率と高速道路燃料効率間の関係について何を語っているか？
+    `coord_fixed()`が重要な理由は何か？
+    `geom_abline()`は何をしているか？
 
     ```{r}
     #| fig-show: hide
@@ -994,9 +994,9 @@ There are two other coordinate systems that are occasionally helpful.
       coord_fixed()
     ```
 
-## The layered grammar of graphics
+## レイヤー化されたグラフィックスの文法
 
-We can expand on the graphing template you learned in @sec-ggplot2-calls by adding position adjustments, stats, coordinate systems, and faceting:
+@sec-ggplot2-calls で学んだグラフのテンプレートに、位置調整 position、統計変換 stat、座標システム coordinateとファセット facetを加えることで、以下のように拡張できます。
 
 ```         
 ggplot(data = <DATA>) + 
@@ -1009,47 +1009,51 @@ ggplot(data = <DATA>) +
   <FACET_FUNCTION>
 ```
 
-Our new template takes seven parameters, the bracketed words that appear in the template.
-In practice, you rarely need to supply all seven parameters to make a graph because ggplot2 will provide useful defaults for everything except the data, the mappings, and the geom function.
+新しいテンプレートは、上でブランケットで囲んだ7つのパラメータを取ります。
+実際には、グラフを作るのに、7つ全てのパラメータを書かねばならないことはまれです。D
+ATA、MAPPINGS、GEOM_FUNCTION以外のパラメータは、ggplot2が役立つデフォルトを提供してくれるからです。
 
-The seven parameters in the template compose the grammar of graphics, a formal system for building plots.
-The grammar of graphics is based on the insight that you can uniquely describe *any* plot as a combination of a dataset, a geom, a set of mappings, a stat, a position adjustment, a coordinate system, a faceting scheme, and a theme.
+テンプレートの7つのパラメータは、プロットを構築する正式なシステムである、グラフィックスの文法を構成しています。
+グラフィックスの文法はある洞察に基づいています。*ど*
+*んな*プロットも、データセット、geom、マッピングの集合、stat、位置調整、座標システム、ファセット、テーマの組み合わせでユニークに描くことができる、という洞察です。
 
-To see how this works, consider how you could build a basic plot from scratch: you could start with a dataset and then transform it into the information that you want to display (with a stat).
-Next, you could choose a geometric object to represent each observation in the transformed data.
-You could then use the aesthetic properties of the geoms to represent variables in the data.
-You would map the values of each variable to the levels of an aesthetic.
-These steps are illustrated in @fig-visualization-grammar.
-You'd then select a coordinate system to place the geoms into, using the location of the objects (which is itself an aesthetic property) to display the values of the x and y variables.
+これがどう機能するか見るには、基本的なプロットをゼロから構築する方法を検討してみてください。デ
+ータセットからはじめて、(statを使って) 表示したい情報に変換します。
+次に、変換したデータの各観測を表示する幾何オブジェクトを選びます。
+それから、geomの外観属性を使って、データ中の変数を表します。
+各変数の値を外観属性の水準へマップすることでしょう。
+こららのステップは @fig-visualization-grammar に図解されています。
+次に、xとy変数の値を表示するためにオブジェクトの場所 (それ自体、外観属性です) を使ってgeomを置く、座標システムを選びます。
 
 ```{r}
 #| label: fig-visualization-grammar
 #| echo: false
 #| fig-alt: |
-#|   A figure demonstrating the steps for going from raw data to table of 
-#|   frequencies where each row represents one level of cut and a count column 
-#|   shows how many diamonds are in that cut level. Then, these values are 
-#|   mapped to heights of bars.
+#|   生データから頻度表までの各ステップを実演する図。
+#|   頻度表の各行は、一つのcut水準とそのcut水準のダイアモンド数を示す
+#|   カウントを表す。次に、こららの値は棒の高さにマップされる。
 #| fig-cap: |
-#|   Steps for going from raw data to a table of frequencies to a bar plot where 
-#|   the heights of the bar represent the frequencies.
+#|   生データから頻度表を経て棒グラフになるまでを実演する図。
+#|   棒の高さは頻度を表している。
 
 knitr::include_graphics("images/visualization-grammar.png")
 ```
 
-At this point, you would have a complete graph, but you could further adjust the positions of the geoms within the coordinate system (a position adjustment) or split the graph into subplots (faceting).
-You could also extend the plot by adding one or more additional layers, where each additional layer uses a dataset, a geom, a set of mappings, a stat, and a position adjustment.
+この段階でグラフは完成していますが、さらに座標システム内でgeomの位置を調整 (位置調整) したり、グラフをサブプロットに分けたり (ファセット) できます。
+また、1つ以上のレイヤーを追加してプロットを拡張することもできます。各
+レイヤーはデータセット、幾何オブジェクト、マッピング、統計変換と位置調整を使います。
 
-You could use this method to build *any* plot that you imagine.
-In other words, you can use the code template that you've learned in this chapter to build hundreds of thousands of unique plots.
+この方法を使えば、想像できる*どんな*プロットも構築できます。
+言い換えれば、本章で学んだコードのテンプレートを使えば、何十万ものユニークなプロットを構築できるということです。
 
-If you'd like to learn more about the theoretical underpinnings of ggplot2, you might enjoy reading "[The Layered Grammar of Graphics](https://vita.had.co.nz/papers/layered-grammar.pdf)", the scientific paper that describes the theory of ggplot2 in detail.
+ggplot2の理論的基礎についてさらに学習したければ、ggplot2の理論を詳細に記述した学術論文"[The Layered Grammar of Graphics](https://vita.had.co.nz/papers/layered-grammar.pdf)"を読むと楽しめるでしょう。
 
-## Summary
+## まとめ
 
-In this chapter you learned about the layered grammar of graphics starting with aesthetics and geometries to build a simple plot, facets for splitting the plot into subsets, statistics for understanding how geoms are calculated, position adjustments for controlling the fine details of position when geoms might otherwise overlap, and coordinate systems which allow you to fundamentally change what `x` and `y` mean.
-One layer we have not yet touched on is theme, which we will introduce in @sec-themes.
+本章では、レイヤー化されたグラフィックスの文法を学習しました。簡
+単なプロットを構築する外観属性と幾何オブジェクトからはじめて、プロットをサブプロットに分けるファセット、geomが計算される方法を理解する統計変換、geomが重なるのを回避したいときなどに位置を細かく制御する位置調整、そして、`x`と`y`の意味を根本的に変えられる座標システムと学んできました。
+まだ触れていないたった一つのレイヤーがテーマ theme ですが、@sec-themes で紹介します。
 
-Two very useful resources for getting an overview of the complete ggplot2 functionality are the ggplot2 cheatsheet (which you can find at <https://posit.co/resources/cheatsheets>) and the ggplot2 package website ([https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org/)).
+ggplot2機能の完全な概要が得られる2つのとても役立つ資源は、ggplot2 cheatsheet ( <https://posit.co/resources/cheatsheets>で見つけられます) と、ggplot2 package website ([https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org/))です。
 
-An important lesson you should take from this chapter is that when you feel the need for a geom that is not provided by ggplot2, it's always a good idea to look into whether someone else has already solved your problem by creating a ggplot2 extension package that offers that geom.
+本章からの大切な教訓は、ggplot2が提供するgeomでは足りないと感じたときは、誰か他の人が既にあなたの問題を解いていて、ggplot2の拡張パッケージを作成してgeomを提供してくれているか、調査することがいつもお薦めだということです。
