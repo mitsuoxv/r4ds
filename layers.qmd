@@ -542,13 +542,13 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   facet_grid(drv ~ cyl, scales = "free")
 ```
 
-### Exercises
+### 練習問題
 
-1.  What happens if you facet on a continuous variable?
+1.  連続値変数でファセットしたらどうなるか？
 
-2.  What do the empty cells in the plot above with `facet_grid(drv ~ cyl)` mean?
-    Run the following code.
-    How do they relate to the resulting plot?
+2.  `facet_grid(drv ~ cyl)`を使った上のプロットで空のセルが意味するのは何か？
+    以下コードを実行しなさい。
+    出力されたプロットととの関係は？
 
     ```{r}
     #| fig-show: hide
@@ -557,8 +557,8 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
       geom_point(aes(x = drv, y = cyl))
     ```
 
-3.  What plots does the following code make?
-    What does `.` do?
+3.  以下コードはどんなプロットを作成するか？
+    `.`の役目は？
 
     ```{r}
     #| fig-show: hide
@@ -572,28 +572,28 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
       facet_grid(. ~ cyl)
     ```
 
-4.  Take the first faceted plot in this section:
+4.  このセクションの最初のファセットされたプロットを見なさい。
 
     ```{r}
     #| fig-show: hide
 
     ggplot(mpg) + 
       geom_point(aes(x = displ, y = hwy)) + 
-      facet_wrap(~ class, nrow = 2)
+      facet_wrap(~ cyl, nrow = 2)
     ```
 
-    What are the advantages to using faceting instead of the color aesthetic?
-    What are the disadvantages?
-    How might the balance change if you had a larger dataset?
+    外観属性colorの替わりにファセットを使う長所は何？
+    欠点は？
+    データセットが大きくなるにつれて、バランスはどう変わりますか？
 
-5.  Read `?facet_wrap`.
-    What does `nrow` do?
-    What does `ncol` do?
-    What other options control the layout of the individual panels?
-    Why doesn't `facet_grid()` have `nrow` and `ncol` arguments?
+5.  `?facet_wrap`を読みなさい。
+    `nrow`の役割は？
+    `ncol`の役割は？
+    個々のパネルのレイアウトを制御するオプションは他に何があるか？
+    `facet_grid()`には引数に`nrow`も`ncol`もない理由は？
 
-6.  Which of the following plots makes it easier to compare engine size (`displ`) across cars with different drive trains?
-    What does this say about when to place a faceting variable across rows or columns?
+6.  駆動方式ごとに排気量 (`displ`) を比較するのは、以下プロットのどちらが容易？
+    ファセットする変数を行に置くべきときと、列に置くべきときについて、何が言えるか？
 
     ```{r}
     #| fig-show: hide
@@ -608,8 +608,8 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
       facet_grid(. ~ drv)
     ```
 
-7.  Recreate the following plot using `facet_wrap()` instead of `facet_grid()`.
-    How do the positions of the facet labels change?
+7.  `facet_grid()`の替わりに`facet_wrap()`を使って、以下プロットを再現しなさい。
+    ファセットのラベル位置を変更するにはどうする？
 
     ```{r}
     #| fig-show: hide
@@ -619,7 +619,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
       facet_grid(drv ~ .)
     ```
 
-## Statistical transformations
+## 統計変換
 
 Consider a basic bar chart, drawn with `geom_bar()` or `geom_col()`.
 The following chart displays the total number of diamonds in the `diamonds` dataset, grouped by `cut`.
