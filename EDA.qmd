@@ -152,7 +152,7 @@ ggplot(smaller, aes(x = carat)) +
 これら質問の多くは、例えば、ある変数の値が別の変数の動きを説明できないか、といった変数*間*の関係を探索するよう促します。
 少し先でそれを探索します。
 
-### 外れ値
+### 異常値
 
 外れ値は、普通でない観測です。
 そのデータ点はパターンにフィットしていなさそうです。
@@ -228,27 +228,27 @@ EDAを行うことで、欠損値が0と表記されたデータを見つけた�
 
 ### 練習問題
 
-1.  Explore the distribution of each of the `x`, `y`, and `z` variables in `diamonds`.
-    What do you learn?
-    Think about a diamond and how you might decide which dimension is the length, width, and depth.
+1.  `diamonds`の変数`x`、`y`、`z`それぞれの分布を探索しなさい。
+    何が分かりますか？
+    ダイアモンドを思い浮かべて、どの次元が長さ、幅、深さとどう決めるか？
 
-2.  Explore the distribution of `price`.
-    Do you discover anything unusual or surprising?
-    (Hint: Carefully think about the `binwidth` and make sure you try a wide range of values.)
+2.  `price`の分布を探索しなさい。
+    何か異常な、あるいは、驚くことを見つけましたか？
+    (ヒント：`binwidth`について注意深く考えて、幅広い値で試してみること。)
 
-3.  How many diamonds are 0.99 carat?
-    How many are 1 carat?
-    What do you think is the cause of the difference?
+3.  0.99カラットのダイアモンドは何個ある？
+    1カラットは？
+    この差の原因は何と考えるか？
 
-4.  Compare and contrast `coord_cartesian()` vs. `xlim()` or `ylim()` when zooming in on a histogram.
-    What happens if you leave `binwidth` unset?
-    What happens if you try and zoom so only half a bar shows?
+4.  ヒストグラムでズームする際に、`coord_cartesian()`を使う場合と、`xlim()`か`ylim()`を使う場合を比較、対象しなさい。
+    `binwidth`を設定していないと、どうなるか？
+    棒の半分だけを表すようにズームすると、どうなるか？
 
 ## 異常値 {#sec-unusual-values-eda}
 
-If you've encountered unusual values in your dataset, and simply want to move on to the rest of your analysis, you have two options.
+データセットの中で異常値に出会って、それでも残りの分析へ進みたい場合、2つのオプションがあります。
 
-1.  Drop the entire row with the strange values:
+1.  奇妙な値のある行全体を落とす。
 
     ```{r}
     #| eval: false
@@ -257,33 +257,33 @@ If you've encountered unusual values in your dataset, and simply want to move on
       filter(between(y, 3, 20))
     ```
 
-    We don't recommend this option because one invalid value doesn't imply that all the other values for that observation are also invalid.
-    Additionally, if you have low quality data, by the time that you've applied this approach to every variable you might find that you don't have any data left!
+    このオプションはお薦めしません。無
+    効な変数が一つあるだけで、その観測のその他全ての変数も同じく無効とは言えないからです。
+    加えて、低品質データの場合、全変数でこのアプローチを適用すると、データが全く残らないかもしれません！
 
-2.  Instead, we recommend replacing the unusual values with missing values.
-    The easiest way to do this is to use `mutate()` to replace the variable with a modified copy.
-    You can use the `if_else()` function to replace unusual values with `NA`:
+2.  替わりに、異常値は欠損値に置き換えることをお薦めします。
+    そうする最も簡単な方法は、`mutate()`を使って、変数を修正後のコピーに置き換えることです。
+    `if_else()`関数を使って、異常値を`NA`に置き換えることができます。
 
     ```{r}
     diamonds2 <- diamonds |> 
       mutate(y = if_else(y < 3 | y > 20, NA, y))
     ```
 
-It's not obvious where you should plot missing values, so ggplot2 doesn't include them in the plot, but it does warn that they've been removed:
+欠損値はどこにプロットすべきか分からないので、ggplot2はプロットに含めませんが、除いた旨警告します。
 
 ```{r}
 #| dev: "png"
 #| fig-alt: |
-#|   A scatterplot of widths vs. lengths of diamonds. There is a strong, 
-#|   linear association between the two variables. All but one of the diamonds 
-#|   has length greater than 3. The one outlier has a length of 0 and a width 
-#|   of about 6.5. 
+#|   ダイアモンドの幅、対、長さの散布図。2変数間には強いリニアな相関がある。
+#|   1つを除く全てのダイアモンドは3超の長さ。長さ0、幅6.5辺りに1つ外れ値が
+#|   ある。
 
 ggplot(diamonds2, aes(x = x, y = y)) + 
   geom_point()
 ```
 
-To suppress that warning, set `na.rm = TRUE`:
+警告を出さないようにするには、`na.rm = TRUE`と設定します。
 
 ```{r}
 #| eval: false
