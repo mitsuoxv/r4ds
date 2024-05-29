@@ -1,4 +1,4 @@
-# Exploratory data analysis {#sec-exploratory-data-analysis}
+# 探索的データ分析 {#sec-exploratory-data-analysis}
 
 ```{r}
 #| echo: false
@@ -6,31 +6,33 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
-This chapter will show you how to use visualization and transformation to explore your data in a systematic way, a task that statisticians call exploratory data analysis, or EDA for short.
-EDA is an iterative cycle.
-You:
+本章では、可視化と変換を使って、統計学者が探索的データ分析 (略してEDA) と呼ぶ、データを探索する組織立った方法を示します。
+EDAは反復サイクルです。
+あなたは、
 
-1.  Generate questions about your data.
+1.  データについて質問を生成します。
 
-2.  Search for answers by visualizing, transforming, and modelling your data.
+2.  データを可視化、変換、モデル化して、回答を探します。
 
-3.  Use what you learn to refine your questions and/or generate new questions.
+3.  分かったことを使って質問を精錬させる、もしくは、新しい質問を生成する。
 
-EDA is not a formal process with a strict set of rules.
-More than anything, EDA is a state of mind.
-During the initial phases of EDA you should feel free to investigate every idea that occurs to you.
-Some of these ideas will pan out, and some will be dead ends.
-As your exploration continues, you will home in on a few particularly productive insights that you'll eventually write up and communicate to others.
+EDAは厳格な規則集がある正式な過程ではありません。
+EDAは何よりもまず、心の持ち様なのです。
+EDAの初期段階では思いついた全てのアイディアを気ままに調査すべきです。
+いくつかのアイディアは広がり、またいくつかのアイディアは行き詰まります。
+探索を続けるうちに、2、3の特に実りある洞察を行き着き、最終的には報告書を書き上げて他者に伝達することになります。
 
-EDA is an important part of any data analysis, even if the primary research questions are handed to you on a platter, because you always need to investigate the quality of your data.
-Data cleaning is just one application of EDA: you ask questions about whether your data meets your expectations or not.
-To do data cleaning, you'll need to deploy all the tools of EDA: visualization, transformation, and modelling.
+EDAはどんなデータ分析でも重要な部分です。た
+とえ、研究の第一義的な質問が盆に載せて手渡されたとしても、データ品質を調べる必要が常にある以上、EDAは欠かせません。
+データ・クリーニングはEDAの一つの応用に過ぎません。デ
+ータが期待に沿うものか否かの質問にあたります。
+データ・クリーニングを行うには、可視化、変換、モデル化といったEDAの全ての道具を持ち出す必要があります。
 
-### Prerequisites
+### 準備するもの
 
-In this chapter we'll combine what you've learned about dplyr and ggplot2 to interactively ask questions, answer them with data, and then ask new questions.
+本章では、dplyrとggplot2について学習したことを組み合わせて、質問を尋ね、データを使って回答、そしてまた新しい質問を尋ねることを繰り返します。
 
 ```{r}
 #| label: setup
@@ -39,32 +41,32 @@ In this chapter we'll combine what you've learned about dplyr and ggplot2 to int
 library(tidyverse)
 ```
 
-## Questions
+## 質問
 
-> "There are no routine statistical questions, only questionable statistical routines." --- Sir David Cox
+> "決まりきった統計上の質問などない。あるのは疑わしい統計の決まりきった手順だけだ。" --- Sir David Cox
 
-> "Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise." --- John Tukey
+> "間違った質問への常に精密にできる正確な回答よりも、正しい質問への大まかでたいてい曖昧な回答の方がずっと良い。" --- John Tukey
 
-Your goal during EDA is to develop an understanding of your data.
-The easiest way to do this is to use questions as tools to guide your investigation.
-When you ask a question, the question focuses your attention on a specific part of your dataset and helps you decide which graphs, models, or transformations to make.
+EDAでのゴールはデータの理解を深めることです。
+最も簡単な方法は、質問を道具として使って、調査を導くことです。
+質問を尋ねると、データセットの特定の部分に注意を集中でき、どのグラフ、モデル、もしくは、変換を作成すべきか決める助けになります。
 
-EDA is fundamentally a creative process.
-And like most creative processes, the key to asking *quality* questions is to generate a large *quantity* of questions.
-It is difficult to ask revealing questions at the start of your analysis because you do not know what insights can be gleaned from your dataset.
-On the other hand, each new question that you ask will expose you to a new aspect of your data and increase your chance of making a discovery.
-You can quickly drill down into the most interesting parts of your data---and develop a set of thought-provoking questions---if you follow up each question with a new question based on what you find.
+EDAは基本的に創造的過程です。
+ほとんどの創造的過程と同様、*高品質の*質問を尋ねる鍵となるのは、*大量の*質問を生成することです。
+分析をはじめたときは、データセットからどんな洞察を拾い集められるのか知らないので、何かを明らかにする質問を尋ねることは困難です。
+他方、新しい質問を尋ねるたびにデータの新しい側面が見えてきて、何かを発見する機会が増えていきます。
+見つけたことに基づいて質問に質問を重ねることで、データの最も興味深い部分に素早く潜り込み、示唆に富む質問集を作り出せるのです。
 
-There is no rule about which questions you should ask to guide your research.
-However, two types of questions will always be useful for making discoveries within your data.
-You can loosely word these questions as:
+研究を導くのにどの質問を尋ねるべきか、には規則はありません。
+ただ、データから何かを発見するのに、2つのタイプの質問がいつも役に立ちます。
+それらの質問を緩く文章にすると以下のような感じです。
 
-1.  What type of variation occurs within my variables?
+1.  変数内の変動は、どのタイプ？
 
-2.  What type of covariation occurs between my variables?
+2.  変数間の共変動は、どのタイプ？
 
-The rest of this chapter will look at these two questions.
-We'll explain what variation and covariation are, and we'll show you several ways to answer each question.
+本章の残りの部分は、これら2つの質問を見ていきます。
+変動や共変動が何かを説明して、各質問に回答するいくつかの方法を示します。
 
 ## Variation
 
