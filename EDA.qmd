@@ -214,11 +214,12 @@ options(old)
 ```
 
 変数`y`は、ダイアモンドを測定した3次元の一つで、ミリ単位なのです。
-幅がゼロミリのダイアモンドなんてありえませんから、これらの値は間違いに違いありません。
-
-By doing EDA, we have discovered missing data that was coded as 0, which we never would have found by simply searching for `NA`s.
-Going forward we might choose to re-code these values as `NA`s in order to prevent misleading calculations.
-We might also suspect that measurements of 32mm and 59mm are implausible: those diamonds are over an inch long, but don't cost hundreds of thousands of dollars!
+幅がゼロミリのダイアモンドなんてありえませんから、これらの値は欠損値に違いありません。
+EDAを行うことで、欠損値が0と表記されたデータを見つけたわけです。単
+に`NA`を探しただけでは決して見つけられなかったでしょう。
+ここから先で誤解を招く計算をしてしまぬよう、これらの値を`NA`に変えることを選ぶかもしれません。
+また、32ミリと59ミリの測定もありそうにないと疑うかもしれません。だ
+って、1インチ超幅の巨大なダイアモンドが何十万ドルもしないなんて！
 
 It's good practice to repeat your analysis with and without the outliers.
 If they have minimal effect on the results, and you can't figure out why they're there, it's reasonable to omit them, and move on.
