@@ -45,7 +45,7 @@ dplyrをロード後にベースRのこれらの関数を使いたい場合は�
 ### nycflights13
 
 基礎的なdplyr動詞を試すため、`nycflights13::flights`を使います。
-このデータセットには、2013年ニューヨーク市発の全`r format(nrow(nycflights13::flights), big.mark = ",")`飛行便が入っています。
+このデータセットには、2013年ニューヨーク市発の全`r format(nrow(nycflights13::flights), big.mark = ",")`航空便が入っています。
 データの出所は、[米国運輸統計局](https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr)で、ドキュメントは`?flights`で見られます。
 
 ```{r}

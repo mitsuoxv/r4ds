@@ -292,19 +292,18 @@ ggplot(diamonds2, aes(x = x, y = y)) +
   geom_point(na.rm = TRUE)
 ```
 
-Other times you want to understand what makes observations with missing values different to observations with recorded values.
-For example, in `nycflights13::flights`[^eda-1], missing values in the `dep_time` variable indicate that the flight was cancelled.
-So you might want to compare the scheduled departure times for cancelled and non-cancelled times.
-You can do this by making a new variable, using `is.na()` to check if `dep_time` is missing.
+欠損値がある観測と記録された値がある観測を分けるのは何か、理解したいこともあるでしょう。
+例えば、`nycflights13::flights`[^eda-1]では、`dep_time`変数の欠損値は航空便がキャンセルされたことを示しています。
+キャンセルされた便とされなかった便で、予定出発時間を比較したいとします。
+`is.na()`を使って新変数を作ることで、`dep_time`が欠損値になっているか否かチェックして、これを行うことができます。
 
-[^eda-1]: Remember that when we need to be explicit about where a function (or dataset) comes from, we'll use the special form `package::function()` or `package::dataset`.
+[^eda-1]: 関数、または、データセットがどこからのものか明示する必要がある場合は、`package::function()`、または、`package::dataset`という特殊な形式を使うことを、覚えておきましょう。
 
 ```{r}
 #| fig-alt: |
-#|   A frequency polygon of scheduled departure times of flights. Two lines 
-#|   represent flights that are cancelled and not cancelled. The x-axis ranges 
-#|   from 0 to 25 minutes and the y-axis ranges from 0 to 10000. The number of 
-#|   flights not cancelled are much higher than those cancelled.
+#|   航空便の予定出発時間の頻度ポリゴン。2つの線がキャンセルされた便と
+#|   されなかった便を表す。x軸は0から25時、y軸は0から10000の範囲。
+#|   キャンセルされなかった便の数のほうが、された便の数よりずっと多い。 
 
 nycflights13::flights |> 
   mutate(
@@ -317,20 +316,20 @@ nycflights13::flights |>
   geom_freqpoly(aes(color = cancelled), binwidth = 1/4)
 ```
 
-However this plot isn't great because there are many more non-cancelled flights than cancelled flights.
-In the next section we'll explore some techniques for improving this comparison.
+だが、キャンセルされなかった便の方がされた便よりはるかに多いので、このプロットは上手くありません。
+次のセクションでは、この比較を改良するテクニックをいくつか探索します。
 
-### Exercises
+### 練習問題
 
-1.  What happens to missing values in a histogram?
-    What happens to missing values in a bar chart?
-    Why is there a difference in how missing values are handled in histograms and bar charts?
+1.  ヒストグラムでは欠損値はどうなるか？
+    棒グラフでは欠損値はどうなるか？
+    ヒストグラムと棒グラフで欠損値の扱いが異なる理由は？
 
-2.  What does `na.rm = TRUE` do in `mean()` and `sum()`?
+2.  `mean()`と`sum()`の中の`na.rm = TRUE`の役目は？
 
-3.  Recreate the frequency plot of `scheduled_dep_time` colored by whether the flight was cancelled or not.
-    Also facet by the `cancelled` variable.
-    Experiment with different values of the `scales` variable in the faceting function to mitigate the effect of more non-cancelled flights than cancelled flights.
+3.  航空便がキャンセルされたか否かで色分けした`scheduled_dep_time`の頻度プロットを再現しなさい。
+    `cancelled`変数でファセットしてみなさい。
+    ファセット関数内の`scales`引数の値をいろいろと設定して、キャンセルされなかった便がキャンセルされた便より多い影響を低減しなさい。
 
 ## Covariation
 
