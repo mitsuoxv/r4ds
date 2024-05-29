@@ -154,43 +154,44 @@ ggplot(smaller, aes(x = carat)) +
 
 ### 外れ値
 
-Outliers are observations that are unusual; data points that don't seem to fit the pattern.
-Sometimes outliers are data entry errors, sometimes they are simply values at the extremes that happened to be observed in this data collection, and other times they suggest important new discoveries.
-When you have a lot of data, outliers are sometimes difficult to see in a histogram.
-For example, take the distribution of the `y` variable from the diamonds dataset.
-The only evidence of outliers is the unusually wide limits on the x-axis.
+外れ値は、普通でない観測です。そ
+のデータ点はパターンにフィットしていなさそうです。
+外れ値は、データ入力エラーであることも、このデータ収集でたまたま観測された極端な値というだけのこともありますが、そうでないときは重要な新発見を示唆しています。
+大量のデータがある場合、外れ値はヒストグラムでは見づらいことがあります。
+例えば、diamondsデータセットの変数yの分布をヒストグラムで見てみましょう。
+外れ値があることの証拠は、x軸の範囲が異常に広いことだけです。
 
 ```{r}
 #| fig-alt: |
-#|   A histogram of lengths of diamonds. The x-axis ranges from 0 to 60 and 
-#|   the y-axis ranges from 0 to 12000. There is a peak around 5, and the 
-#|   data appear to be completely clustered around the peak.
+#|   ダイアモンドの幅のヒストグラム。x軸は0から60、y軸は0から12000の範囲。
+#|   5辺りにピークが一つあり、データはピークの周りに完全に集中している
+#|   ように見える。
 
 ggplot(diamonds, aes(x = y)) + 
   geom_histogram(binwidth = 0.5)
 ```
 
-There are so many observations in the common bins that the rare bins are very short, making it very difficult to see them (although maybe if you stare intently at 0 you'll spot something).
-To make it easy to see the unusual values, we need to zoom to small values of the y-axis with `coord_cartesian()`:
+よくあるビンの中の観測はとても多いので、珍しいビンは非常に短くなっていて、とても見づらくなっています (0をじっと凝視すれば何かあると気付くでしょうが)。
+異常値を見やすくするには、`coord_cartesian()`を使って、y軸の小さな値にズームする必要があります。
 
 ```{r}
 #| fig-alt: |
-#|   A histogram of lengths of diamonds. The x-axis ranges from 0 to 60 and the 
-#|   y-axis ranges from 0 to 50. There is a peak around 5, and the data 
-#|   appear to be completely clustered around the peak. Other than those data, 
-#|   there is one bin at 0 with a height of about 8, one a little over 30 with 
-#|   a height of 1 and another one a little below 60 with a height of 1.
+#|   ダイアモンドの幅のヒストグラム。x軸は0から60、y軸は0から12000の範囲。
+#|   5辺りにピークが一つあり、データはピークの周りに完全に集中している
+#|   ように見える。それらのデータ以外に、0に高さ約8ののビンが一つ、
+#|   30を少し超えた所に高さ1のビンが一つ、
+#|   60の少し手前にもう一つ高さ1のビンがある。
 
 ggplot(diamonds, aes(x = y)) + 
   geom_histogram(binwidth = 0.5) +
   coord_cartesian(ylim = c(0, 50))
 ```
 
-`coord_cartesian()` also has an `xlim()` argument for when you need to zoom into the x-axis.
-ggplot2 also has `xlim()` and `ylim()` functions that work slightly differently: they throw away the data outside the limits.
-
-This allows us to see that there are three unusual values: 0, \~30, and \~60.
-We pluck them out with dplyr:
+`coord_cartesian()`には、x軸にズームするのに必要な`xlim`引数もあります。
+ggplot2には関数の`xlim()`と`ylim()`もありますが、挙動が変わります。範
+囲外のデータを投げ捨ててしまいます。
+このグラフで、異常値が3つ、0と30辺り、60辺りにあることが見えます。
+dplyrを使って、引き抜いてみましょう。
 
 ```{r}
 #| include: false
@@ -212,8 +213,9 @@ unusual
 options(old)
 ```
 
-The `y` variable measures one of the three dimensions of these diamonds, in mm.
-We know that diamonds can't have a width of 0mm, so these values must be incorrect.
+変数`y`は、ダイアモンドを測定した3次元の一つで、ミリ単位なのです。
+幅がゼロミリのダイアモンドなんてありえませんから、これらの値は間違いに違いありません。
+
 By doing EDA, we have discovered missing data that was coded as 0, which we never would have found by simply searching for `NA`s.
 Going forward we might choose to re-code these values as `NA`s in order to prevent misleading calculations.
 We might also suspect that measurements of 32mm and 59mm are implausible: those diamonds are over an inch long, but don't cost hundreds of thousands of dollars!
