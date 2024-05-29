@@ -68,15 +68,16 @@ EDAは基本的に創造的過程です。
 本章の残りの部分は、これら2つの質問を見ていきます。
 変動や共変動が何かを説明して、各質問に回答するいくつかの方法を示します。
 
-## Variation
+## 変動
 
-**Variation** is the tendency of the values of a variable to change from measurement to measurement.
-You can see variation easily in real life; if you measure any continuous variable twice, you will get two different results.
-This is true even if you measure quantities that are constant, like the speed of light.
-Each of your measurements will include a small amount of error that varies from measurement to measurement.
-Variables can also vary if you measure across different subjects (e.g., the eye colors of different people) or at different times (e.g., the energy levels of an electron at different moments).
-Every variable has its own pattern of variation, which can reveal interesting information about how that it varies between measurements on the same observation as well as across observations.
-The best way to understand that pattern is to visualize the distribution of the variable's values, which you've learned about in @sec-data-visualization.
+**変動**は、変数の値が測定ごとに変化する傾向です。
+実生活で変動を見ることは簡単です。ど
+んな連続変数でも2度測定すれば、結果は違っているでしょう。
+たとえ光速のような一定の量を測定したとしても、同様です。
+測定ごとに小さな誤差を含んでおり、それは測定ごとに違っているからです。
+また、異なる対象 (例えば、異なる人々の眼の色) や、異なる時点 (例えば、異なる瞬間での電子のエネルギー水準) で測定すれば、変数は異なります。
+全ての変数には独自の変動のパターンがあり、同じ観測での、あるいは、異なる観測間の、測定ごとの変動の仕方について興味深い情報が明らかになりえます。
+パターンを理解する最良の方法は、@sec-data-visualization 学習した、変数値分布の可視化です。
 
 We'll start our exploration by visualizing the distribution of weights (`carat`) of \~54,000 diamonds from the `diamonds` dataset.
 Since `carat` is a numerical variable, we can use a histogram:
