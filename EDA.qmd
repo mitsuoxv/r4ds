@@ -101,29 +101,28 @@ ggplot(diamonds, aes(x = carat)) +
 
 ### 典型的な値
 
-In both bar charts and histograms, tall bars show the common values of a variable, and shorter bars show less-common values.
-Places that do not have bars reveal values that were not seen in your data.
-To turn this information into useful questions, look for anything unexpected:
+棒グラフでもヒストグラムでも、高い棒は変数のよくある値を示し、低い棒はあまりない値を示します。
+棒がない場所からは、データの中に見られない値だと分かります。
+この情報を役立つ質問に変えるには、何であれ予期せぬことを探します。
 
--   Which values are the most common?
-    Why?
+-   どの値が最もありふれているか？
+    その理由は？
 
--   Which values are rare?
-    Why?
-    Does that match your expectations?
+-   どの値がまれか？
+    その理由は？
+    予期した通りだった？
 
--   Can you see any unusual patterns?
-    What might explain them?
+-   変わったパターンは見られないか？
+    どう説明が付く？
 
-Let's take a look at the distribution of `carat` for smaller diamonds.
+大きいのを除いたダイアモンドの`carat`分布を見てみましょう。
 
 ```{r}
 #| fig-alt: |
-#|   A histogram of carats of diamonds, with the x-axis ranging from 0 to 3 and 
-#|   the y-axis ranging from 0 to roughly 2500. The binwidth is quite narrow 
-#|   (0.01), resulting in a very large number of skinny bars. The distribution 
-#|   is right skewed, with many peaks followed by bars in decreasing heights, 
-#|   until a sharp increase at the next peak.
+#|   ダイアモンドのカラットのヒストグラム。x軸は0から3、y軸は0から約2500の
+#|   範囲。ビン幅がとても狭い (0.01) ので、ひょろっとした棒がとても多数
+#|   並んでいる。分布は右に長く延びる形で、多くのピークの後には高さが減少する
+#|   棒が続き、次のピークで急増する。
 
 smaller <- diamonds |> 
   filter(carat < 3)
@@ -132,28 +131,28 @@ ggplot(smaller, aes(x = carat)) +
   geom_histogram(binwidth = 0.01)
 ```
 
-This histogram suggests several interesting questions:
+このヒストグラムからは、いくつか興味深い質問が示唆されます。
 
--   Why are there more diamonds at whole carats and common fractions of carats?
+-   カラットが整数、あるいは、よくある分数で、ダイアモンドが多いのはなぜか？
 
--   Why are there more diamonds slightly to the right of each peak than there are slightly to the left of each peak?
+-   各ピークのやや左側よりもやや右側の方が、ダイアモンドが多いのはなぜか？
 
-Visualizations can also reveal clusters, which suggest that subgroups exist in your data.
-To understand the subgroups, ask:
+可視化はまた、データの中にサブグループが存在することを示唆する、クラスターを明らかにできます。
+サブグループを理解するには、次のように尋ねます。
 
--   How are the observations within each subgroup similar to each other?
+-   各サブグループ内の観測がお互いに似ているのはなぜか？
 
--   How are the observations in separate clusters different from each other?
+-   サブグループ間の観測がお互いにどう違っているか？
 
--   How can you explain or describe the clusters?
+-   クラスターをどう説明、もしくは、描写できるか？
 
--   Why might the appearance of clusters be misleading?
+-   クラスターらしきものが誤解を招いているとしたらなぜか？
 
-Some of these questions can be answered with the data while some will require domain expertise about the data.
-Many of them will prompt you to explore a relationship *between* variables, for example, to see if the values of one variable can explain the behavior of another variable.
-We'll get to that shortly.
+これらの質問のいくつかはデータから回答できますが、いくつかはデータに関する専門知識が必要になります。
+これら質問の多くは、例えば、ある変数の値が別の変数の動きを説明できないか、といった変数*間*の関係を探索するよう促します。
+少し先でそれを探索します。
 
-### Unusual values
+### 外れ値
 
 Outliers are observations that are unusual; data points that don't seem to fit the pattern.
 Sometimes outliers are data entry errors, sometimes they are simply values at the extremes that happened to be observed in this data collection, and other times they suggest important new discoveries.
@@ -242,7 +241,7 @@ You'll need to figure out what caused them (e.g., a data entry error) and disclo
     What happens if you leave `binwidth` unset?
     What happens if you try and zoom so only half a bar shows?
 
-## Unusual values {#sec-unusual-values-eda}
+## 異常値 {#sec-unusual-values-eda}
 
 If you've encountered unusual values in your dataset, and simply want to move on to the rest of your analysis, you have two options.
 
