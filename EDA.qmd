@@ -79,28 +79,27 @@ EDAは基本的に創造的過程です。
 全ての変数には独自の変動のパターンがあり、同じ観測での、あるいは、異なる観測間の、測定ごとの変動の仕方について興味深い情報が明らかになりえます。
 パターンを理解する最良の方法は、@sec-data-visualization 学習した、変数値分布の可視化です。
 
-We'll start our exploration by visualizing the distribution of weights (`carat`) of \~54,000 diamonds from the `diamonds` dataset.
-Since `carat` is a numerical variable, we can use a histogram:
+`diamonds`データセットから約54,000個のダイアモンドの重さ (`carat`) の分布を可視化することから探索をはじめましょう。
+`carat`は数値変数なので、ヒストグラムが使えます。
 
 ```{r}
 #| fig-alt: |
-#|   A histogram of carats of diamonds, with the x-axis ranging from 0 to 4.5 
-#|   and the y-axis ranging from 0 to 30000. The distribution is right skewed 
-#|   with very few diamonds in the bin centered at 0, almost 30000 diamonds in 
-#|   the bin centered at 0.5, approximately 15000 diamonds in the bin centered 
-#|   at 1, and much fewer, approximately 5000 diamonds in the bin centered at 
-#|   1.5. Beyond this, there's a trailing tail.
+#|   ダイアモンドのカラットのヒストグラム。x軸は0から4.5、y軸は0から30000の
+#|   範囲。分布は右に長く延びており、0が真ん中のビンに入るダイアモンドは
+#|   とても少なく、0.5が真ん中のビンには30000近いダイアモンドが入り、
+#|   1が真ん中のビンには約15000のダイアモンドが入り、1.5が真ん中のビンには
+#|   ずっと少ない約5000のダイアモンドが入る。そこからは、長く尾を引く。
 
 ggplot(diamonds, aes(x = carat)) +
   geom_histogram(binwidth = 0.5)
 ```
 
-Now that you can visualize variation, what should you look for in your plots?
-And what type of follow-up questions should you ask?
-We've put together a list below of the most useful types of information that you will find in your graphs, along with some follow-up questions for each type of information.
-The key to asking good follow-up questions will be to rely on your curiosity (What do you want to learn more about?) as well as your skepticism (How could this be misleading?).
+変動を可視化できたところで、プロットの中に何を探すべきでしょうか？
+どうゆうタイプの質問を、続けて尋ねるべきでしょうか？
+グラフの中から探す最も役立つ情報のタイプと、情報のタイプごとに続けるべき質問のいくつか、をこの先でリストにまとめています。
+続けて尋ねる質問を良いものにする鍵は、好奇心 (さらに何を知りたいか？) と懐疑心 (どうにか誤解を招いていないか？) に頼ることです。
 
-### Typical values
+### 典型的な値
 
 In both bar charts and histograms, tall bars show the common values of a variable, and shorter bars show less-common values.
 Places that do not have bars reveal values that were not seen in your data.
