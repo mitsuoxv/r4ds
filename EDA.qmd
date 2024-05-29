@@ -154,9 +154,9 @@ ggplot(smaller, aes(x = carat)) +
 
 ### 外れ値
 
-外れ値は、普通でない観測です。そ
-のデータ点はパターンにフィットしていなさそうです。
-外れ値は、データ入力エラーであることも、このデータ収集でたまたま観測された極端な値というだけのこともありますが、そうでないときは重要な新発見を示唆しています。
+外れ値は、普通でない観測です。
+そのデータ点はパターンにフィットしていなさそうです。
+外れ値は、データ入力ミスであることも、このデータ収集でたまたま観測された極端な値というだけのこともありますが、そうでないときは重要な新発見を示唆しています。
 大量のデータがある場合、外れ値はヒストグラムでは見づらいことがあります。
 例えば、diamondsデータセットの変数yの分布をヒストグラムで見てみましょう。
 外れ値があることの証拠は、x軸の範囲が異常に広いことだけです。
@@ -218,15 +218,15 @@ options(old)
 EDAを行うことで、欠損値が0と表記されたデータを見つけたわけです。単
 に`NA`を探しただけでは決して見つけられなかったでしょう。
 ここから先で誤解を招く計算をしてしまぬよう、これらの値を`NA`に変えることを選ぶかもしれません。
-また、32ミリと59ミリの測定もありそうにないと疑うかもしれません。だ
-って、1インチ超幅の巨大なダイアモンドが何十万ドルもしないなんて！
+また、32ミリと59ミリの測定もありそうにないと疑うかもしれません。
+だって、1インチ超幅の巨大なダイアモンドが何十万ドルもしないなんて！
 
-It's good practice to repeat your analysis with and without the outliers.
-If they have minimal effect on the results, and you can't figure out why they're there, it's reasonable to omit them, and move on.
-However, if they have a substantial effect on your results, you shouldn't drop them without justification.
-You'll need to figure out what caused them (e.g., a data entry error) and disclose that you removed them in your write-up.
+外れ値を含めたり、外したりして分析を繰り返すことをお薦めします。
+結果に影響がほとんどなく、外れ値になっている理由が分からない場合、それらを外して先に進むのが理にかなっています。
+しかし、結果に相当な影響がある場合は、正当な理由なくそれらを外すべきではありません。
+外れ値になった理由 (例えば、データ入力ミス) を見つけ出し、報告書にはだから外したと開示する必要があります。
 
-### Exercises
+### 練習問題
 
 1.  Explore the distribution of each of the `x`, `y`, and `z` variables in `diamonds`.
     What do you learn?
