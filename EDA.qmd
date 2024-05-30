@@ -516,16 +516,16 @@ diamonds |>
 
 #### 練習問題
 
-1.  How could you rescale the count dataset above to more clearly show the distribution of cut within color, or color within cut?
+1.  color内のcut分布、あるいは、cut内のcolor分布をより明確に示すには、上記のcountデータセットの尺度 scale をどう変更しますか？
 
-2.  What different data insights do you get with a segmented bar chart if color is mapped to the `x` aesthetic and `cut` is mapped to the `fill` aesthetic?
-    Calculate the counts that fall into each of the segments.
+2.  `color`を外観属性`x`に、`cut`を外観属性`fill`にマップして、セグメントに分けた棒グラフを描いたら、どんな違った洞察がデータから得られるか？
+    各セグメントに入るカウントを計算しなさい。
 
-3.  Use `geom_tile()` together with dplyr to explore how average flight departure delays vary by destination and month of year.
-    What makes the plot difficult to read?
-    How could you improve it?
+3.  dplyrと`geom_tile()`を一緒に使って、航空便の平均出発遅延時間が目的地と月の組み合わせごとにどう異なるか探索しなさい。
+    プロットを読みづらくしているのは何か？
+    どうすれば改良できる？
 
-### Two numerical variables
+### 2つの数値変数
 
 You've already seen one great way to visualize the covariation between two numerical variables: draw a scatterplot with `geom_point()`.
 You can see covariation as a pattern in the points.
