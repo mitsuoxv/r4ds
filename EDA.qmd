@@ -614,20 +614,20 @@ ggplot(smaller, aes(x = carat, y = price)) +
 
 #### 練習問題
 
-1.  Instead of summarizing the conditional distribution with a boxplot, you could use a frequency polygon.
-    What do you need to consider when using `cut_width()` vs. `cut_number()`?
-    How does that impact a visualization of the 2d distribution of `carat` and `price`?
+1.  条件付き分布を要約するのに、ボックスプロットの替わりに、頻度ポリゴンを使うこともできる。
+    `cut_width()`対`cut_number()`で検討する必要があることは何か？
+    `carat`と`price`の2次元分布の可視化にどう影響するか？
 
-2.  Visualize the distribution of `carat`, partitioned by `price`.
+2.  `price`で区切って、`carat`の分布を可視化しなさい。
 
-3.  How does the price distribution of very large diamonds compare to small diamonds?
-    Is it as you expect, or does it surprise you?
+3.  小さなダイアモンドに比べて、とても大きいダイアモンドの価格分布はどう違うか？
+    予想通りか、驚きか？
 
-4.  Combine two of the techniques you've learned to visualize the combined distribution of cut, carat, and price.
+4.  学習したテクニックの2つを組み合わせて、cut、carat、priceの組み合わさった分布を可視化しなさい。
 
-5.  Two dimensional plots reveal outliers that are not visible in one dimensional plots.
-    For example, some points in the following plot have an unusual combination of `x` and `y` values, which makes the points outliers even though their `x` and `y` values appear normal when examined separately.
-    Why is a scatterplot a better display than a binned plot for this case?
+5.  2次元のプロットは、1次元のプロットでは見えなかった外れ値を明らかにする。
+    例えば、以下プロットでは、`x`値と`y`値を別々に見れば正常に見えるが、`x`値と`y`値の組み合わせでは異常で外れ値となっている点がいくつかある。
+    ビン詰めのプロットよりも散布図の方が、このケースでは良い表示になっている理由は何か？
 
     ```{r}
     #| eval: false
@@ -638,8 +638,8 @@ ggplot(smaller, aes(x = carat, y = price)) +
       coord_cartesian(xlim = c(4, 11), ylim = c(4, 11))
     ```
 
-6.  Instead of creating boxes of equal width with `cut_width()`, we could create boxes that contain roughly equal number of points with `cut_number()`.
-    What are the advantages and disadvantages of this approach?
+6.  `cut_width()`を使って同じ幅の箱を作る替わりに、`cut_number()`を使えばほぼ同じ数の点を含む箱を作れる。
+    このアプローチの長所と短所は何？
 
     ```{r}
     #| eval: false
@@ -647,43 +647,45 @@ ggplot(smaller, aes(x = carat, y = price)) +
       geom_boxplot(aes(group = cut_number(carat, 20)))
     ```
 
-## Patterns and models
+## パターンとモデル
 
-If a systematic relationship exists between two variables it will appear as a pattern in the data.
-If you spot a pattern, ask yourself:
+2変数間に組織的な関係が存在するなら、データにパターンが現れます。
+パターンを見つけたら、以下を尋ねてください。
 
--   Could this pattern be due to coincidence (i.e. random chance)?
+-   このパターンは偶然のせい (つまり、たまたま)？
 
--   How can you describe the relationship implied by the pattern?
+-   パターンがほのめかす関係をどう記述できるか？
 
--   How strong is the relationship implied by the pattern?
+-   パターンがほのめかす関係はどれほど強いか？
 
--   What other variables might affect the relationship?
+-   他にどんな変数がこの関係に影響している可能性があるか？
 
--   Does the relationship change if you look at individual subgroups of the data?
+-   データのサブグループごとに見ると、関係は変化するか？
 
-Patterns in your data provide clues about relationships, i.e., they reveal covariation.
-If you think of variation as a phenomenon that creates uncertainty, covariation is a phenomenon that reduces it.
-If two variables covary, you can use the values of one variable to make better predictions about the values of the second.
-If the covariation is due to a causal relationship (a special case), then you can use the value of one variable to control the value of the second.
+データのパターンは関係についての手ががりを提供しています。
+つまり、共変動を明らかにしています。
+変動を不確実性を生む現象と考えるなら、共変動はそれを減じる現象です。
+2変数がそろって変動するなら、一方の変数の値を使って、もう一方の変数の値をより良く予測できます。
+共変動が因果関係 (特別なケースです) のせいであれば、一方の変数の値を使って、もう一方の変数の値を制御できます。
 
-Models are a tool for extracting patterns out of data.
-For example, consider the diamonds data.
-It's hard to understand the relationship between cut and price, because cut and carat, and carat and price are tightly related.
-It's possible to use a model to remove the very strong relationship between price and carat so we can explore the subtleties that remain.
-The following code fits a model that predicts `price` from `carat` and then computes the residuals (the difference between the predicted value and the actual value).
-The residuals give us a view of the price of the diamond, once the effect of carat has been removed.
-Note that instead of using the raw values of `price` and `carat`, we log transform them first, and fit a model to the log-transformed values.
-Then, we exponentiate the residuals to put them back in the scale of raw prices.
+モデルはデータからパターンを引き出す道具です。
+例えば、diamondsデータを検討してみましょう。
+cutとprice間の関係を理解することは困難です。c
+utとcarat、caratとpriceが緊密に関連しているからです。
+モデルを使えば、caratとprice間のとても強い関係を除いて、残った微妙な点を探索することができます。
+以下コードは`carat`から`price`を予測するモデルをフィットして、残差 (予測値と実績値との差) を計算しています。
+残差は、カラットの影響を除いた後の、ダイアモンド価格を見せてくれます。
+`price`と`carat`はそのままの値を使うのではなく、log変換してから、log変換後の値にモデルをフィットしています。
+それから、残差を指数化して、元の値の尺度に戻しています。
 
 ```{r}
 #| message: false
 #| dev: "png"
 #| fig-alt: |
-#|   A scatterplot of residuals vs. carat of diamonds. The x-axis ranges from 0 
-#|   to 5, the y-axis ranges from 0 to almost 4. Much of the data are clustered 
-#|   around low values of carat and residuals. There is a clear, curved pattern 
-#|   showing decrease in residuals as carat increases.
+#|   残差、対、ダイアモンドのカラットの散布図。
+#|   x軸は0から5、y軸は0から4近くの範囲。
+#|   多くのデータは、低カラット、低残差辺りにクラスターになっている。
+#|   カラットが増えると残差が減ることを示す、明確な曲線パターンがある。
 
 library(tidymodels)
 
@@ -703,25 +705,27 @@ ggplot(diamonds_aug, aes(x = carat, y = .resid)) +
   geom_point()
 ```
 
-Once you've removed the strong relationship between carat and price, you can see what you expect in the relationship between cut and price: relative to their size, better quality diamonds are more expensive.
+いったんcaratとprice間の強い関係を除いてしまえば、cutとprice間の予期した通りの関係、つまり、同じ大きさのダイアモンドなら高品質なほど高価という関係が見られます。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side box plots of residuals by cut. The x-axis displays the various 
-#|   cuts (Fair to Ideal), the y-axis ranges from 0 to almost 5. The medians are 
-#|   quite similar, between roughly 0.75 to 1.25. Each of the distributions of 
-#|   residuals is right skewed, with many outliers on the higher end.
+#|   cutごとに横並びの残差のボックスプロット。
+#|   x軸は (FairからIdealまでの) さまざまなcutを表し、
+#|   y軸は0から4近くまでの範囲。
+#|   中央値は、ほぼ0.75から1.25までにあるが、高品質ほど高い。
+#|   残差の分布はそれぞれ、右に延びていて、高い方に外れ値がある。
 
 ggplot(diamonds_aug, aes(x = cut, y = .resid)) + 
   geom_boxplot()
 ```
 
-We're not discussing modelling in this book because understanding what models are and how they work is easiest once you have tools of data wrangling and programming in hand.
+本書ではモデルは議論していません。デ
+ータを手懐けたり、プログラムしたりする道具を身に付ける前では、モデルが何で、どう機能するのか理解することは困難だからです。
 
-## Summary
+## まとめ
 
-In this chapter you've learned a variety of tools to help you understand the variation within your data.
-You've seen techniques that work with a single variable at a time and with a pair of variables.
-This might seem painfully restrictive if you have tens or hundreds of variables in your data, but they're the foundation upon which all other techniques are built.
+本章では、データ内の変動を理解する助けとなるさまざまな道具を学習しました。
+いっときに一つの変数で機能するテクニックや、変数のペアで機能するテクニックを見てきました。
+データに何十、何百と変数がある場合、これでは足りないように思えますが、これらはその上に、他の全てのテクニックが構築されている基礎となっています。
 
-In the next chapter, we'll focus on the tools we can use to communicate our results.
+次章では、結果を伝達するために使える道具にフォーカスします。
