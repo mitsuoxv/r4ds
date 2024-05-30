@@ -444,30 +444,31 @@ ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
 
 #### 練習問題
 
-1.  Use what you've learned to improve the visualization of the departure times of cancelled vs. non-cancelled flights.
+1.  学んだことを使って、キャンセルされた便とされなかった便の予定出発時間の可視化を改良しなさい。
 
-2.  Based on EDA, what variable in the diamonds dataset appears to be most important for predicting the price of a diamond?
-    How is that variable correlated with cut?
-    Why does the combination of those two relationships lead to lower quality diamonds being more expensive?
+2.  EDAに基づくと、diamondsデータセットのどの変数が、価格を予測するのに最も重要に見えるか？
+    どの変数とcutはどう相関しているか？
+    その2変数の組み合わせが、低品質ダイアモンドほど高価にしている理由は？
 
-3.  Instead of exchanging the x and y variables, add `coord_flip()` as a new layer to the vertical boxplot to create a horizontal one.
-    How does this compare to exchanging the variables?
+3.  垂直なボックスプロットから水平なボックスプロットに変更するために、xとyの変数を入れ替えるのではなく、`coord_flip()`を新しいレイヤーとして加えなさい。
+    変数を入れ替えたものとどこか違いますか？
 
-4.  One problem with boxplots is that they were developed in an era of much smaller datasets and tend to display a prohibitively large number of "outlying values".
-    One approach to remedy this problem is the letter value plot.
-    Install the lvplot package, and try using `geom_lv()` to display the distribution of price vs. cut.
-    What do you learn?
-    How do you interpret the plots?
+4.  ボックスプロットの問題の一つは、ずっと小さなデータセットの時代に開発されたために、"外れ値"をあまりに大量に表示しがちなことです。
+    この問題を治療する一つのアプローチは、letter value プロットです。
+    lvplotパッケージをインストールして、`geom_lv()`を使ってprice 対 cut の分布を表示しなさい。
+    何が分かりますか？
+    プロットをどう解釈しますか？
 
-5.  Create a visualization of diamond prices vs. a categorical variable from the `diamonds` dataset using `geom_violin()`, then a faceted `geom_histogram()`, then a colored `geom_freqpoly()`, and then a colored `geom_density()`.
-    Compare and contrast the four plots.
-    What are the pros and cons of each method of visualizing the distribution of a numerical variable based on the levels of a categorical variable?
+5.  `diamonds`データセットのダイアモンド価格、対、カテゴリ変数を可視化しなさい。
+    最初は`geom_violin()`を使い、次にファセットした`geom_histogram()`、次に色分けした`geom_freqpoly()`、そして、色分けした`geom_density()`で作成しなさい。
+    4つのプロットを比較、対照しなさい。
+    カテゴリ変数の水準別に数値変数の分布を可視化する各方法の良い点と悪い点は何か？
 
-6.  If you have a small dataset, it's sometimes useful to use `geom_jitter()` to avoid overplotting to more easily see the relationship between a continuous and categorical variable.
-    The ggbeeswarm package provides a number of methods similar to `geom_jitter()`.
-    List them and briefly describe what each one does.
+6.  データセットが小さい場合、`geom_jitter()`を使ってoverplottingを回避すると、連続変数とカテゴリ変数間の関係が見やすくなって役に立つことがあります。
+    ggbeeswarmパッケージは`geom_jitter()`に似た手法をいくつか提供しています。
+    それらをリストにして、それぞれが何をするか、関係に記述しなさい。
 
-### Two categorical variables
+### 2つのカテゴリ変数
 
 To visualize the covariation between categorical variables, you'll need to count the number of observations for each combination of levels of these categorical variables.
 One way to do that is to rely on the built-in `geom_count()`:
