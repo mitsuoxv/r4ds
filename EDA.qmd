@@ -351,92 +351,98 @@ ggplot(diamonds, aes(x = price)) +
   geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
 ```
 
-Note that ggplot2 uses an ordered color scale for `cut` because it's defined as an ordered factor variable in the data.
-You'll learn more about these in @sec-ordered-factors.
+`cut`はデータで順序付きファクタとして定義されているので、ggplot2はそのscaleに順序付き色尺度を使っています。
+これらについては、@sec-ordered-factors でさらに学びます。
 
-The default appearance of `geom_freqpoly()` is not that useful here because the height, determined by the overall count, differs so much across `cut`s, making it hard to see the differences in the shapes of their distributions.
+デフォルトでは、`geom_freqpoly()`の見え方はあまり役立ちません。ビ
+ン内のカウントで決まる高さが`cut`ごとに大きく違うので、分布の形の違いが見えにくいからです。
 
-To make the comparison easier we need to swap what is displayed on the y-axis.
-Instead of displaying count, we'll display the **density**, which is the count standardized so that the area under each frequency polygon is one.
+比較を見やすくするためには、y軸に表示されるものを交換する必要があります。
+カウントの替わりに、頻度ポリゴン下の面積が1になるよう標準化されたカウントである**密度**を表示します。
 
 ```{r}
 #| fig-alt: |
-#|   A frequency polygon of densities of prices of diamonds where each cut of 
-#|   carat (Fair, Good, Very Good, Premium, and Ideal) is represented with a 
-#|   different color line. The x-axis ranges from 0 to 20000. The lines overlap 
-#|   a great deal, suggesting similar density distributions of prices of 
-#|   diamonds. One notable feature is that all but Fair diamonds have high peaks 
-#|   around a price of 1500 and Fair diamonds have a higher mean than others.
+#|   ダイアモンドの価格の頻度ポリゴン。ダイアモンドの品質 cut (Fair、
+#|   Good、Very Good、Premium、Ideal) ごとに違った色の線で表されている。
+#|   x軸は0から20000の範囲。線はかなり重なっており、
+#|   どの品質でも価格分布は似ていることを示唆。分かりやすい特徴の一つは、
+#|   Fair以外のダイアモンドは皆1500辺りに最も高いピークを有し、
+#|   Fairなダイアモンドは他より高い平均を有すること。
 
 ggplot(diamonds, aes(x = price, y = after_stat(density))) + 
   geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
 ```
 
-Note that we're mapping the density to `y`, but since `density` is not a variable in the `diamonds` dataset, we need to first calculate it.
-We use the `after_stat()` function to do so.
+密度 density を`y`にマップしていますが、`diamonds`データセットには`density`という変数はないので、まずそれを計算する必要があります。
+`after_stat()`関数を使って、その計算をしています。
 
-There's something rather surprising about this plot - it appears that fair diamonds (the lowest quality) have the highest average price!
-But maybe that's because frequency polygons are a little hard to interpret - there's a lot going on in this plot.
+このプロットにはかなり驚くべきことがあります。F
+airな (最も低品質な) ダイアモンドが最も平均価格が高いなんて！
+しかし、頻度ポリゴンの解釈が難しいせいかもしれません。こ
+のプロットではいろんなことが起きているのですから。
 
-A visually simpler plot for exploring this relationship is using side-by-side boxplots.
+見た目がもっと簡素なプロットでこの関係を探索するには、ボックスプロットを横に並べることです。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side boxplots of prices of diamonds by cut. The distribution of 
-#|   prices is right skewed for each cut (Fair, Good, Very Good, Premium, and 
-#|   Ideal). The medians are close to each other, with the median for Ideal 
-#|   diamonds lowest and that for Fair highest.
+#|   ダイアモンド価格の品質ごとの横並びのボックスプロット。どの品質
+#|   (Fair、Good、Very Good、Premium、Ideal) でも価格分布は右に長く
+#|   延びている。中央値は、Idealが最も低く、Fairが最も高いが、違いは
+#|   大きくない。
 
 ggplot(diamonds, aes(x = cut, y = price)) +
   geom_boxplot()
 ```
 
-We see much less information about the distribution, but the boxplots are much more compact so we can more easily compare them (and fit more on one plot).
-It supports the counter-intuitive finding that better quality diamonds are typically cheaper!
-In the exercises, you'll be challenged to figure out why.
+分布に関する情報量は減りましたが、ボックスプロットはずっと簡潔なので、(一つのプロットにいくつも並べて) 比較するのがより容易です。
+ここでも、直観に反する発見が支持されています。高
+品質ダイアモンドほど典型的には安い！
+練習問題で、その理由を見出すよう挑戦されます。
 
-`cut` is an ordered factor: fair is worse than good, which is worse than very good and so on.
-Many categorical variables don't have such an intrinsic order, so you might want to reorder them to make a more informative display.
-One way to do that is with `fct_reorder()`.
-You'll learn more about that function in @sec-modifying-factor-order, but we want to give you a quick preview here because it's so useful.
-For example, take the `class` variable in the `mpg` dataset.
-You might be interested to know how highway mileage varies across classes:
+`cut`は順序付きファクタです。F
+airはGoodより悪く、GoodはVery Goodよりも悪い、と続きます。
+多くのカテゴリ変数でもそのような本質的な順序はないので、より分かりやすく表示するためにカテゴリ変数の順序を変更 reorder したいかもしれません。
+そうするための一つの方法が、`fct_reorder()`を使うことです。
+この関数については @sec-modifying-factor-order で、さらに学習しますが、とても役に立つ関数なので、ここでちょっとプレビューを示しておきます。
+例えば、`mpg`データセットの`class`変数を取り上げます。
+classごとに高速道路での燃料効率がどう違うのか興味があるとします。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side boxplots of highway mileages of cars by class. Classes are 
-#|   on the x-axis (2seaters, compact, midsize, minivan, pickup, subcompact, 
-#|   and suv).
+#|   車の高速道路での燃料効率のクラスごとの横並びのボックスプロット。
+#|   クラス (2seaters、compact、midsize、minivan、pickup、subcompact、suv)
+#|   はx軸上にある。
 
 ggplot(mpg, aes(x = class, y = hwy)) +
   geom_boxplot()
 ```
 
-To make the trend easier to see, we can reorder `class` based on the median value of `hwy`:
+傾向を見やすくするために、`hwy`の中央値に基づいて`class`をreorderできます。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side boxplots of highway mileages of cars by class. Classes are 
-#|   on the x-axis and ordered by increasing median highway mileage (pickup, 
-#|   suv, minivan, 2seater, subcompact, compact, and midsize).
+#|   車の高速道路での燃料効率のクラスごとの横並びのボックスプロット。
+#|   クラス (2seaters、compact、midsize、minivan、pickup、subcompact、suv)
+#|   はx軸上にあり、高速道路での燃料効率の中央値が増える順に左から並ぶ。
 
 ggplot(mpg, aes(x = fct_reorder(class, hwy, median), y = hwy)) +
   geom_boxplot()
 ```
 
-If you have long variable names, `geom_boxplot()` will work better if you flip it 90°.
-You can do that by exchanging the x and y aesthetic mappings.
+変数名が長い場合、90度回転した方が`geom_boxplot()`は見栄えが良いです。
+外観属性xとyへのマッピングを交換すると、90度回転できます。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side boxplots of highway mileages of cars by class. Classes are 
-#|   on the y-axis and ordered by increasing median highway mileage.
+#|   車の高速道路での燃料効率のクラスごとの横並びのボックスプロット。
+#|   クラス (2seaters、compact、midsize、minivan、pickup、subcompact、suv)
+#|   はy軸上にあり、高速道路での燃料効率の中央値が増える順に下から並ぶ。
 
 ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
   geom_boxplot()
 ```
 
-#### Exercises
+#### 練習問題
 
 1.  Use what you've learned to improve the visualization of the departure times of cancelled vs. non-cancelled flights.
 
