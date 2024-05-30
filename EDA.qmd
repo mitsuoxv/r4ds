@@ -470,16 +470,16 @@ ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
 
 ### 2つのカテゴリ変数
 
-To visualize the covariation between categorical variables, you'll need to count the number of observations for each combination of levels of these categorical variables.
-One way to do that is to rely on the built-in `geom_count()`:
+カテゴリ変数間の共変動を可視化するには、これらのカテゴリ変数の水準の組み合わせごとに観測数をカウントする必要があります。
+そうする一つの方法はggplot2に含まれている`geom_count()`に頼ることです。
 
 ```{r}
 #| fig-alt: |
-#|   A scatterplot of color vs. cut of diamonds. There is one point for each
-#|   combination of levels of cut (Fair, Good, Very Good, Premium, and Ideal) 
-#|   and color (D, E, F, G, G, I, and J). The sizes of the points represent 
-#|   the number of observations for that combination. The legend indicates 
-#|   that these sizes range between 1000 and 4000.
+#|   ダイアモンドのcolor対cutの散布図。
+#|   cutの水準 (Fair、Good、Very Good、Premium、Ideal) と
+#|   colorの水準 (D、E、F、G、H、I、J) の組み合わせごとに一つの点がある。
+#|   点のサイズがその組み合わせの観測数を表す。
+#|   凡例はサイズは主に1000から4000までの範囲にあることを示す。
 
 ggplot(diamonds, aes(x = cut, y = color)) +
   geom_count()
