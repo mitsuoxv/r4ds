@@ -464,7 +464,7 @@ ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
     4つのプロットを比較、対照しなさい。
     カテゴリ変数の水準別に数値変数の分布を可視化する各方法の良い点と悪い点は何か？
 
-6.  データセットが小さい場合、`geom_jitter()`を使ってoverplottingを回避すると、連続変数とカテゴリ変数間の関係が見やすくなって役に立つことがあります。
+6.  データセットが小さい場合、`geom_jitter()`を使ってオーバープロットを回避すると、連続変数とカテゴリ変数間の関係が見やすくなって役に立つことがあります。
     ggbeeswarmパッケージは`geom_jitter()`に似た手法をいくつか提供しています。
     それらをリストにして、それぞれが何をするか、関係に記述しなさい。
 
@@ -527,55 +527,58 @@ diamonds |>
 
 ### 2つの数値変数
 
-You've already seen one great way to visualize the covariation between two numerical variables: draw a scatterplot with `geom_point()`.
-You can see covariation as a pattern in the points.
-For example, you can see a positive relationship between the carat size and price of a diamond: diamonds with more carats have a higher price.
-The relationship is exponential.
+2つの数値変数間の共変動を可視化する素晴らしい方法を既に見ています。
+そう、`geom_point()`を使った散布図です。
+共変動を点のパターンとして見ることができます。
+例えば、ダイアモンドのカラットの大きさと価格の間には、カラットが増えるほど価格も上昇するという正の関係が見えます。
+関係は指数関数的です。
 
 ```{r}
 #| dev: "png"
 #| fig-alt: |
-#|   A scatterplot of price vs. carat. The relationship is positive, somewhat 
-#|   strong, and exponential.
+#|   価格、対、カラットの散布図。
+#|   関係は正で、いくらか強く、指数関数的。
 
 ggplot(smaller, aes(x = carat, y = price)) +
   geom_point()
 ```
 
-(In this section we'll use the `smaller` dataset to stay focused on the bulk of the diamonds that are smaller than 3 carats)
+(本セクションでは、大抵のダイアモンドにフォーカスするために、3カラットより小さいダイアモンドの`smaller`データセットを使います)
 
-Scatterplots become less useful as the size of your dataset grows, because points begin to overplot, and pile up into areas of uniform black, making it hard to judge differences in the density of the data across the 2-dimensional space as well as making it hard to spot the trend.
-You've already seen one way to fix the problem: using the `alpha` aesthetic to add transparency.
+データセットの規模が大きくなると、点のオーバープロットがはじまって、真っ黒に積み重なって、2次元スペースでのデータ密度の違いが判断しづらくなり、トレンドを見つけるのが困難になるので、散布図は役に立たなくなります。
+この問題を直す方法を一つ既に見ています。外
+観属性`alpha`を使って、透明度を加えるのです。
 
 ```{r}
 #| dev: "png"
 #| fig-alt: |
-#|   A scatterplot of price vs. carat. The relationship is positive, somewhat 
-#|   strong, and exponential. The points are transparent, showing clusters where 
-#|   the number of points is higher than other areas, The most obvious clusters 
-#|   are for diamonds with 1, 1.5, and 2 carats.
+#|   価格、対、カラットの散布図。
+#|   関係は正で、いくらか強く、指数関数的。
+#|   点には透明度があり、点の数が他の場所より多いクラスターを示している。
+#|   最も明白なクラスターは、1、1.5、2カラットのダイアモンド。
 
 ggplot(smaller, aes(x = carat, y = price)) + 
   geom_point(alpha = 1 / 100)
 ```
 
-But using transparency can be challenging for very large datasets.
-Another solution is to use bin.
-Previously you used `geom_histogram()` and `geom_freqpoly()` to bin in one dimension.
-Now you'll learn how to use `geom_bin2d()` and `geom_hex()` to bin in two dimensions.
+しかし、とても大きなデータセットだと、透明度を使うのは難しいかもしれません。
+他の解決策はビンを使うことです。
+ここまでに、`geom_histogram()`と`geom_freqpoly()`を使って、1次元でビン詰めしました。
+ここでは、`geom_bin2d()`と`geom_hex()`を使って、2次元でビン詰めする方法を学びます。
 
-`geom_bin2d()` and `geom_hex()` divide the coordinate plane into 2d bins and then use a fill color to display how many points fall into each bin.
-`geom_bin2d()` creates rectangular bins.
-`geom_hex()` creates hexagonal bins.
-You will need to install the hexbin package to use `geom_hex()`.
+`geom_bin2d()`と`geom_hex()`は、座標面を2次元のビンに分け、ビンごとに入る点の数を表示するため色塗りします。
+`geom_bin2d()`は長方形のビンを作ります。
+`geom_hex()`は六角形のビンを作ります。
+`geom_hex()`を使うには、hexbinパッケージをインストールする必要があります。
 
 ```{r}
 #| layout-ncol: 2
 #| fig-width: 3
 #| fig-alt: |
-#|   Plot 1: A binned density plot of price vs. carat. Plot 2: A hexagonal bin 
-#|   plot of price vs. carat. Both plots show that the highest density of 
-#|   diamonds have low carats and low prices.
+#|   プロット1: price対caratの密度プロットで、長方形のビン。
+#|   プロット2: price対caratのプロットで、六角形のビン。
+#|   どちらのプロットも、小さいカラットと低価格が最もダイアモンドの密度が
+#|   高いことを示す。
 
 ggplot(smaller, aes(x = carat, y = price)) +
   geom_bin2d()
@@ -585,29 +588,31 @@ ggplot(smaller, aes(x = carat, y = price)) +
   geom_hex()
 ```
 
-Another option is to bin one continuous variable so it acts like a categorical variable.
-Then you can use one of the techniques for visualizing the combination of a categorical and a continuous variable that you learned about.
-For example, you could bin `carat` and then for each group, display a boxplot:
+もう一つのオプションは、一つの連続変数をビン詰めして、カテゴリ変数のようにすることです。
+そうすれば、学習済みのカテゴリ変数にと連続変数の組み合わせの可視化テクニックが使えます。
+例えば、`carat`をビン詰めして、グループごとにボックスプロットを表示します。
 
 ```{r}
 #| fig-alt: |
-#|   Side-by-side box plots of price by carat. Each box plot represents diamonds 
-#|   that are 0.1 carats apart in weight. The box plots show that as carat 
-#|   increases the median price increases as well. Additionally, diamonds with 
-#|   1.5 carats or lower have right skewed price distributions, 1.5 to 2 have 
-#|   roughly symmetric price distributions, and diamonds that weigh more have 
-#|   left skewed distributions. Cheaper, smaller diamonds have outliers on the 
-#|   higher end, more expensive, bigger diamonds have outliers on the lower end.
+#|   caratごとの価格の横並びボックスプロット。
+#|   各ボックスプロットは、重さが0.1カラット間隔のダイアモンドを表す。
+#|   これらのボックスプロットから、カラットが増えるほど、価格の中央値も
+#|   上昇することが分かる。
+#|   加えて、1.5カラット以下のダイアモンドは、右に延びた価格分布で、
+#|   1.5から2カラットのダイアモンドは、ほぼ左右対称な価格分布で、
+#|   それ以上に重いダイアモンドは、左に延びた価格分布になっている。
+#|   外れ値は、安価で小さいダイアモンドでは上方、つまり、より高価な方に、
+#|   大きなダイアモンドでは下方にある。
 
 ggplot(smaller, aes(x = carat, y = price)) + 
   geom_boxplot(aes(group = cut_width(carat, 0.1)))
 ```
 
-`cut_width(x, width)`, as used above, divides `x` into bins of width `width`.
-By default, boxplots look roughly the same (apart from number of outliers) regardless of how many observations there are, so it's difficult to tell that each boxplot summaries a different number of points.
-One way to show that is to make the width of the boxplot proportional to the number of points with `varwidth = TRUE`.
+上で使った`cut_width(x, width)`は、`x`を`width`で指定した幅のビンに分けます。
+デフォルトでは、観測数が違っても、ボックスプロットは (外れ値の数を除くと) ほぼ同じ形になるので、ボックスプロットごとに点の数が違うことは分かりません。
+分かるようにする一つの方法は、`varwidth = TRUE`と設定して、ボックスプロットの幅を点の数に比例するようにすることです。
 
-#### Exercises
+#### 練習問題
 
 1.  Instead of summarizing the conditional distribution with a boxplot, you could use a frequency polygon.
     What do you need to consider when using `cut_width()` vs. `cut_number()`?
