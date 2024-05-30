@@ -164,7 +164,7 @@ ggplot(smaller, aes(x = carat)) +
 
 3.  0.99カラットのダイアモンドは何個ある？
     1カラットは？
-    この差の原因は何と考えるか？
+    この差の原因は何？
 
 ### 異常値 {#sec-unusual-values-eda}
 
@@ -316,8 +316,8 @@ nycflights13::flights |>
 #### 練習問題
 
 1.  ヒストグラムでズームする際に、`coord_cartesian()`を使う場合と、`xlim()`か`ylim()`を使う場合を比較、対象しなさい。
-    `binwidth`を設定していないと、どうなるか？
-    棒の半分だけを表すようにズームすると、どうなるか？
+    `binwidth`を設定していないとどうなるか？
+    棒の半分だけを表すようにズームするとどうなるか？
 
 2.  ヒストグラムでは欠損値はどうなるか？
     棒グラフでは欠損値はどうなるか？
@@ -329,24 +329,23 @@ nycflights13::flights |>
     `cancelled`変数でファセットしてみなさい。
     ファセット関数内の`scales`引数の値をいろいろと設定して、キャンセルされなかった便がキャンセルされた便より多い影響を低減しなさい。
 
-## Covariation
+## 共変動
 
-If variation describes the behavior *within* a variable, covariation describes the behavior *between* variables.
-**Covariation** is the tendency for the values of two or more variables to vary together in a related way.
-The best way to spot covariation is to visualize the relationship between two or more variables.
+変動が変数*内*の振る舞いを描写するとすれば、共変動は変数*間*の振る舞いを描写します。
+**共変動**は、2つ以上の変数の値が関連して一緒に変動する傾向です。
+共変動を見つける最良の方法は、2以上の変数間の関係を可視化することです。
 
-### A categorical and a numerical variable {#sec-cat-num}
+### カテゴリ変数と数値変数 {#sec-cat-num}
 
-For example, let's explore how the price of a diamond varies with its quality (measured by `cut`) using `geom_freqpoly()`:
+例えば、`geom_freqpoly()`を使って、ダイアモンドの価格が (`cut`で測られる) その品質でどう変わるか探索してみましょう。
 
 ```{r}
 #| fig-alt: |
-#|   A frequency polygon of prices of diamonds where each cut of carat (Fair, 
-#|   Good, Very Good, Premium, and Ideal) is represented with a different color 
-#|   line. The x-axis ranges from 0 to 30000 and the y-axis ranges from 0 to 
-#|   5000. The lines overlap a great deal, suggesting similar frequency 
-#|   distributions of prices of diamonds. One notable feature is that 
-#|   Ideal diamonds have the highest peak around 1500.
+#|   ダイアモンドの価格の頻度ポリゴン。ダイアモンドの品質 cut (Fair、
+#|   Good、Very Good、Premium、Ideal) ごとに違った色の線で表されている。
+#|   x軸は0から20000、y軸は0から5000の範囲。線はかなり重なっており、
+#|   どの品質でも価格分布は似ていることを示唆。分かりやすい特徴の一つは、
+#|   Idealなダイアモンドが1500辺りに最も高いピークを有すること。
 
 ggplot(diamonds, aes(x = price)) + 
   geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
