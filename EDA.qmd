@@ -471,7 +471,7 @@ ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
 ### 2つのカテゴリ変数
 
 カテゴリ変数間の共変動を可視化するには、これらのカテゴリ変数の水準の組み合わせごとに観測数をカウントする必要があります。
-そうする一つの方法はggplot2に含まれている`geom_count()`に頼ることです。
+一つの方法はggplot2に含まれている`geom_count()`に頼ることです。
 
 ```{r}
 #| fig-alt: |
@@ -485,25 +485,25 @@ ggplot(diamonds, aes(x = cut, y = color)) +
   geom_count()
 ```
 
-The size of each circle in the plot displays how many observations occurred at each combination of values.
-Covariation will appear as a strong correlation between specific x values and specific y values.
+プロットの各丸のサイズは値の組み合わせごとの観測数を表しています。
+特定のx値と特定のy値の間に強い相関があるとき、共変動は現れます。
 
-Another approach for exploring the relationship between these variables is computing the counts with dplyr:
+これら変数間の関係を探索するもう一つのアプローチは、dplyrを使ってカウントを計算することです。
 
 ```{r}
 diamonds |> 
   count(color, cut)
 ```
 
-Then visualize with `geom_tile()` and the fill aesthetic:
+それから、`geom_tile()`で外観属性fillを使って可視化します。
 
 ```{r}
 #| fig-alt: |
-#|   A tile plot of cut vs. color of diamonds. Each tile represents a 
-#|   cut/color combination and tiles are colored according to the number of 
-#|   observations in each tile. There are more Ideal diamonds than other cuts, 
-#|   with the highest number being Ideal diamonds with color G. Fair diamonds 
-#|   and diamonds with color I are the lowest in frequency.
+#|   ダイアモンドのcut対colorのタイル・プロット。
+#|   各タイルはcut/colorを表しており、そこでの観測数に従って
+#|   色付けされている。
+#|   cutで一番多いのはIdealで、cut/colorで一番多いのはIdeal/G
+#|   、一番少ないのはFair/J。
 
 diamonds |> 
   count(color, cut) |>  
@@ -511,10 +511,10 @@ diamonds |>
   geom_tile(aes(fill = n))
 ```
 
-If the categorical variables are unordered, you might want to use the seriation package to simultaneously reorder the rows and columns in order to more clearly reveal interesting patterns.
-For larger plots, you might want to try the heatmaply package, which creates interactive plots.
+カテゴリ変数に順序がないのなら、興味深いパターンをより分かりやすくするために、 seriationパッケージを使って、行と列を同時に並べ直したいかもしれません。
+さらに大きなプロットでは、heatmaplyパッケージを使って、インターアクティブなプロットを作成したいかもしれません。
 
-#### Exercises
+#### 練習問題
 
 1.  How could you rescale the count dataset above to more clearly show the distribution of cut within color, or color within cut?
 
