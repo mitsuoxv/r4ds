@@ -167,7 +167,7 @@ RStudioを起動すると @fig-rstudio-console、画面に２つの領域が現�
 #|   RStudio IDEでは、２つの大切な領域：Rコードを打ち込むコンソール区画
 #|   が左側に、プロットが出力される出力区画が右側に現れる。
 #| fig-alt: |
-#|   RStudio IDEで、コンソール区画と出力区画がハイライトされた画面。
+#|   RStudio IDEで、コンソール区画と出力区画が強調された画面。
 knitr::include_graphics("diagrams/rstudio/console.png", dpi = 270)
 ```
 

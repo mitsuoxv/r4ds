@@ -16,7 +16,7 @@ source("_common.R")
 #| fig-cap: |
 #|   データ可視化は通常、データ探索の第一歩。
 #| fig-alt: |
-#|   データサイエンスのモデル。可視化が青でハイライトされている。
+#|   データサイエンスのモデル。可視化が青で強調されている。
 #| out.width: NULL
 
 knitr::include_graphics("diagrams/data-science/visualize.png", dpi = 270)

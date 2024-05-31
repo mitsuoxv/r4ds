@@ -208,15 +208,15 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   theme(legend.position = "none")
 ```
 
-You can also use the same idea to highlight certain points on a plot with `geom_text_repel()` from the ggrepel package.
-Note another handy technique used here: we added a second layer of large, hollow points to further highlight the labelled points.
+同じアイディアを用いて、ggrepelパッケージの`geom_text_repel()`を使えば、プロット上の特定の点を強調することもできます。
+もう一つ手軽なテクニックがここでは使われています。
+ラベルを付けた点をさらに強調するために、レイヤーを重ねて大きな空洞のある点を追加しています。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars. Points 
-#|   where highway mileage is above 40 as well as above 20 with engine size 
-#|   above 5 are red, with a hollow red circle, and labelled with model name 
-#|   of the car.
+#|   高速道路での燃料効率、対、排気量の散布図。
+#|   高速道路での燃料効率が40超と、排気量が5超で高速道路での燃料効率が20超の
+#|   点は、赤い空洞のある丸の付いた赤丸で、車のモデル名のラベルが付いている。
 
 potential_outliers <- mpg |>
   filter(hwy > 40 | (hwy > 20 & displ > 5))
@@ -231,8 +231,8 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
-Remember, in addition to `geom_text()` and `geom_label()`, you have many other geoms in ggplot2 available to help annotate your plot.
-A couple ideas:
+プロットに注釈を付ける助けとなるgeomは、`geom_text()`や`geom_label()`だけでなく、ggplot2には他にも多くあることを覚えておきましょう。
+2、3のアイディアは、
 
 -   Use `geom_hline()` and `geom_vline()` to add reference lines.
     We often make them thick (`linewidth = 2`) and white (`color = white`), and draw them underneath the primary data layer.
