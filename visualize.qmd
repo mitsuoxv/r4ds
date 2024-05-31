@@ -24,7 +24,7 @@ knitr::include_graphics("diagrams/data-science/visualize.png", dpi = 270)
 
 以下の各章ごとに、データ可視化を作成する1つから2、3の側面に取り組みます。
 
--   @sec-layers では、レイヤー化されたグラフィックの文法について学びます。
+-   @sec-layers では、レイヤー化されたグラフの文法について学びます。
 
 -   @sec-exploratory-data-analysis では、可視化と好奇心、懐疑心を組み合わせることで、データに関する興味深い質問と回答を行います。
 

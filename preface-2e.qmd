@@ -31,6 +31,6 @@ ine Çetinkaya-Rundelです。彼
     第1版でもモデルを十分に扱えるだけのスペースがありませんでしたが、今ではもっと良い資源が利用可能になっています。
     [tidymodels](https://www.tidymodels.org/) パッケージの使用と、Max KuhnとJulia Silgeによる著作[Tidy Modeling with R](https://www.tmwr.org/)を読むことを一般的に薦めています。
 
--   "コミュニケート"部は残しましたが、R Markdownに替わって、[Quarto](https://quarto.org/)をメインとするよう、徹底的にアップデートしました。
+-   "伝達"部は残しましたが、R Markdownに替わって、[Quarto](https://quarto.org/)をメインとするよう、徹底的にアップデートしました。
     この第2版はQuartoで書かれています。Q
     uartoが将来にわたって使われる道具であることは明らかです。

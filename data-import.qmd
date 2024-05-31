@@ -1,4 +1,4 @@
-# データのインポート {#sec-data-import}
+# データの読み込み {#sec-data-import}
 
 ```{r}
 #| echo: false
@@ -557,7 +557,7 @@ tribble(
 
 本章では、`read_csv()`を使ってCSVファイルをロードするやり方と、`tibble()`と`tribble()`を使って自分のデータを入力するやり方を学習しました。
 CSVファイルの働き方、出会いそうな問題のいくつか、それらを克服する方法を学びました。
-本書では後ほど数度、データのインポートが出て来ます。@
+本書では後ほど数度、データの読み込みが出て来ます。\@
 sec-import-spreadsheets ではエクセルとグーグル・シーツから、@sec-import-databases ではデータベースから、@sec-arrow ではparquetファイルから、@sec-rectangling ではJSONから、@sec-scraping ではウェブサイトから、データをロードする方法が出て来ます。
 
 本書のこの部も終わりに近付いてきましたが、最後に重要なトピックが一つ残っています。ヘ

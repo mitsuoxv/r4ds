@@ -1,4 +1,4 @@
-# Communication {#sec-communication}
+# 伝達 {#sec-communication}
 
 ```{r}
 #| echo: false
@@ -6,29 +6,29 @@
 source("_common.R")
 ```
 
-## Introduction
+## はじめに
 
-In @sec-exploratory-data-analysis, you learned how to use plots as tools for *exploration*.
-When you make exploratory plots, you know---even before looking---which variables the plot will display.
-You made each plot for a purpose, could quickly look at it, and then move on to the next plot.
-In the course of most analyses, you'll produce tens or hundreds of plots, most of which are immediately thrown away.
+@sec-exploratory-data-analysis では、*探索*のための道具としてプロットを使う方法を学習しました。
+探索のためにプロットを作成するときは、結果を見るまでもなく、プロットがどの変数を表示しているか知っていました。
+目的を持ってプロットを作成し、ざっと見て、そして次のプロットへと移って行く。
+多くの分析過程では、何十も何百もプロットを作成して、ほとんどは直ちに捨て去ります。
 
-Now that you understand your data, you need to *communicate* your understanding to others.
-Your audience will likely not share your background knowledge and will not be deeply invested in the data.
-To help others quickly build up a good mental model of the data, you will need to invest considerable effort in making your plots as self-explanatory as possible.
-In this chapter, you'll learn some of the tools that ggplot2 provides to do so.
+データを理解できたら、その理解を他者へ*伝達*する必要があります。
+聴衆は、あなたが持つ背景情報をおそらく共有しておらず、あなたほど深くデータに注力もしていません。
+他者にデータがどんなものか素早く分かってもらうためには、プロットを可能な限り自己説明的にすることに相当の努力を注ぎ込む必要があります。
+本章では、そのためにggplot2が提供してくれている道具をいくつか学習します。
 
-This chapter focuses on the tools you need to create good graphics.
-We assume that you know what you want, and just need to know how to do it.
-For that reason, we highly recommend pairing this chapter with a good general visualization book.
-We particularly like [The Truthful Art](https://www.amazon.com/gp/product/0321934075/), by Albert Cairo.
-It doesn't teach the mechanics of creating visualizations, but instead focuses on what you need to think about in order to create effective graphics.
+本章は、良いグラフを作成するのに必要な道具にフォーカスします。
+あなたは何がしたいか分かっていて、ただそうする方法を知る必要があることを前提とします。
+そのため、本章と一般的な可視化の優れた本を一緒に読むことを強くお薦めします。
+[The Truthful Art](https://www.amazon.com/gp/product/0321934075/), by Albert Cairo は特に良い本です。
+可視化作成の機構は教えていませんが、その替わり、効果的なグラフを作成するために考える必要があることにフォーカスしています。
 
-### Prerequisites
+### 準備するもの
 
-In this chapter, we'll focus once again on ggplot2.
-We'll also use a little dplyr for data manipulation, **scales** to override the default breaks, labels, transformations and palettes, and a few ggplot2 extension packages, including **ggrepel** ([https://ggrepel.slowkow.com](https://ggrepel.slowkow.com/)) by Kamil Slowikowski and **patchwork** ([https://patchwork.data-imaginist.com](https://patchwork.data-imaginist.com/)) by Thomas Lin Pedersen.
-Don't forget that you'll need to install those packages with `install.packages()` if you don't already have them.
+本章では、再びggplot2にフォーカスします。
+また、dplyrを少々使ったデータ操作、**尺度 (scale)**を使ったbreaks、labels、transformations、palettesのデフォルトを上書きも行いますし、**ggrepel** ([https://ggrepel.slowkow.com](https://ggrepel.slowkow.com/)) by Kamil Slowikowski と **patchwork** ([https://patchwork.data-imaginist.com](https://patchwork.data-imaginist.com/)) by Thomas Lin Pedersen など2、3のggplot2拡張パッケージも使います。
+まだこれらのパッケージをインストールしていないなら、`install.packages()`を使って忘れずにインストールしておいてください。
 
 ```{r}
 #| label: setup
