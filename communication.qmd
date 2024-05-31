@@ -49,7 +49,7 @@ library(patchwork)
 #| message: false
 #| fig-alt: |
 #|   車の高速道路での燃料効率、対、排気量の散布図。
-#|   点は車のクラスごとに違いった色になっている。
+#|   点は車のクラスごとに違った色になっている。
 #|   車の高速道路での燃料効率と排気量間の関係の軌道に沿った滑らかな曲線が
 #|   重ねられている。
 #|   x軸には"Engine displacement (L)"と、y軸には"Highway fuel economy (mpg)"と
@@ -132,14 +132,14 @@ ggplot(df, aes(x, y)) +
 
 ## 注釈
 
-In addition to labelling major components of your plot, it's often useful to label individual observations or groups of observations.
-The first tool you have at your disposal is `geom_text()`.
-`geom_text()` is similar to `geom_point()`, but it has an additional aesthetic: `label`.
-This makes it possible to add textual labels to your plots.
+プロットの主要な構成要素にラベルを付けることに加えて、個々の観測や観測のグループにラベルを付けることはしばしば役に立ちます。
+手元にある最初の道具は、`geom_text()`です。
+`geom_text()`は`geom_point()`に似ていますが、もう一つの外観属性`label`を有しています。
+これでプロットにテキストのラベルを追加することができます。
 
-There are two possible sources of labels.
-First, you might have a tibble that provides labels.
-In the following plot we pull out the cars with the highest engine size in each drive type and save their information as a new data frame called `label_info`.
+ラベルの出どころになりえる所が2カ所あります。
+第1に、ラベルを提供してくれているtibbleかもしれません。
+以下プロットのために、駆動方式ごとに最大排気量の車を引き出して、その情報を`label_info`と名付けた新しいデータフレームに保存します。
 
 ```{r}
 label_info <- mpg |>
@@ -158,16 +158,19 @@ label_info <- mpg |>
 label_info
 ```
 
-Then, we use this new data frame to directly label the three groups to replace the legend with labels placed directly on the plot.
-Using the `fontface` and `size` arguments we can customize the look of the text labels.
-They're larger than the rest of the text on the plot and bolded.
-(`theme(legend.position = "none"`) turns all the legends off --- we'll talk about it more shortly.)
+次に、この新しいデータフレームを使って、3つのグループに直接ラベルを付けて、凡例をプロットに直接置いたラベルに交換します。
+`fontface`と`size`の引数を使って、テキスト・ラベルの見栄を好きなように調整できます。
+`size`はプロットの他のテキストよりも大きく、`fontface`はボールドにしています。
+(`theme(legend.position = "none"`) で、全ての凡例表示を消しています。こ
+れについては、少し先でお話しします。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway mileage versus engine size where points are colored 
-#|   by drive type. Smooth curves for each drive type are overlaid. 
-#|   Text labels identify the curves as front-wheel, rear-wheel, and 4-wheel.
+#|   高速道路での燃料効率、対、排気量の散布図。
+#|   点は駆動方式ごとに違った色になっている。
+#|   駆動方式ごとに滑らかな曲線が重ねられている。
+#|   テキスト・ラベルが曲線を、front-wheel、rear-wheel、4-wheelと
+#|   特定している。
 
 ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   geom_point(alpha = 0.3) +
@@ -180,18 +183,19 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   theme(legend.position = "none")
 ```
 
-Note the use of `hjust` (horizontal justification) and `vjust` (vertical justification) to control the alignment of the label.
+ラベルの配置を制御するために、`hjust` (horizontal justification) と`vjust` (vertical justification) を使っています。
 
-However the annotated plot we made above is hard to read because the labels overlap with each other, and with the points.
-We can use the `geom_label_repel()` function from the ggrepel package to address both of these issues.
-This useful package will automatically adjust labels so that they don't overlap:
+しかし、上で作成した注釈付きプロットは、ラベル同士が重なり、点とも重なっており、読みづらいです。
+ggrepelパッケージの`geom_label_repel()`関数を使えば、これらの問題の両方を解決できます。
+この役に立つパッケージは自動的にラベルを調整して、重ならないようにしてくれます。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars, where 
-#|   points are colored according to the car class. Some points are labelled 
-#|   with the car's name. The labels are box with white, transparent background 
-#|   and positioned to not overlap.
+#|   高速道路での燃料効率、対、排気量の散布図。
+#|   点は駆動方式ごとに違った色になっている。
+#|   駆動方式ごとに滑らかな曲線が重ねられている。
+#|   テキスト・ラベルが曲線を、front-wheel、rear-wheel、4-wheelと
+#|   特定している。ラベルは白地のボックスで、重ならない位置にある。
 
 ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   geom_point(alpha = 0.3) +
