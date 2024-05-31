@@ -15,19 +15,19 @@ source("_common.R")
 
 データを理解できたら、その理解を他者へ*伝達*する必要があります。
 聴衆は、あなたが持つ背景情報をおそらく共有しておらず、あなたほど深くデータに注力もしていません。
-他者にデータがどんなものか素早く分かってもらうためには、プロットを可能な限り自己説明的にすることに相当の努力を注ぎ込む必要があります。
-本章では、そのためにggplot2が提供してくれている道具をいくつか学習します。
+他者にデータがどんなものか素早く分かってもらうためには、プロットを可能な限り自己説明的にすべきで、相当の努力を注ぎ込む必要があります。
+本章では、そのためにggplot2が提供してくれる道具をいくつか学習します。
 
 本章は、良いグラフを作成するのに必要な道具にフォーカスします。
-あなたは何がしたいか分かっていて、ただそうする方法を知る必要があることを前提とします。
+あなたは何がしたいか分かっていて、そうする方法をただ知る必要があることを前提とします。
 そのため、本章と一般的な可視化の優れた本を一緒に読むことを強くお薦めします。
 [The Truthful Art](https://www.amazon.com/gp/product/0321934075/), by Albert Cairo は特に良い本です。
-可視化作成の機構は教えていませんが、その替わり、効果的なグラフを作成するために考える必要があることにフォーカスしています。
+可視化作成の機構は教えてくれませんが、その替わり、効果的なグラフを作成するための要検討事項にフォーカスしています。
 
 ### 準備するもの
 
 本章では、再びggplot2にフォーカスします。
-また、dplyrを少々使ったデータ操作、**尺度 (scale)**を使ったbreaks、labels、transformations、palettesのデフォルトを上書きも行いますし、**ggrepel** ([https://ggrepel.slowkow.com](https://ggrepel.slowkow.com/)) by Kamil Slowikowski と **patchwork** ([https://patchwork.data-imaginist.com](https://patchwork.data-imaginist.com/)) by Thomas Lin Pedersen など2、3のggplot2拡張パッケージも使います。
+また、dplyrを少々使ってデータ操作、**尺度 (scale)**を使ってbreaks、labels、transformations、palettesのデフォルト上書きも行いますし、**ggrepel** ([https://ggrepel.slowkow.com](https://ggrepel.slowkow.com/)) by Kamil Slowikowski と **patchwork** ([https://patchwork.data-imaginist.com](https://patchwork.data-imaginist.com/)) by Thomas Lin Pedersen などのggplot2拡張パッケージも使います。
 まだこれらのパッケージをインストールしていないなら、`install.packages()`を使って忘れずにインストールしておいてください。
 
 ```{r}
