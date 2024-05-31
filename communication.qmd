@@ -234,22 +234,23 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 プロットに注釈を付ける助けとなるgeomは、`geom_text()`や`geom_label()`だけでなく、ggplot2には他にも多くあることを覚えておきましょう。
 2、3のアイディアは、
 
--   Use `geom_hline()` and `geom_vline()` to add reference lines.
-    We often make them thick (`linewidth = 2`) and white (`color = white`), and draw them underneath the primary data layer.
-    That makes them easy to see, without drawing attention away from the data.
+-   `geom_hline()`と`geom_vline()`を使って、参照線を加える。
+    線は厚く (`linewidth = 2`)、白色 (`color = white`) にすることが多く、主なデータ・レイヤーの下に描く。
+    データから注目をそらすことなく、見やすくすることができる。
 
--   Use `geom_rect()` to draw a rectangle around points of interest.
-    The boundaries of the rectangle are defined by aesthetics `xmin`, `xmax`, `ymin`, `ymax`.
-    Alternatively, look into the [ggforce package](https://ggforce.data-imaginist.com/index.html), specifically [`geom_mark_hull()`](https://ggforce.data-imaginist.com/reference/geom_mark_hull.html), which allows you to annotate subsets of points with hulls.
+-   `geom_rect()`を使って、興味のある点を長方形で囲う。
+    長方形の境界線は外観属性`xmin`、`xmax`、`ymin`、`ymax`で指定する。
+    替わりの方法は、[ggforceパッケージ](https://ggforce.data-imaginist.com/index.html) で探す。特
+    に[`geom_mark_hull()`](https://ggforce.data-imaginist.com/reference/geom_mark_hull.html)を使えば、点のサブセットを外皮で囲んで注釈とできる。
 
--   Use `geom_segment()` with the `arrow` argument to draw attention to a point with an arrow.
-    Use aesthetics `x` and `y` to define the starting location, and `xend` and `yend` to define the end location.
+-   `geom_segment()`で`arrow`引数を使って、点に矢印を付けて注目をひく。
+    外観属性`x`と`y`で始点を、`xend`と`yend`で終点を指定する。
 
-Another handy function for adding annotations to plots is `annotate()`.
-As a rule of thumb, geoms are generally useful for highlighting a subset of the data while `annotate()` is useful for adding one or few annotation elements to a plot.
+プロットに注釈を加えるもう一つ手軽な関数は`annotate()`です。
+経験則として、一般的にデータのサブセットを強調するにはgeomが役立ち、プロットに1つ、あるいは、2、3の注釈要素を加えるには`annotate()`が役立ちます。
 
-To demonstrate using `annotate()`, let's create some text to add to our plot.
-The text is a bit long, so we'll use `stringr::str_wrap()` to automatically add line breaks to it given the number of characters you want per line:
+`annotate()`を使って実演するため、プロットに加えるテキストをいくつか作りましょう。
+テキストが少々長いので、`stringr::str_wrap()`に1行当たりの文字数を与えて、自動的に改行させています。
 
 ```{r}
 trend_text <- "Larger engine sizes tend to have lower fuel economy." |>
@@ -257,16 +258,18 @@ trend_text <- "Larger engine sizes tend to have lower fuel economy." |>
 trend_text
 ```
 
-Then, we add two layers of annotation: one with a label geom and the other with a segment geom.
-The `x` and `y` aesthetics in both define where the annotation should start, and the `xend` and `yend` aesthetics in the segment annotation define the end location of the segment.
-Note also that the segment is styled as an arrow.
+次に、注釈レイヤーを2つ追加します。一
+つはlabel geomを、もう一つはsegment geomを使います。
+どちらのgeomでも外観属性`x`と`y`が注釈の始点を特定し、segment geomではさらに`xend`と`yend`が終点を特定しています。
+また、segmentは矢印のスタイルにしています。
 
 ```{r}
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars. A red 
-#|   arrow pointing down follows the trend of the points and the annotation 
-#|   placed next to the arrow reads "Larger engine sizes tend to have lower 
-#|   fuel economy". The arrow and the annotation text is red.
+#|   車の高速道路での燃料効率、対、排気量の散布図。
+#|   右下がりの赤い矢印が点のトレンドに沿っており、
+#|   "Larger engine sizes tend to have lower fuel economy"という注釈文が
+#|   矢印の隣に置かれている。
+#|   矢印と注釈文は赤色。
 
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point() +
@@ -282,28 +285,28 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
-Annotation is a powerful tool for communicating main takeaways and interesting features of your visualizations.
-The only limit is your imagination (and your patience with positioning annotations to be aesthetically pleasing)!
+注釈は、あなたの可視化から主に覚えてもらいたいことや、興味深い特徴を伝達するための強力な道具です。
+唯一の限界はあなたの想像力 (と、見た目が楽しいように注釈を位置付ける忍耐力) です！
 
-### Exercises
+### 練習問題
 
-1.  Use `geom_text()` with infinite positions to place text at the four corners of the plot.
+1.  `geom_text()`で位置を無限にして、テキストをプロットの四隅に置きなさい。
 
-2.  Use `annotate()` to add a point geom in the middle of your last plot without having to create a tibble.
-    Customize the shape, size, or color of the point.
+2.  `annotate()`を使って、tibbleを作ることなく、最後のプロットの真ん中にpoint geomを追加しなさい。
+    点の形、サイズ、色を好きなように調整しなさい。
 
-3.  How do labels with `geom_text()` interact with faceting?
-    How can you add a label to a single facet?
-    How can you put a different label in each facet?
-    (Hint: Think about the dataset that is being passed to `geom_text()`.)
+3.  `geom_text()`でのlabelsはファセットすると、どうなる？
+    一つのファセットだけにラベルを加えるには、どうする？
+    ファセットごとに違うラベルを置くには、どうする？
+    (ヒント：`geom_text()`に渡されるデータセットについて考えよ。)
 
-4.  What arguments to `geom_label()` control the appearance of the background box?
+4.  `geom_label()`で、背景の箱の外見を制御している引数は何？
 
-5.  What are the four arguments to `arrow()`?
-    How do they work?
-    Create a series of plots that demonstrate the most important options.
+5.  `arrow()`の4つの引数は何？
+    その機能は？
+    最も重要なオプションを実演する一連のプロットを作成しなさい。
 
-## Scales
+## 尺度
 
 The third way you can make your plot better for communication is to adjust the scales.
 Scales control how the aesthetic mappings manifest visually.
