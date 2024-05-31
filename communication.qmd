@@ -40,23 +40,23 @@ library(ggrepel)
 library(patchwork)
 ```
 
-## Labels
+## ラベル
 
-The easiest place to start when turning an exploratory graphic into an expository graphic is with good labels.
-You add labels with the `labs()` function.
+探索のためのグラフを解説のためのグラフに転換するのに、最もはじめやすいのは良いラベルを付けることです。
+`labs()`関数を使って、ラベルを付けられます。
 
 ```{r}
 #| message: false
 #| fig-alt: |
-#|   Scatterplot of highway fuel efficiency versus engine size of cars, where 
-#|   points are colored according to the car class. A smooth curve following 
-#|   the trajectory of the relationship between highway fuel efficiency versus 
-#|   engine size of cars is overlaid. The x-axis is labelled "Engine 
-#|   displacement (L)" and the y-axis is labelled "Highway fuel economy (mpg)". 
-#|   The legend is labelled "Car type". The plot is titled "Fuel efficiency 
-#|   generally decreases with engine size". The subtitle is "Two seaters 
-#|   (sports cars) are an exception because of their light weight" and the 
-#|   caption is "Data from fueleconomy.gov".
+#|   車の高速道路での燃料効率、対、排気量の散布図。
+#|   点は車のクラスごとに違いった色になっている。
+#|   車の高速道路での燃料効率と排気量間の関係の軌道に沿った滑らかな曲線が
+#|   重ねられている。
+#|   x軸には"Engine displacement (L)"と、y軸には"Highway fuel economy (mpg)"と
+#|   ラベルが付けられている。凡例のラベルは"Car type"。プロットのタイトルは
+#|   "Fuel efficiency generally decreases with engine size"。
+#|   サブタイトルは"Two seaters (sports cars) are an exception because of their light weight"、
+#|   キャプションは"Data from fueleconomy.gov"。
 
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point(aes(color = class)) +
@@ -71,23 +71,26 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   )
 ```
 
-The purpose of a plot title is to summarize the main finding.
-Avoid titles that just describe what the plot is, e.g., "A scatterplot of engine displacement vs. fuel economy".
+プロット・タイトルの目的は、主要な発見を要約することです。
+プロットを描写するだけのタイトル、例えば、"A scatterplot of engine displacement vs. fuel economy"、は避けましょう。
 
-If you need to add more text, there are two other useful labels: `subtitle` adds additional detail in a smaller font beneath the title and `caption` adds text at the bottom right of the plot, often used to describe the source of the data.
-You can also use `labs()` to replace the axis and legend titles.
-It's usually a good idea to replace short variable names with more detailed descriptions, and to include the units.
+もっとテキストを加える必要があるなら、他に2つ役に立つラベルがあります。`s`
+`ubtitle`はタイトルの下に小さめのフォントで追加の詳細を加え、`caption`はプロットの右下にテキストを加え、データの出所を記述するのにしばしば使われます。
+`labs()`を使って、軸や凡例のタイトルを変更することもできます。
+短い変数名に替えて、より詳細な記述にして、単位を含めることをお薦めします。
 
-It's possible to use mathematical equations instead of text strings.
-Just switch `""` out for `quote()` and read about the available options in `?plotmath`:
+文字列の替わりに、算式も使えます。`"`
+`"`を`quote()`に変えるだけです。利
+用可能なオプションについて読むには、`?plotmath`としてください。
 
 ```{r}
 #| fig-asp: 1
 #| out-width: "50%"
 #| fig-width: 3
 #| fig-alt: |
-#|   Scatterplot with math text on the x and y axis labels. X-axis label 
-#|   says x_i, y-axis label says sum of x_i  squared, for i from 1 to n.
+#|   x軸とy軸のラベルが算式になっている散布図。
+#|   x軸のラベルはx_i、
+#|   y軸のラベルはsum of x_i  squared, for i from 1 to nの意味。
 
 df <- tibble(
   x = 1:10,
@@ -102,18 +105,18 @@ ggplot(df, aes(x, y)) +
   )
 ```
 
-### Exercises
+### 練習問題
 
-1.  Create one plot on the fuel economy data with customized `title`, `subtitle`, `caption`, `x`, `y`, and `color` labels.
+1.  燃料効率データのプロットを一つ作って、`title`、`subtitle`、`caption`、`x`、`y`、`color`に独自のラベルを付けなさい。
 
-2.  Recreate the following plot using the fuel economy data.
-    Note that both the colors and shapes of points vary by type of drive train.
+2.  燃料効率データを使って、以下プロットを再現しなさい。
+    点の色と形、両方が駆動方式ごとに違っていることに注意。
 
     ```{r}
     #| echo: false
     #| fig-alt: |
-    #|   Scatterplot of highway versus city fuel efficiency. Shapes and 
-    #|   colors of points are determined by type of drive train.
+    #|   高速道路、対、市中の燃料効率の散布図。
+    #|   点の形と色は駆動方式ごとに違っている。
 
     ggplot(mpg, aes(x = cty, y = hwy, color = drv, shape = drv)) +
       geom_point() +
@@ -125,9 +128,9 @@ ggplot(df, aes(x, y)) +
       )
     ```
 
-3.  Take an exploratory graphic that you've created in the last month, and add informative titles to make it easier for others to understand.
+3.  先月作成した探索のためのグラフを取り出して、他の人が理解しやすいよう、分かりやすいタイトルを付けなさい。
 
-## Annotations
+## 注釈
 
 In addition to labelling major components of your plot, it's often useful to label individual observations or groups of observations.
 The first tool you have at your disposal is `geom_text()`.
